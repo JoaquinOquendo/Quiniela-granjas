@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiniela Granjas · Mundial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ───────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --ecu-y:#FFD100;
+  --ecu-b:#003DA6;
+  --ecu-r:#EF3340;
+  --cream:#F5F0E8;
+  --ink:#0A0A0A;
+  --ink2:#1A1A1A;
+  --muted:#6B6B6B;
+  --border:#E0D8CC;
+  --border-dark:#2A2A2A;
+  --wc-green:#3CAC3B;
+}
+
+html{scroll-behavior:smooth;}
+@media(hover:hover){html{cursor:none;}}
+@media(hover:none){.cursor,.cursor-ring{display:none;}}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Instrument Sans',sans-serif;
+  font-weight:400;
+  overflow-x:hidden;
+}
+
+/* Custom cursor */
+.cursor{
+  width:12px;height:12px;
+  background:var(--ecu-r);
+  border-radius:50%;
+  position:fixed;
+  top:0;left:0;
+  pointer-events:none;
+  z-index:9999;
+  transition:transform .15s ease,background .2s;
+  mix-blend-mode:multiply;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1.5px solid var(--ecu-r);
+  border-radius:50%;
+  position:fixed;
+  top:0;left:0;
+  pointer-events:none;
+  z-index:9998;
+  transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .2s;
+  opacity:.5;
+}
+
+/* ── TICKER ──────────────────────────────────────────────── */
+.ticker{
+  background:var(--ecu-b);
+  color:#fff;
+  padding:.4rem 0;
+  overflow:hidden;
+  position:fixed;top:0;left:0;right:0;z-index:100;
+}
+.ticker-inner{
+  display:flex;gap:0;
+  animation:ticker-scroll 30s linear infinite;
+  white-space:nowrap;
+}
+.ticker-item{
+  font-family:'Syne',sans-serif;
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  padding:0 2rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.ticker-dot{
+  width:4px;height:4px;border-radius:50%;
+  background:var(--ecu-y);flex-shrink:0;
+}
+@keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:24px;left:0;right:0;z-index:99;
+  padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:.5rem;
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-size:.8rem;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);
+  background:var(--cream);
+  padding:.35rem .75rem;
+  border:1.5px solid var(--ink);
+  border-radius:2px;
+}
+.nav-badge{
+  font-family:'Syne',sans-serif;
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--cream);
+  background:var(--ecu-r);
+  padding:.35rem .85rem;
+  border-radius:2px;
+  display:flex;align-items:center;gap:.5rem;
+}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--ecu-y);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;
+  padding:120px 2rem 4rem;
+  display:grid;
+  grid-template-columns:55% 45%;
+  grid-template-rows:auto auto;
+  gap:0;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Big decorative stripe */
+.hero-stripe{
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:44%;
+  background:var(--ecu-b);
+  z-index:0;
+}
+.hero-stripe::after{
+  content:'';
+  position:absolute;top:0;left:-80px;
+  width:160px;height:100%;
+  background:var(--ecu-y);
+  clip-path:polygon(80px 0,100% 0,100% 100%,0 100%);
+}
+
+.hero-content{
+  position:relative;z-index:1;
+  padding-right:3rem;
+  display:flex;flex-direction:column;justify-content:center;
+}
+
+.hero-tag{
+  font-family:'Syne',sans-serif;
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.hero-tag::before{content:'';width:32px;height:1.5px;background:var(--ecu-r);}
+
+.hero-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(5rem,12vw,9rem);
+  font-weight:800;
+  line-height:.85;
+  letter-spacing:-.03em;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+}
+.hero-title .line1{display:block;color:var(--ink);}
+.hero-title .line2{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:2px var(--ecu-r);
+}
+.hero-title .line3{display:block;color:var(--ink);}
+
+.hero-meta{
+  display:flex;align-items:center;gap:2rem;
+  padding-top:1.5rem;
+  border-top:1px solid var(--border);
+}
+.hero-meta-item{}
+.hero-meta-num{
+  font-family:'Syne',sans-serif;
+  font-size:1.8rem;font-weight:800;
+  line-height:1;color:var(--ink);
+}
+.hero-meta-lbl{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.2rem;}
+
+.hero-right{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding-left:3rem;
+  padding-bottom:3rem;
+}
+
+/* Big yellow number */
+.hero-year{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(6rem,16vw,14rem);
+  font-weight:800;
+  line-height:.8;
+  color:var(--ecu-y);
+  letter-spacing:-.04em;
+  margin-bottom:1rem;
+}
+.hero-tagline{
+  font-family:'Syne',sans-serif;
+  font-size:.7rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+  padding:.5rem 0;
+  border-top:1px solid rgba(255,255,255,.15);
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+/* Ecuador flag stripe */
+.ecu-flag{
+  display:flex;height:6px;margin-top:1.5rem;gap:2px;overflow:hidden;border-radius:1px;
+}
+.ef-y{background:var(--ecu-y);flex:2;}
+.ef-b{background:var(--ecu-b);flex:1;}
+.ef-r{background:var(--ecu-r);flex:1;}
+
+/* Scroll line */
+.scroll-line{
+  position:absolute;bottom:2rem;left:2rem;
+  display:flex;align-items:flex-end;gap:.75rem;
+  z-index:2;
+}
+.sl-line{width:40px;height:1px;background:var(--muted);}
+.sl-text{font-family:'Syne',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+
+/* ── LAYOUT HELPERS ───────────────────────────────────────── */
+.page{max-width:1100px;margin:0 auto;padding:0 2rem;}
+
+/* ── SECTION HEADERS ──────────────────────────────────────── */
+.sec-header{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:1.5rem;
+  margin-bottom:2.5rem;
+  padding-bottom:1rem;
+  border-bottom:1.5px solid var(--ink);
+}
+.sec-num{
+  font-family:'Syne',sans-serif;
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.2em;color:var(--muted);
+}
+.sec-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  font-weight:800;letter-spacing:-.02em;text-transform:uppercase;
+  line-height:1;
+}
+.sec-sub{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-align:right;}
+
+/* ── STRIP DIVIDER ────────────────────────────────────────── */
+.strip{
+  display:flex;height:8px;gap:2px;overflow:hidden;
+}
+.strip-y{background:var(--ecu-y);}
+.strip-b{background:var(--ecu-b);}
+.strip-r{background:var(--ecu-r);}
+
+/* ── SECTION WRAPPER ──────────────────────────────────────── */
+.section{padding:5rem 0;}
+
+/* ── PODIUM ───────────────────────────────────────────────── */
+.podium-editorial{
+  display:grid;
+  grid-template-columns:1fr 1.2fr 1fr;
+  gap:2px;
+  margin-bottom:2px;
+}
+.pod-card{
+  padding:2.5rem 2rem 2rem;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.pod-card.pos-1{background:var(--ecu-b);color:#fff;}
+.pod-card.pos-2{background:var(--ink);color:#fff;}
+.pod-card.pos-3{background:var(--border);color:var(--ink);}
+
+.pod-rank-big{
+  font-family:'Syne',sans-serif;
+  font-size:5rem;font-weight:800;
+  line-height:1;letter-spacing:-.03em;
+  position:absolute;top:1.5rem;right:1.5rem;
+  opacity:.1;
+}
+.pos-1 .pod-rank-big{color:var(--ecu-y);}
+.pos-2 .pod-rank-big{color:#fff;}
+
+.pod-tag{
+  font-family:'Syne',sans-serif;
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.25em;text-transform:uppercase;
+  margin-bottom:1.5rem;
+  opacity:.5;
+}
+.pod-initial-box{
+  width:48px;height:48px;
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:.75rem;
+}
+.pos-1 .pod-initial-box{background:var(--ecu-y);}
+.pos-2 .pod-initial-box{background:var(--ecu-r);}
+.pos-3 .pod-initial-box{background:var(--ecu-b);}
+
+.pod-init-letter{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#000;}
+.pos-2 .pod-init-letter,.pos-3 .pod-init-letter{color:#fff;}
+
+.pod-name{
+  font-family:'Syne',sans-serif;
+  font-size:1.5rem;font-weight:800;
+  letter-spacing:-.01em;text-transform:uppercase;
+  line-height:1;margin-bottom:.75rem;
+}
+.pod-pts-row{
+  display:flex;align-items:baseline;gap:.4rem;
+  margin-top:auto;padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.pos-3 .pod-pts-row{border-color:var(--border);}
+.pod-pts-num{
+  font-family:'Syne',sans-serif;
+  font-size:3rem;font-weight:800;
+  line-height:1;letter-spacing:-.02em;
+}
+.pos-1 .pod-pts-num{color:var(--ecu-y);}
+.pos-2 .pod-pts-num{color:#fff;}
+.pos-3 .pod-pts-num{color:var(--ecu-b);}
+.pod-pts-lbl{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;}
+
+/* Accent line on pos-1 */
+.pos-1::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--ecu-y),#ffe566);
+}
+
+/* ── TABLE ────────────────────────────────────────────────── */
+.lb-editorial{
+  background:var(--ink2);
+  color:#fff;
+  border-radius:0;
+}
+.lb-editorial table{width:100%;border-collapse:collapse;}
+.lb-editorial thead th{
+  padding:.75rem 1.25rem;
+  font-family:'Syne',sans-serif;
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);text-align:center;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.lb-editorial thead th:nth-child(2){text-align:left;}
+.lb-editorial tbody tr{
+  border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background .1s;
+}
+.lb-editorial tbody tr:last-child{border-bottom:none;}
+.lb-editorial tbody tr:hover{background:rgba(255,255,255,.03);}
+.lb-editorial td{padding:1rem 1.25rem;text-align:center;}
+.lb-editorial td:nth-child(2){text-align:left;}
+
+.rk{
+  font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;
+  width:20px;display:inline-block;text-align:center;
+}
+.rk1{color:var(--ecu-y);}
+.rk2{color:#999;}
+.rk3{color:#cd7f32;}
+.rkn{color:rgba(255,255,255,.2);}
+
+.rkbar{display:inline-block;width:2px;height:20px;border-radius:1px;vertical-align:middle;margin-right:10px;}
+.rb1{background:var(--ecu-y);}
+.rb2{background:#999;}
+.rb3{background:#cd7f32;}
+.rbn{background:rgba(255,255,255,.1);}
+
+.pn{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase;}
+.pt{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;}
+tr:nth-child(1) .pt{color:var(--ecu-y);}
+tr:nth-child(2) .pt{color:#aaa;}
+tr:nth-child(3) .pt{color:#cd7f32;}
+
+.dif{font-size:.72rem;color:rgba(255,255,255,.3);}
+.dif-n{color:rgba(239,51,64,.7);}
+.ph{font-family:'Syne',sans-serif;font-size:.78rem;color:rgba(255,255,255,.4);}
+
+/* ── BREAKDOWN ────────────────────────────────────────────── */
+.bd-editorial{
+  display:none;
+}
+@media(max-width:768px){
+  .bd-editorial{display:grid;gap:2px;}
+}
+.bd-row-hd{
+  display:grid;
+  grid-template-columns:180px repeat(8,1fr);
+  gap:2px;
+  padding:.6rem 0;
+  margin-bottom:2px;
+}
+.bd-hd-cell{
+  font-family:'Syne',sans-serif;
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);text-align:center;
+}
+.bd-hd-cell:first-child{text-align:left;}
+.bd-row{
+  display:grid;
+  grid-template-columns:180px repeat(8,1fr);
+  gap:2px;
+  background:var(--border);
+}
+.bd-cell{
+  background:var(--cream);
+  padding:.75rem .5rem;
+  font-family:'Syne',sans-serif;
+  font-size:.82rem;font-weight:600;
+  text-align:center;
+  transition:background .1s;
+}
+.bd-cell:first-child{text-align:left;font-size:.82rem;font-weight:700;padding-left:1rem;text-transform:uppercase;letter-spacing:.02em;}
+.bd-cell:hover{background:#ede8df;}
+.bd-cell.c-grp{color:var(--wc-green);}
+.bd-cell.c-oct{color:var(--ecu-b);}
+.bd-cell.c-qf{color:#e07000;}
+.bd-cell.c-sf{color:var(--ecu-r);}
+.bd-cell.c-fin{color:#8b5cf6;}
+.bd-cell.c-cam{color:#b8860b;}
+.bd-cell.c-pre{color:#7c3aed;}
+.bd-cell.c-tot{background:var(--ink);color:var(--ecu-y);font-size:1rem;font-weight:800;}
+
+/* ── PREMIOS INDIVIDUALES ─────────────────────────────────── */
+.premios-editorial{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2px;
+}
+.prem-card{
+  padding:2rem 1.5rem;
+  position:relative;
+  overflow:hidden;
+}
+.prem-card:nth-child(1){background:var(--ecu-r);color:#fff;}
+.prem-card:nth-child(2){background:var(--ecu-y);color:var(--ink);}
+.prem-card:nth-child(3){background:var(--ecu-b);color:#fff;}
+.prem-card:nth-child(4){background:var(--ink);color:#fff;}
+
+.pc-bg-num{
+  position:absolute;bottom:-1rem;right:-.5rem;
+  font-family:'Syne',sans-serif;
+  font-size:7rem;font-weight:800;
+  line-height:1;letter-spacing:-.04em;
+  opacity:.08;
+  user-select:none;
+}
+.pc-icon{font-size:1.5rem;margin-bottom:1rem;}
+.pc-cat{
+  font-family:'Syne',sans-serif;
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  opacity:.5;margin-bottom:.75rem;
+}
+.vote-row-ed{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;}
+.v-pos-ed{font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;opacity:.4;min-width:12px;}
+.v-name-ed{font-size:.8rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.v-name-ed.vt{font-weight:600;}
+.v-track-ed{flex:1;height:2px;background:rgba(255,255,255,.15);border-radius:1px;overflow:hidden;}
+.prem-card:nth-child(2) .v-track-ed{background:rgba(0,0,0,.12);}
+.v-fill-ed{height:100%;border-radius:1px;}
+.vfe1{background:rgba(255,255,255,.6);}
+.vfe2{background:rgba(0,0,0,.4);}
+.vfe3{background:rgba(255,255,255,.6);}
+.vfe4{background:rgba(255,255,255,.5);}
+.v-n-ed{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;opacity:.5;min-width:14px;text-align:right;}
+
+/* ── PARTIDOS ─────────────────────────────────────────────── */
+.partidos-editorial{display:flex;flex-direction:column;gap:2px;}
+
+.partido-ed{
+  display:grid;
+  grid-template-columns:auto 1fr auto 1fr auto;
+  align-items:stretch;
+  background:var(--cream);
+  border:1.5px solid var(--border);
+  overflow:hidden;
+}
+.partido-ed.played{border-color:var(--ink);}
+
+.pe-group{
+  padding:1rem 1.25rem;
+  background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;
+  min-width:80px;
+}
+.pe-group-lbl{font-family:'Syne',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+.pe-group-name{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:800;color:#fff;letter-spacing:.05em;text-transform:uppercase;margin-top:.2rem;}
+
+.pe-team{
+  padding:1.25rem 1.5rem;
+  display:flex;align-items:center;
+}
+.pe-team-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;letter-spacing:.02em;text-transform:uppercase;}
+.pe-team.right{justify-content:flex-end;}
+.pe-team.right .pe-team-name{text-align:right;}
+
+.pe-center{
+  padding:.75rem 1rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.25rem;
+  min-width:80px;
+}
+.pe-score{
+  font-family:'Syne',sans-serif;
+  font-size:1.6rem;font-weight:800;
+  letter-spacing:.08em;color:var(--ecu-b);
+}
+.pe-vs{font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.2em;color:var(--muted);}
+.pe-hora{font-family:'Syne',sans-serif;font-size:.65rem;letter-spacing:.12em;color:var(--muted);}
+
+.pe-prono{
+  padding:.6rem 1.25rem;
+  background:var(--ink2);
+  display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;
+  min-width:200px;
+}
+.pe-prono-lbl{
+  font-family:'Syne',sans-serif;font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);width:100%;margin-bottom:.15rem;
+}
+.chip-ed{
+  font-family:'Syne',sans-serif;font-size:.65rem;font-weight:600;
+  padding:.12rem .45rem;border-radius:2px;
+  letter-spacing:.04em;text-transform:uppercase;
+}
+.che{background:rgba(60,172,59,.2);color:#4ade80;}
+.cae{background:rgba(239,51,64,.2);color:#f87171;}
+.cde{background:rgba(255,209,0,.15);color:var(--ecu-y);}
+
+/* ── ESPECIALES ───────────────────────────────────────────── */
+.esp-editorial{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2px;
+}
+.esp-ed{
+  padding:2rem 1.5rem;
+  position:relative;overflow:hidden;
+  background:var(--cream);
+  border:1.5px solid var(--border);
+}
+.esp-ed::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.ee-gold::before{background:var(--ecu-y);}
+.ee-red::before{background:var(--ecu-r);}
+.ee-blue::before{background:var(--ecu-b);}
+.ee-green::before{background:var(--wc-green);}
+.ee-purple::before{background:#8b5cf6;}
+.ee-orange::before{background:#f97316;}
+.ee-pink::before{background:#ec4899;}
+.ee-teal::before{background:#14b8a6;}
+
+.ee-icon{
+  font-family:'Syne',sans-serif;
+  font-size:2.5rem;font-weight:800;
+  color:var(--border);line-height:1;
+  margin-bottom:.75rem;
+  user-select:none;
+}
+.ee-nombre{
+  font-family:'Syne',sans-serif;
+  font-size:.55rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.25rem;
+}
+.ee-titulo{
+  font-family:'Syne',sans-serif;
+  font-size:.85rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.03em;
+  color:var(--ink);margin-bottom:.6rem;
+}
+.ee-winner{
+  font-family:'Syne',sans-serif;
+  font-size:1.6rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.01em;
+  line-height:1.1;
+  color:var(--ecu-b);margin-bottom:.75rem;
+}
+.ee-desc{
+  font-size:.75rem;line-height:1.6;color:var(--muted);
+  padding-top:.65rem;border-top:1px solid var(--border);
+}
+.ee-desc strong{color:var(--ink);font-weight:600;}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.footer-ed{
+  background:var(--ink);
+  padding:3rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-left{}
+.footer-brand{
+  font-family:'Syne',sans-serif;
+  font-size:1.5rem;font-weight:800;
+  letter-spacing:-.01em;text-transform:uppercase;
+  color:#fff;margin-bottom:.25rem;
+}
+.footer-brand span{color:var(--ecu-y);}
+.footer-sub{font-size:.7rem;color:rgba(255,255,255,.3);font-family:'Syne',sans-serif;letter-spacing:.1em;text-transform:uppercase;}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+
+/* ── TABLET 900px ─────────────────────────────────── */
+@media(max-width:900px){
+  .esp-editorial{grid-template-columns:1fr 1fr;}
+  .premios-editorial{grid-template-columns:1fr 1fr;}
+  .bd-row,.bd-row-hd{grid-template-columns:130px repeat(4,1fr);}
+  .bd-cell:nth-child(n+7),.bd-hd-cell:nth-child(n+7){display:none;}
+  .hero{grid-template-columns:60% 40%;}
+  .hero-title{font-size:clamp(3rem,10vw,6rem);}
+  .hero-year{font-size:clamp(5rem,14vw,9rem);}
+  .lb-editorial thead th:nth-child(n+8),.lb-editorial td:nth-child(n+8){display:none;}
+}
+
+/* ── MOBILE 768px ─────────────────────────────────── */
+@media(max-width:768px){
+
+  /* Nav */
+  nav{padding:0 1rem;}
+  .nav-logo{font-size:.7rem;padding:.3rem .6rem;}
+  .nav-badge{font-size:.6rem;padding:.3rem .65rem;}
+
+  /* Ticker */
+  .ticker{display:none;} /* hide on mobile to save space */
+
+  /* Hero — stacked single column */
+  .hero{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto;
+    min-height:auto;
+    padding:80px 1.25rem 3rem;
+    gap:0;
+  }
+  .hero-stripe{display:none;}
+  .hero-content{padding-right:0;padding-bottom:2rem;}
+  .hero-title{
+    font-size:clamp(3.5rem,18vw,5.5rem);
+    margin-bottom:1.25rem;
+  }
+  .hero-title .line2{-webkit-text-stroke-width:1.5px;}
+  .hero-meta{gap:1.25rem;padding-top:1.25rem;}
+  .hero-meta-num{font-size:1.4rem;}
+  .hero-meta-lbl{font-size:.6rem;}
+
+  .hero-right{
+    padding-left:0;padding-top:0;
+    padding-bottom:1.5rem;
+    border-top:1.5px solid var(--border);
+  }
+  .hero-year{
+    font-size:clamp(4rem,22vw,7rem);
+    color:var(--ecu-b);
+  }
+  .hero-tagline{
+    color:var(--muted);
+    font-size:.65rem;
+  }
+  .scroll-line{display:none;}
+
+  /* Page padding */
+  .page{padding:0 1rem;}
+
+  /* Section headers */
+  .sec-header{
+    grid-template-columns:auto 1fr;
+    gap:.75rem;
+  }
+  .sec-sub{display:none;}
+  .sec-title{font-size:clamp(2rem,10vw,3rem);}
+  .sec-num{font-size:.6rem;}
+  .section{padding:3rem 0;}
+
+  /* Podium — stack vertically, 1er puesto on top */
+  .podium-editorial{
+    grid-template-columns:1fr;
+    gap:2px;
+  }
+  /* Reorder: 1st always first on mobile */
+  .pod-card.pos-2{order:2;}
+  .pod-card.pos-1{order:1;}
+  .pod-card.pos-3{order:3;}
+  .pod-card{padding:1.5rem 1.25rem;}
+  .pod-rank-big{font-size:4rem;top:1rem;right:1rem;}
+  .pod-name{font-size:1.2rem;}
+  .pod-pts-num{font-size:2.2rem;}
+
+  /* Leaderboard — hide less important cols */
+  .lb-editorial thead th:nth-child(n+5),
+  .lb-editorial td:nth-child(n+5){display:none;}
+  .lb-editorial thead th,
+  .lb-editorial td{padding:.75rem .75rem;font-size:.78rem;}
+  .pn{font-size:.85rem;}
+  .pt{font-size:1.1rem;}
+
+  /* Breakdown — compact */
+  .bd-row-hd{display:none;} /* hide header on mobile, colors speak */
+  .bd-row{
+    grid-template-columns:1fr 1fr 1fr;
+    gap:1px;
+    margin-bottom:2px;
+  }
+  .bd-cell{padding:.6rem .4rem;font-size:.78rem;}
+  .bd-cell:first-child{
+    grid-column:1/-1;
+    text-align:center;
+    background:var(--ink);
+    color:#fff;
+    font-size:.75rem;
+    padding:.5rem;
+  }
+  .bd-cell:nth-child(n+9){display:none;} /* hide premios col on mobile */
+  .bd-cell.c-tot{
+    grid-column:1/-1;
+    font-size:.9rem;
+    padding:.6rem;
+  }
+
+  /* Premios individuales — 2 cols */
+  .premios-editorial{
+    grid-template-columns:1fr 1fr;
+    gap:2px;
+  }
+  .prem-card{padding:1.25rem 1rem;}
+  .pc-bg-num{font-size:5rem;}
+  .v-track-ed{display:none;} /* hide bar on mobile */
+  .v-name-ed{font-size:.75rem;}
+
+  /* Partidos — stack vertically */
+  .partido-ed{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:2px;
+  }
+  .pe-group{
+    flex-direction:row;
+    align-items:center;
+    gap:.5rem;
+    padding:.6rem 1rem;
+  }
+  .pe-group-lbl{font-size:.55rem;}
+  .pe-group-name{font-size:.7rem;}
+  .partido-match-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:.9rem 1rem;
+  }
+  .pe-team{padding:.9rem 1rem;}
+  .pe-team-name{font-size:.9rem;}
+  .pe-center{padding:.6rem .75rem;min-width:60px;}
+  .pe-score{font-size:1.2rem;}
+  .pe-prono{
+    padding:.6rem 1rem;
+    min-width:unset;
+  }
+  .chip-ed{font-size:.62rem;padding:.1rem .35rem;}
+
+  /* Especiales — 2 cols then 1 */
+  .esp-editorial{
+    grid-template-columns:1fr 1fr;
+    gap:2px;
+  }
+  .esp-ed{padding:1.25rem 1rem;}
+  .ee-icon{font-size:2rem;margin-bottom:.5rem;}
+  .ee-winner{font-size:1.2rem;}
+  .ee-desc{font-size:.72rem;}
+
+  /* Footer */
+  .footer-ed{
+    flex-direction:column;
+    text-align:center;
+    padding:2rem 1.25rem;
+    gap:.75rem;
+  }
+  .footer-brand{font-size:1.2rem;}
+}
+
+/* ── SMALL MOBILE 400px ───────────────────────────── */
+@media(max-width:420px){
+  .hero-title{font-size:3.2rem;}
+  .premios-editorial{grid-template-columns:1fr;}
+  .esp-editorial{grid-template-columns:1fr;}
+  .podium-editorial .pod-card{padding:1.25rem 1rem;}
+  .lb-editorial thead th:nth-child(n+4),
+  .lb-editorial td:nth-child(n+4){display:none;}
+  .pt{font-size:1rem;}
+}
+
+/* EVOLUTION CHART — desktop + mobile */
+.chart-viz{
+  padding:2rem 2rem 1.5rem;
+  margin-bottom:2px;
+  background:var(--cream);
+  border:1.5px solid var(--border);
+  overflow:hidden;
+}
+.chart-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;
+}
+.chart-kicker{
+  font-family:'Syne',sans-serif;
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.25rem;
+}
+.chart-heading{
+  font-family:'Syne',sans-serif;
+  font-size:1.1rem;font-weight:800;
+  letter-spacing:-.01em;text-transform:uppercase;
+  color:var(--ink);
+}
+.chart-legend{
+  display:flex;flex-wrap:wrap;gap:.35rem .75rem;
+}
+.legend-item{
+  display:flex;align-items:center;gap:.35rem;
+  font-family:'Syne',sans-serif;
+  font-size:.62rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);
+}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.chart-phases{
+  display:flex;justify-content:space-between;
+  margin-bottom:.4rem;
+  padding:0 .5rem 0 40px;
+}
+.chart-phase-lbl{
+  font-family:'Syne',sans-serif;
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);
+  text-align:center;flex:1;
+}
+#evolutionChart{width:100%;display:block;}
+
+/* Mobile: dark bg */
+.chart-mobile-wrap{display:none;}
+@media(max-width:768px){
+  .bd-editorial{display:none;}
+  .chart-viz{display:none;}
+  .chart-mobile-wrap{
+    display:block;
+    background:var(--cream);
+    border:1.5px solid var(--border);
+    padding:1.25rem 1rem 1rem;
+    overflow:hidden;
+    margin-bottom:2px;
+  }
+  .chart-mobile-wrap .chart-kicker{color:var(--muted);}
+  .chart-mobile-wrap .chart-heading{color:var(--ink);}
+  .chart-mobile-wrap .legend-item{color:var(--muted);}
+  .chart-mobile-wrap .chart-phase-lbl{color:var(--muted);}
+  #evolutionChartMobile{width:100%;display:block;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Quiniela Granjas</div>
+  <div class="nav-badge"><span class="nav-dot"></span><span id="navUpdate">—</span></div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stripe"></div>
+  <div class="hero-content">
+    <div class="hero-tag">FIFA World Cup 2026 · Clan los Granja</div>
+    <h1 class="hero-title">
+      <span class="line1">QUINIELA</span>
+      <span class="line2">GRANJAS</span>
+      <span class="line3">2026</span>
+    </h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-num" id="heroParticipants">—</div>
+        <div class="hero-meta-lbl">Participantes</div>
+      </div>
+      <div style="width:1px;height:40px;background:var(--border);"></div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-num">72</div>
+        <div class="hero-meta-lbl">Partidos</div>
+      </div>
+      <div style="width:1px;height:40px;background:var(--border);"></div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-num" id="heroLeader">—</div>
+        <div class="hero-meta-lbl">Líder</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-year">26</div>
+    <div class="hero-tagline">Canada · México · Estados Unidos</div>
+    <div class="ecu-flag">
+      <div class="ef-y"></div><div class="ef-b"></div><div class="ef-r"></div>
+    </div>
+  </div>
+  <div class="scroll-line">
+    <div class="sl-line"></div>
+    <div class="sl-text">Scroll</div>
+  </div>
+</div>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-y" style="flex:2"></div>
+  <div class="strip-b" style="flex:1"></div>
+  <div class="strip-r" style="flex:1"></div>
+</div>
+
+<div class="page">
+
+  <!-- 01 TABLA -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">01 ——</div>
+      <div class="sec-title">Tabla</div>
+      <div class="sec-sub">Clasificación<br>General</div>
+    </div>
+    <div class="podium-editorial" id="podium"></div>
+    <div style="height:2px;"></div>
+    <div class="lb-editorial">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Participante</th><th>Total</th><th>Dif</th>
+          <th>Grp</th><th>Oct</th><th>Cto</th><th>SF</th><th>Fin</th><th>Camp</th><th>Prem</th>
+        </tr></thead>
+        <tbody id="leaderboard"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- STRIP -->
+  <div class="strip">
+    <div class="strip-r" style="flex:1"></div>
+    <div class="strip-b" style="flex:1"></div>
+    <div class="strip-y" style="flex:2"></div>
+  </div>
+
+  <!-- 02 DESGLOSE -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">02 ——</div>
+      <div class="sec-title">Puntos</div>
+      <div class="sec-sub">Desglose<br>por Fase</div>
+    </div>
+    
+<!-- CHART DESKTOP (cream) -->
+<div class="chart-viz">
+  <div class="chart-top">
+    <div>
+      <div class="chart-kicker">Desglose visual</div>
+      <div class="chart-heading">Evolución por fase</div>
+    </div>
+    <div class="chart-legend" id="chartLegendDesktop"></div>
+  </div>
+  <div class="chart-phases" id="chartPhasesDesktop"></div>
+  <canvas id="evolutionChart"></canvas>
+</div>
+
+<!-- CHART MOBILE (dark) -->
+<div class="chart-mobile-wrap">
+  <div class="chart-top">
+    <div>
+      <div class="chart-kicker">Evolución acumulada</div>
+      <div class="chart-heading">Por fase</div>
+    </div>
+    <div class="chart-legend" id="chartLegendMobile"></div>
+  </div>
+  <div class="chart-phases" id="chartPhasesMobile"></div>
+  <canvas id="evolutionChartMobile"></canvas>
+</div>
+
+<div class="bd-editorial">
+      <div class="bd-row-hd">
+        <div class="bd-hd-cell">Participante</div>
+        <div class="bd-hd-cell" style="color:var(--wc-green)">Grupos</div>
+        <div class="bd-hd-cell" style="color:var(--ecu-b)">Octavos</div>
+        <div class="bd-hd-cell" style="color:#e07000">Cuartos</div>
+        <div class="bd-hd-cell" style="color:var(--ecu-r)">Semis</div>
+        <div class="bd-hd-cell" style="color:#8b5cf6">Final</div>
+        <div class="bd-hd-cell" style="color:#b8860b">Campeón</div>
+        <div class="bd-hd-cell" style="color:#7c3aed">Premios</div>
+        <div class="bd-hd-cell" style="color:var(--ink)">Total</div>
+      </div>
+      <div id="breakdown"></div>
+    </div>
+  </div>
+
+  <!-- STRIP -->
+  <div class="strip">
+    <div class="strip-b" style="flex:1"></div>
+    <div class="strip-y" style="flex:2"></div>
+    <div class="strip-r" style="flex:1"></div>
+  </div>
+
+  <!-- 03 PREMIOS -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">03 ——</div>
+      <div class="sec-title">Votos</div>
+      <div class="sec-sub">Premios<br>Individuales</div>
+    </div>
+    <div class="premios-editorial" id="premiosGrid"></div>
+  </div>
+
+  <!-- 04 PARTIDOS -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">04 ——</div>
+      <div class="sec-title">Hoy</div>
+      <div class="sec-sub">Partidos<br>del Día</div>
+    </div>
+    <div class="partidos-editorial" id="partidosList"></div>
+  </div>
+
+  <!-- 05 ESPECIALES -->
+  <div class="section">
+    <div class="sec-header">
+      <div class="sec-num">05 ——</div>
+      <div class="sec-title">Premios</div>
+      <div class="sec-sub">Especiales<br>del Torneo</div>
+    </div>
+    <div class="esp-editorial" id="especialesGrid"></div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- FOOTER -->
+<div class="strip">
+  <div class="strip-y" style="flex:2"></div>
+  <div class="strip-b" style="flex:1"></div>
+  <div class="strip-r" style="flex:1"></div>
+</div>
+<div class="footer-ed">
+  <div class="footer-left">
+    <div class="footer-brand">Quiniela <span>Granjas</span></div>
+    <div class="footer-sub" id="footerUpdate">—</div>
+  </div>
+  <div style="font-family:'Syne',sans-serif;font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.15em;text-transform:uppercase;">
+    FIFA World Cup 2026 · Canada · México · USA
+  </div>
+</div>
+
+<script>
+// ── CURSOR ────────────────────────────────────────────────
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.transform=`translate(${mx-6}px,${my-6}px)`;
+});
+function animRing(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button,[data-hover]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform+=' scale(2)';ring.style.opacity='0';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform=cur.style.transform.replace(' scale(2)','');ring.style.opacity='.5';});
+});
+
+// ── TICKER ────────────────────────────────────────────────
+function buildTicker(players){
+  const msgs=[
+    'Quiniela Granjas · Mundial 2026',
+    `Líder: ${players[0]?.name||'—'} con ${players[0]?.total||0} pts`,
+    'Ecuador · Vamos la Tri',
+    'Canada · México · Estados Unidos · 2026',
+    '#WEARE26',
+  ];
+  const all=[...msgs,...msgs].map(m=>`<span class="ticker-item"><span class="ticker-dot"></span>${m}</span>`).join('');
+  document.getElementById('tickerInner').innerHTML=all+all;
+}
+
+// ── DATA ──────────────────────────────────────────────────
+const DATA={
+  lastUpdate:"24 May 2026 · 18:30",
+  players:[
+    {name:"Joaquín",  grp:42,oct:16,qf:10,sf:8, fin:12,camp:20,prem:10,total:118},
+    {name:"Maii",     grp:38,oct:12,qf:15,sf:16,fin:0, camp:0, prem:20,total:101},
+    {name:"Charly",   grp:35,oct:14,qf:10,sf:8, fin:12,camp:0, prem:10,total:89},
+    {name:"Papi Juli",grp:30,oct:8, qf:10,sf:16,fin:0, camp:0, prem:10,total:74},
+    {name:"Tio Julito",grp:28,oct:12,qf:5,sf:0, fin:0, camp:0, prem:20,total:65},
+    {name:"Daniel",   grp:25,oct:8, qf:5, sf:0, fin:0, camp:0, prem:10,total:48},
+    {name:"Lore",     grp:22,oct:4, qf:0, sf:0, fin:0, camp:0, prem:10,total:36},
+    {name:"Agus",     grp:18,oct:4, qf:5, sf:0, fin:0, camp:0, prem:0, total:27},
+  ],
+  premios:[
+    {icon:"⚽",cat:"Bota de Oro",  bg:0,votos:[{n:"Mbappé",c:4},{n:"Haaland",c:2},{n:"Vinicius Jr.",c:1},{n:"Lautaro",c:1}]},
+    {icon:"★", cat:"Balón de Oro", bg:1,votos:[{n:"Vinicius Jr.",c:3},{n:"Mbappé",c:3},{n:"Bellingham",c:1},{n:"De Bruyne",c:1}]},
+    {icon:"◉", cat:"Mejor Arquero",bg:2,votos:[{n:"Courtois",c:5},{n:"Alisson",c:2},{n:"Dibu Martínez",c:1}]},
+    {icon:"◈", cat:"Mejor Novato", bg:3,votos:[{n:"Yamal",c:6},{n:"Endrick",c:1},{n:"Mainoo",c:1}]},
+  ],
+  partidos:[
+    {grupo:"Grupo A",hora:"15:00",local:"México",visitante:"Sudáfrica",resultado:null,
+     pronosticos:[{nombre:"Joaquín",local:2,visitante:0},{nombre:"Maii",local:1,visitante:1},{nombre:"Charly",local:2,visitante:1},{nombre:"Papi Juli",local:1,visitante:0},{nombre:"Tio Julito",local:2,visitante:0},{nombre:"Daniel",local:3,visitante:1},{nombre:"Lore",local:1,visitante:2},{nombre:"Agus",local:2,visitante:2}]},
+    {grupo:"Grupo E",hora:"18:00",local:"Ecuador",visitante:"Costa de Marfil",resultado:[2,1],
+     pronosticos:[{nombre:"Joaquín",local:2,visitante:1},{nombre:"Maii",local:1,visitante:1},{nombre:"Charly",local:3,visitante:1},{nombre:"Papi Juli",local:2,visitante:0},{nombre:"Tio Julito",local:3,visitante:0},{nombre:"Daniel",local:2,visitante:1},{nombre:"Lore",local:1,visitante:2},{nombre:"Agus",local:2,visitante:2}]},
+  ],
+  pronosticos_grupos:[
+    {nombre:"Joaquín",    partidos:[[2,0],[1,0],[2,1],[0,1],[1,2],[0,1],[2,1],[1,0],[3,0],[2,1],[1,1],[0,0],[3,1],[1,0],[2,1],[0,0],[2,0],[1,1],[3,0],[1,0],[2,1],[1,1],[2,0],[1,0],[2,1],[1,0],[2,1],[0,1],[2,0],[1,1],[3,0],[1,0],[2,1],[2,0],[1,1],[0,1],[3,1],[1,0],[2,1],[0,0],[2,0],[1,1],[3,0],[1,0],[2,1],[1,1],[2,0],[1,0],[1,0],[2,1],[1,2],[3,0],[2,1],[0,1],[2,0],[1,1],[3,0],[1,0],[2,1],[0,0],[2,0],[1,0],[2,1],[1,0],[2,1],[0,1],[3,1],[1,0],[2,1],[0,0],[1,1],[2,0]]},
+    {nombre:"Maii",       partidos:[[1,1],[0,1],[1,1],[1,2],[0,1],[1,1],[1,1],[2,1],[2,2],[1,1],[2,1],[1,1],[2,1],[0,1],[1,1],[1,1],[2,1],[0,1],[2,1],[0,1],[1,1],[0,1],[1,1],[0,1],[1,1],[0,1],[1,1],[1,1],[1,1],[0,1],[2,1],[0,1],[1,1],[1,1],[0,1],[1,1],[2,1],[0,1],[1,1],[1,1],[1,1],[0,1],[2,1],[0,1],[1,1],[0,1],[1,1],[0,1],[0,1],[1,1],[2,1],[2,1],[1,1],[1,1],[1,1],[0,1],[2,1],[0,1],[1,1],[1,1],[1,1],[0,1],[1,1],[0,1],[1,1],[1,1],[2,1],[0,1],[1,1],[1,1],[0,1],[1,1]]},
+    {nombre:"Charly",     partidos:[[2,1],[1,0],[2,0],[0,1],[1,1],[0,1],[2,0],[1,0],[3,1],[2,0],[1,2],[0,0],[3,0],[1,1],[2,0],[0,1],[2,1],[1,0],[3,1],[1,1],[2,0],[1,0],[2,1],[1,0],[2,0],[1,1],[2,0],[0,1],[2,1],[1,0],[3,1],[1,0],[2,0],[2,1],[1,0],[0,1],[3,0],[1,1],[2,0],[0,1],[2,1],[1,0],[3,0],[1,1],[2,0],[1,0],[2,1],[1,0],[1,1],[2,0],[1,2],[3,1],[2,0],[0,1],[2,1],[1,0],[3,1],[1,0],[2,0],[0,1],[2,1],[1,0],[2,0],[1,1],[2,0],[0,1],[3,0],[1,0],[2,1],[0,1],[1,0],[2,1]]},
+    {nombre:"Papi Juli",  partidos:[[1,0],[2,1],[1,0],[1,1],[2,0],[1,1],[1,0],[2,1],[2,0],[1,0],[2,1],[1,0],[2,0],[2,1],[1,0],[1,1],[2,0],[1,1],[2,0],[1,1],[1,0],[2,1],[1,0],[2,1],[1,0],[2,0],[1,0],[1,1],[2,0],[1,0],[2,1],[1,0],[1,0],[2,0],[1,1],[1,0],[2,0],[2,1],[1,0],[1,1],[2,0],[1,1],[2,0],[1,0],[1,0],[2,1],[1,0],[2,0],[2,0],[1,0],[2,1],[2,0],[1,0],[1,1],[2,0],[1,0],[2,1],[1,0],[1,0],[1,1],[2,0],[1,0],[1,0],[2,1],[1,0],[1,0],[2,0],[2,1],[1,0],[1,1],[2,0],[1,0]]},
+    {nombre:"Tio Julito", partidos:[[2,0],[1,1],[2,1],[1,0],[0,2],[1,0],[2,0],[1,1],[3,0],[1,0],[2,0],[0,1],[3,0],[1,0],[2,0],[0,1],[2,0],[1,0],[3,0],[1,0],[2,0],[1,0],[2,0],[1,0],[2,0],[1,0],[2,0],[1,0],[2,0],[1,0],[3,0],[1,0],[2,0],[2,0],[1,0],[0,1],[3,0],[1,0],[2,0],[0,1],[2,0],[1,0],[3,0],[1,0],[2,0],[1,0],[2,0],[1,0],[1,0],[2,0],[1,2],[3,0],[2,0],[0,1],[2,0],[1,0],[3,0],[1,0],[2,0],[0,1],[2,0],[1,0],[2,0],[1,0],[2,0],[0,1],[3,0],[1,0],[2,0],[0,1],[1,0],[2,0]]},
+    {nombre:"Daniel",     partidos:[[3,1],[0,1],[3,1],[1,2],[1,1],[1,0],[3,1],[0,1],[4,0],[3,1],[0,2],[1,0],[4,1],[0,1],[3,1],[1,0],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[3,1],[0,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[0,1],[3,1],[0,2],[4,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[0,1],[3,1]]},
+    {nombre:"Lore",       partidos:[[1,2],[1,1],[1,1],[0,2],[2,1],[1,1],[1,1],[1,2],[1,1],[1,2],[2,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[2,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1]]},
+    {nombre:"Agus",       partidos:[[2,2],[1,0],[2,2],[1,1],[1,2],[0,0],[2,2],[1,0],[3,2],[2,2],[1,1],[0,0],[3,2],[1,0],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[1,0],[2,2],[1,0],[2,2],[1,0],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[2,2],[1,0],[0,0],[3,2],[1,0],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[1,0],[2,2],[1,0],[1,0],[2,2],[1,1],[3,2],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[0,0],[2,2],[1,0],[2,2],[1,0],[2,2],[0,0],[3,2],[1,0],[2,2],[0,0],[1,0],[2,2]]},
+  ],
+  resultados_grupos:[[2,1],[0,0],[1,1],[2,0],[0,1],[3,1],[1,1],[2,0],[2,0],[1,1],[1,2],[0,0],[3,0],[1,0],[2,1],[1,1],[2,0],[1,1],[2,1],[0,0],[2,1],[1,1],[1,0],[0,1],[2,0],[1,1],[2,1],[0,1],[2,1],[1,0],[3,1],[0,1],[1,1],[2,0],[1,1],[0,0],[3,1],[1,0],[2,0],[0,1],[2,1],[1,0],[3,0],[1,0],[2,1],[1,1],[2,0],[1,0],[1,0],[2,1],[1,2],[2,1],[2,0],[0,1],[2,1],[1,0],[2,1],[1,0],[2,0],[0,1],[2,0],[1,0],[2,1],[1,0],[2,1],[0,1],[3,1],[1,0],[2,1],[0,0],[1,1],[2,0]],
+  ecuador_partidos:[{idx:10,esLocal:false},{idx:34,esLocal:true},{idx:55,esLocal:false}],
+};
+
+// ── UTILS ─────────────────────────────────────────────────
+function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function ini(n){return n.trim().charAt(0).toUpperCase();}
+
+// ── ESPECIALES ────────────────────────────────────────────
+function calcEsp(){
+  const res=DATA.resultados_grupos,pros=DATA.pronosticos_grupos,ecu=DATA.ecuador_partidos||[];
+  const stats=pros.map(p=>{
+    let exactos=0,ecuGF=0,maxG=0,maxGdet='';
+    p.partidos.forEach((pro,i)=>{
+      const real=res[i];if(!real)return;
+      if(pro[0]===real[0]&&pro[1]===real[1])exactos++;
+      const g=pro[0]+pro[1];if(g>maxG){maxG=g;maxGdet=`${pro[0]}-${pro[1]}`;}
+    });
+    ecu.forEach(ec=>{const pro=p.partidos[ec.idx];if(!pro)return;ecuGF+=ec.esLocal?pro[0]:pro[1];});
+    return {nombre:p.nombre,exactos,ecuGF,maxG,maxGdet};
+  });
+  const adivino=[...stats].sort((a,b)=>b.exactos-a.exactos)[0];
+  const ciego=[...DATA.players].sort((a,b)=>a.grp-b.grp)[0];
+  const hincha=[...stats].sort((a,b)=>b.ecuGF-a.ecuGF)[0];
+  const traidor=[...stats].sort((a,b)=>a.ecuGF-b.ecuGF)[0];
+  let sN='—',sD='—',minC=99;
+  pros.forEach(p=>p.partidos.forEach((pro,i)=>{
+    const real=res[i];if(!real||pro[0]!==real[0]||pro[1]!==real[1])return;
+    const c=pros.filter(q=>q.partidos[i]&&q.partidos[i][0]===real[0]&&q.partidos[i][1]===real[1]).length;
+    if(c<minC){minC=c;sN=p.nombre;sD=`${real[0]}-${real[1]}`;}
+  }));
+  const byG=[...DATA.players].sort((a,b)=>b.grp-a.grp).map((p,i)=>({...p,pg:i+1}));
+  const byT=[...DATA.players].sort((a,b)=>b.total-a.total).map((p,i)=>({...p,pt:i+1}));
+  let maxR=-99,tortN='—',tortD='—';
+  byG.forEach(p=>{const f=byT.find(q=>q.name===p.name);if(!f)return;const r=p.pg-f.pt;if(r>maxR){maxR=r;tortN=p.name;tortD=`${p.pg}º→${f.pt}º`;}});
+  const osado=[...stats].sort((a,b)=>b.maxG-a.maxG)[0];
+  let g1='—',g2='—',gN=0;
+  for(let a=0;a<pros.length;a++)for(let b=a+1;b<pros.length;b++){
+    let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
+    if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
+  }
+  return [
+    {icon:"◎",titulo:"El Adivino",  nombre:adivino?.nombre||'—',  desc:`Acertó <strong>${adivino?.exactos||0} marcadores exactos</strong>. Visión de otro planeta.`,cls:"ee-gold"},
+    {icon:"✕",titulo:"El Ciego",    nombre:ciego?.name||'—',       desc:`Solo <strong>${ciego?.grp||0} pts en grupos</strong>. Vivía en un universo paralelo.`,cls:"ee-red"},
+    {icon:"◈",titulo:"El Suertero", nombre:sN,                     desc:`Único en acertar el <strong>${sD}</strong>. La suerte también es talento.`,cls:"ee-blue"},
+    {icon:"▲",titulo:"El Hincha",   nombre:hincha?.nombre||'—',    desc:`Le dio <strong>${hincha?.ecuGF||0} goles a Ecuador</strong>. Fe incondicional en la Tri.`,cls:"ee-green"},
+    {icon:"▼",titulo:"El Traidor",  nombre:traidor?.nombre||'—',   desc:`Solo <strong>${traidor?.ecuGF||0} goles para Ecuador</strong>. Ni en casa confía.`,cls:"ee-red"},
+    {icon:"↑",titulo:"El Tortuga",  nombre:tortN,                  desc:`Remontada épica: <strong>${tortD}</strong>. Lento pero mortal.`,cls:"ee-purple"},
+    {icon:"!!",titulo:"El Osado",   nombre:osado?.nombre||'—',     desc:`Apostó por un <strong>${osado?.maxGdet||'—'}</strong>. Nadie más se atrevió.`,cls:"ee-orange"},
+    {icon:"=", titulo:"Los Gemelos",nombre:`${g1} & ${g2}`,        desc:`<strong>${gN} pronósticos idénticos</strong>. ¿Trampa o telepatía?`,cls:"ee-teal"},
+  ];
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function render(){
+  const sorted=[...DATA.players].sort((a,b)=>b.total-a.total);
+  const leader=sorted[0];
+
+  // Meta
+  document.getElementById('navUpdate').textContent=DATA.lastUpdate;
+  document.getElementById('heroParticipants').textContent=DATA.players.length;
+  document.getElementById('heroLeader').textContent=leader?.name||'—';
+  document.getElementById('footerUpdate').textContent='Última actualización: '+DATA.lastUpdate;
+  buildTicker(sorted);
+
+  // Podium
+  const ord=sorted.length>=3?[sorted[1],sorted[0],sorted[2]]:sorted;
+  const cls=sorted.length>=3?['pos-2','pos-1','pos-3']:['pos-1','pos-2','pos-3'];
+  const ranks=sorted.length>=3?[2,1,3]:[1,2,3];
+  document.getElementById('podium').innerHTML=ord.map((p,i)=>`
+    <div class="pod-card ${cls[i]}">
+      <div class="pod-rank-big">${ranks[i]}</div>
+      <div class="pod-tag">${ranks[i]===1?'Líder':ranks[i]+'º lugar'}</div>
+      <div class="pod-initial-box"><span class="pod-init-letter">${ini(p.name)}</span></div>
+      <div class="pod-name">${e(p.name)}</div>
+      <div class="pod-pts-row">
+        <span class="pod-pts-num">${p.total}</span>
+        <span class="pod-pts-lbl">pts</span>
+      </div>
+    </div>`).join('');
+
+  // Leaderboard
+  document.getElementById('leaderboard').innerHTML=sorted.map((p,i)=>{
+    const rank=i+1,rC=rank<=3?`rk${rank}`:'rkn',rbC=rank<=3?`rb${rank}`:'rbn';
+    const diff=p.total-leader.total;
+    const dH=diff===0?'<span class="dif">—</span>':`<span class="dif dif-n">${diff}</span>`;
+    return `<tr>
+      <td><span class="rkbar ${rbC}"></span><span class="rk ${rC}">${rank}</span></td>
+      <td><span class="pn">${e(p.name)}</span></td>
+      <td><span class="pt">${p.total}</span></td>
+      <td>${dH}</td>
+      <td><span class="ph">${p.grp}</span></td><td><span class="ph">${p.oct}</span></td>
+      <td><span class="ph">${p.qf}</span></td><td><span class="ph">${p.sf}</span></td>
+      <td><span class="ph">${p.fin}</span></td><td><span class="ph">${p.camp}</span></td>
+      <td><span class="ph">${p.prem}</span></td>
+    </tr>`;
+  }).join('');
+
+  // Breakdown
+  const bdCont=document.getElementById('breakdown');
+  bdCont.innerHTML=sorted.map(p=>`
+    <div class="bd-row">
+      <div class="bd-cell">${e(p.name)}</div>
+      <div class="bd-cell c-grp">${p.grp}</div>
+      <div class="bd-cell c-oct">${p.oct}</div>
+      <div class="bd-cell c-qf">${p.qf}</div>
+      <div class="bd-cell c-sf">${p.sf}</div>
+      <div class="bd-cell c-fin">${p.fin}</div>
+      <div class="bd-cell c-cam">${p.camp}</div>
+      <div class="bd-cell c-pre">${p.prem}</div>
+      <div class="bd-cell c-tot">${p.total}</div>
+    </div>`).join('');
+
+  // Premios
+  const fillClasses=['vfe1','vfe2','vfe3','vfe4'];
+  document.getElementById('premiosGrid').innerHTML=DATA.premios.map((pr,pi)=>{
+    const mx=Math.max(...pr.votos.map(v=>v.c));
+    return `<div class="prem-card">
+      <div class="pc-bg-num">${pi+1}</div>
+      <div class="pc-icon">${pr.icon}</div>
+      <div class="pc-cat">${e(pr.cat)}</div>
+      ${pr.votos.map((v,vi)=>`
+      <div class="vote-row-ed">
+        <span class="v-pos-ed">${vi+1}</span>
+        <span class="v-name-ed${vi===0?' vt':''}">${e(v.n)}</span>
+        <div class="v-track-ed"><div class="v-fill-ed ${fillClasses[pi]}" style="width:${Math.round(v.c/mx*100)}%"></div></div>
+        <span class="v-n-ed">${v.c}</span>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+
+  // Partidos
+  const pl=document.getElementById('partidosList');
+  if(!DATA.partidos?.length){
+    pl.innerHTML='<div class="partido-ed" style="padding:2rem;display:block;text-align:center"><span style="font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Sin partidos hoy</span></div>';
+  } else {
+    pl.innerHTML=DATA.partidos.map((p,pi)=>{
+      const chips=p.pronosticos.map(pr=>{
+        let cls='cde';
+        if(pr.local>pr.visitante)cls='che';
+        else if(pr.visitante>pr.local)cls='cae';
+        return `<span class="chip-ed ${cls}">${e(pr.nombre)} ${pr.local}-${pr.visitante}</span>`;
+      }).join('');
+      const ctr=p.resultado
+        ?`<div class="pe-center"><div class="pe-score">${p.resultado[0]}—${p.resultado[1]}</div><div class="pe-vs">FT</div></div>`
+        :`<div class="pe-center"><div class="pe-vs">VS</div><div class="pe-hora">${e(p.hora)}</div></div>`;
+      return `<div class="partido-ed${p.resultado?' played':''}">
+        <div class="pe-group"><div class="pe-group-lbl">Grupo</div><div class="pe-group-name">${e(p.grupo.replace('Grupo ',''))}</div></div>
+        <div class="pe-team"><div class="pe-team-name">${e(p.local)}</div></div>
+        ${ctr}
+        <div class="pe-team right"><div class="pe-team-name">${e(p.visitante)}</div></div>
+        <div class="pe-prono"><div class="pe-prono-lbl">Pronósticos</div>${chips}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Especiales
+  const esp=calcEsp();
+  document.getElementById('especialesGrid').innerHTML=esp.map((e2,ei)=>`
+    <div class="esp-ed ${e2.cls}" style="animation-delay:${ei*.04}s">
+      <div class="ee-icon">${e2.icon}</div>
+      <div class="ee-nombre">${e(e2.titulo)}</div>
+      <div class="ee-titulo">${e(e2.titulo)}</div>
+      <div class="ee-winner">${e(e2.nombre)}</div>
+      <div class="ee-desc">${e2.desc}</div>
+    </div>`).join('');
+}
+
+
+function drawChart(canvasId, players, isDark){
+  var phases=["Grp","Oct","Cto","SF","Fin","Camp","Prem"];
+  var colors=["#FFD100","#EF3340","#003DA6","#3CAC3B","#FF6B35","#8B5CF6","#14B8A6","#EC4899"];
+  var phaseKeys=["grp","oct","qf","sf","fin","camp","prem"];
+
+  var canvas=document.getElementById(canvasId);
+  if(!canvas) return;
+  var ctx=canvas.getContext("2d");
+
+  var cumData=players.map(function(p){
+    var cum=0;
+    return phaseKeys.map(function(k){cum+=(p[k]||0);return cum;});
+  });
+
+  var dpr=window.devicePixelRatio||1;
+  var W=canvas.parentElement.offsetWidth||340;
+  var H=isDark?230:280;
+  canvas.width=W*dpr;
+  canvas.height=H*dpr;
+  canvas.style.width=W+"px";
+  canvas.style.height=H+"px";
+  ctx.scale(dpr,dpr);
+
+  // Fill canvas background
+  ctx.fillStyle=isDark?"#111620":"#F5F0E8";
+  ctx.fillRect(0,0,W,H);
+
+  var PAD={top:16,right:isDark?20:80,bottom:12,left:38};
+  var CW=W-PAD.left-PAD.right;
+  var CH=H-PAD.top-PAD.bottom;
+  var maxVal=Math.max.apply(null,cumData.map(function(d){return Math.max.apply(null,d);}));
+  maxVal=Math.ceil(maxVal/20)*20||100;
+
+  var gridColor=isDark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)";
+  var dashColor=isDark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.04)";
+  var labelColor=isDark?"rgba(255,255,255,0.22)":"rgba(0,0,0,0.3)";
+  var dotStroke=isDark?"#111620":"#F5F0E8";
+
+  function xPos(i){return PAD.left+i*(CW/(phases.length-1));}
+  function yPos(v){return PAD.top+CH-(v/maxVal)*CH;}
+
+  // Grid lines
+  [0,.25,.5,.75,1].forEach(function(t){
+    var y=PAD.top+CH*(1-t);
+    var val=Math.round(maxVal*t);
+    ctx.strokeStyle=gridColor;
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(PAD.left+CW,y);ctx.stroke();
+    ctx.fillStyle=labelColor;
+    ctx.font="bold 8px 'Syne',sans-serif";
+    ctx.textAlign="right";ctx.textBaseline="middle";
+    ctx.fillText(val,PAD.left-5,y);
+  });
+
+  // Phase vertical dashes
+  phases.forEach(function(_,i){
+    if(i===0||i===phases.length-1)return;
+    ctx.strokeStyle=dashColor;
+    ctx.lineWidth=1;ctx.setLineDash([2,5]);
+    ctx.beginPath();ctx.moveTo(xPos(i),PAD.top);ctx.lineTo(xPos(i),PAD.top+CH);ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // Draw areas first (behind lines)
+  cumData.forEach(function(data,pi){
+    var color=colors[pi%colors.length];
+    ctx.beginPath();
+    ctx.moveTo(xPos(0),yPos(0));
+    data.forEach(function(v,i){ctx.lineTo(xPos(i),yPos(v));});
+    ctx.lineTo(xPos(data.length-1),yPos(0));
+    ctx.closePath();
+    ctx.save();
+    ctx.globalAlpha=isDark?0.07:0.06;
+    ctx.fillStyle=color;
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Draw lines + dots
+  cumData.forEach(function(data,pi){
+    var color=colors[pi%colors.length];
+    // Line
+    ctx.beginPath();
+    data.forEach(function(v,i){i===0?ctx.moveTo(xPos(i),yPos(v)):ctx.lineTo(xPos(i),yPos(v));});
+    ctx.strokeStyle=color;
+    ctx.lineWidth=isDark?2:2.5;
+    ctx.lineJoin="round";ctx.lineCap="round";
+    ctx.stroke();
+    // Dots
+    data.forEach(function(v,i){
+      ctx.beginPath();ctx.arc(xPos(i),yPos(v),isDark?3:3.5,0,Math.PI*2);
+      ctx.fillStyle=color;ctx.fill();
+      ctx.strokeStyle=dotStroke;ctx.lineWidth=1.5;ctx.stroke();
+    });
+  });
+
+  // Desktop: labels at end of each line
+  if(!isDark){
+    var lastIdx=phases.length-1;
+    // Sort by last value to offset overlapping labels
+    var sorted=cumData.map(function(d,i){return{v:d[lastIdx],i:i};}).sort(function(a,b){return b.v-a.v;});
+    var minGap=14;
+    var usedY=[];
+    sorted.forEach(function(item){
+      var color=colors[item.i%colors.length];
+      var rawY=yPos(item.v);
+      // Push label down if too close to previous
+      var labelY=rawY;
+      for(var k=0;k<usedY.length;k++){
+        if(Math.abs(labelY-usedY[k])<minGap) labelY=usedY[k]+minGap;
+      }
+      usedY.push(labelY);
+      // Connector dot
+      ctx.beginPath();ctx.arc(xPos(lastIdx),rawY,2.5,0,Math.PI*2);
+      ctx.fillStyle=color;ctx.fill();
+      // Label
+      ctx.fillStyle=color;
+      ctx.font="bold 9px 'Syne',sans-serif";
+      ctx.textAlign="left";ctx.textBaseline="middle";
+      ctx.fillText(players[item.i].name.toUpperCase(),xPos(lastIdx)+8,labelY);
+      // Pts
+      ctx.fillStyle="rgba(0,0,0,0.4)";
+      ctx.font="8px 'Syne',sans-serif";
+      ctx.fillText(cumData[item.i][lastIdx]+" pts",xPos(lastIdx)+8,labelY+11);
+    });
+  }
+
+  // Mobile: just leader label
+  if(isDark){
+    var lastIdx2=phases.length-1;
+    var best=cumData.reduce(function(b,d,i){return d[lastIdx2]>b.v?{v:d[lastIdx2],i:i}:b;},{v:-1,i:0});
+    ctx.fillStyle=colors[best.i%colors.length];
+    ctx.font="bold 8px 'Syne',sans-serif";
+    ctx.textAlign="left";ctx.textBaseline="middle";
+    var lx=xPos(lastIdx2)+4;
+    var ly=yPos(best.v);
+    if(ly<PAD.top+8)ly=PAD.top+10;
+    ctx.fillText(players[best.i].name.toUpperCase().substring(0,7),lx,ly);
+  }
+}
+
+function buildChart(players){
+  var phases=["Grp","Oct","Cto","SF","Fin","Camp","Prem"];
+  var colors=["#FFD100","#EF3340","#003DA6","#3CAC3B","#FF6B35","#8B5CF6","#14B8A6","#EC4899"];
+
+  // Populate legends
+  var legHtml=players.map(function(p,i){
+    return '<div class="legend-item"><span class="legend-dot" style="background:'+colors[i%colors.length]+'"></span>'+e(p.name)+'</div>';
+  }).join("");
+  ["chartLegendDesktop","chartLegendMobile"].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.innerHTML=legHtml;
+  });
+
+  // Populate phase labels
+  var phaseHtml=phases.map(function(p){return '<span class="chart-phase-lbl">'+p+'</span>';}).join("");
+  ["chartPhasesDesktop","chartPhasesMobile"].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.innerHTML=phaseHtml;
+  });
+
+  drawChart("evolutionChart",players,false);
+  drawChart("evolutionChartMobile",players,false);
+}
+
+// Use live Google Sheets data
+initLive();
+</script>
+</body>
+</html>
