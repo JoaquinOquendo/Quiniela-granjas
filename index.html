@@ -1060,6 +1060,8 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
   
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
+
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 <!-- 02 DESGLOSE -->
   <div class="section">
     <div class="sec-header">
@@ -1119,36 +1121,61 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
   
   <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
-<!-- 03 PREMIOS -->
+
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
+<!-- 03 JUEGOS -->
   <div class="section">
     <div class="sec-header">
       <div class="sec-num">03 ——</div>
-      <div class="sec-title">Votos</div>
-      <div class="sec-sub">Premios<br>Individuales</div>
-    </div>
-    <div class="premios-editorial" id="premiosGrid"></div>
-  </div>
-
-  <!-- 04 HOY -->
-  <div class="section">
-    <div class="sec-header">
-      <div class="sec-num">04 ——</div>
-      <div class="sec-title">Hoy</div>
-      <div class="sec-sub">Partidos<br>del Día</div>
+      <div class="sec-title">Juegos</div>
+      <div class="sec-sub">Próximos<br>Partidos</div>
     </div>
     <div class="partidos-editorial" id="partidosList"></div>
   </div>
 
   
   <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
-<!-- 05 RACHA -->
+
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
+<!-- 04 CALOR -->
   <div class="section">
-    <div class="sec-header"><div class="sec-num">05 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
+    <div class="sec-header"><div class="sec-num">04 ——</div><div class="sec-title">Calor</div><div class="sec-sub">Mapa de<br>pronósticos</div></div>
+    <div class="heatmap-wrap" id="heatmapWrap"></div>
+  </div>
+
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
+
+  
+  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
+<!-- 05 AMBICIOSO -->
+  <div class="section">
+    <div class="sec-header"><div class="sec-num">05 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
+    <div class="ambicioso-wrap" id="ambiciosoWrap"></div>
+  </div>
+
+  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
+
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
+<!-- 06 RACHA -->
+  <div class="section">
+    <div class="sec-header"><div class="sec-num">06 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
     <div class="racha-grid" id="rachaGrid"></div>
   </div>
-<!-- 06 H2H -->
+
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
+<!-- 07 VOTOS -->
   <div class="section">
-    <div class="sec-header"><div class="sec-num">06 ——</div><div class="sec-title">H2H</div><div class="sec-sub">Cara a cara<br>entre dos</div></div>
+    <div class="sec-header">
+      <div class="sec-num">07 ——</div>
+      <div class="sec-title">Votos</div>
+      <div class="sec-sub">Premios<br>Individuales</div>
+    </div>
+    <div class="premios-editorial" id="premiosGrid"></div>
+  </div>
+
+  <!-- 08 H2H -->
+  <div class="section">
+    <div class="sec-header"><div class="sec-num">08 ——</div><div class="sec-title">H2H</div><div class="sec-sub">Cara a cara<br>entre dos</div></div>
     <div class="h2h-controls">
       <select class="h2h-select" id="h2hA" onchange="renderH2H()"></select>
       <span class="h2h-vs-lbl">vs</span>
@@ -1160,19 +1187,6 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
   
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
-<!-- 07 CALOR -->
-  <div class="section">
-    <div class="sec-header"><div class="sec-num">07 ——</div><div class="sec-title">Calor</div><div class="sec-sub">Mapa de<br>pronósticos</div></div>
-    <div class="heatmap-wrap" id="heatmapWrap"></div>
-  </div>
-
-  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
-
-  <!-- 08 AMBICIOSO -->
-  <div class="section">
-    <div class="sec-header"><div class="sec-num">08 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
-    <div class="ambicioso-wrap" id="ambiciosoWrap"></div>
-  </div>
 
   <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 <!-- 09 ESPECIALES -->
