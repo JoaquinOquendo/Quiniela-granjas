@@ -1202,452 +1202,53 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
 <script>
 // ── CURSOR ────────────────────────────────────────────────
-const cur=document.getElementById('cursor');
-const ring=document.getElementById('cursorRing');
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cur.style.transform=`translate(${mx-6}px,${my-6}px)`;
-});
-function animRing(){
-  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
-  ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
-  requestAnimationFrame(animRing);
-}
-animRing();
-document.querySelectorAll('a,button,[data-hover]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.transform+=' scale(2)';ring.style.opacity='0';});
-  el.addEventListener('mouseleave',()=>{cur.style.transform=cur.style.transform.replace(' scale(2)','');ring.style.opacity='.5';});
-});
+document.addEventListener('mousemove',ev=>{mx=ev.clientX;my=ev.clientY;cur.style.transform=`translate(${mx-6}px,${my-6}px)`;});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(animRing);})();
 
-// ── TICKER ────────────────────────────────────────────────
-function buildTicker(players){
-  const msgs=[
-    'Quiniela Granjas · Mundial 2026',
-    `Líder: ${players[0]?.name||'—'} con ${players[0]?.total||0} pts`,
-    'Ecuador · Vamos la Tri',
-    'Canada · México · Estados Unidos · 2026',
-    '#WEARE26',
-  ];
-  const all=[...msgs,...msgs].map(m=>`<span class="ticker-item"><span class="ticker-dot"></span>${m}</span>`).join('');
-  document.getElementById('tickerInner').innerHTML=all+all;
-}
-
-// ── DATA ──────────────────────────────────────────────────
-const DATA={
-  lastUpdate:"24 May 2026 · 18:30",
-  players:[
-    {name:"Joaquín",  grp:42,oct:16,qf:10,sf:8, fin:12,camp:20,prem:10,total:118},
-    {name:"Maii",     grp:38,oct:12,qf:15,sf:16,fin:0, camp:0, prem:20,total:101},
-    {name:"Charly",   grp:35,oct:14,qf:10,sf:8, fin:12,camp:0, prem:10,total:89},
-    {name:"Papi Juli",grp:30,oct:8, qf:10,sf:16,fin:0, camp:0, prem:10,total:74},
-    {name:"Tio Julito",grp:28,oct:12,qf:5,sf:0, fin:0, camp:0, prem:20,total:65},
-    {name:"Daniel",   grp:25,oct:8, qf:5, sf:0, fin:0, camp:0, prem:10,total:48},
-    {name:"Lore",     grp:22,oct:4, qf:0, sf:0, fin:0, camp:0, prem:10,total:36},
-    {name:"Agus",     grp:18,oct:4, qf:5, sf:0, fin:0, camp:0, prem:0, total:27},
-  ],
-  premios:[
-    {icon:"⚽",cat:"Bota de Oro",  bg:0,votos:[{n:"Mbappé",c:4},{n:"Haaland",c:2},{n:"Vinicius Jr.",c:1},{n:"Lautaro",c:1}]},
-    {icon:"★", cat:"Balón de Oro", bg:1,votos:[{n:"Vinicius Jr.",c:3},{n:"Mbappé",c:3},{n:"Bellingham",c:1},{n:"De Bruyne",c:1}]},
-    {icon:"◉", cat:"Mejor Arquero",bg:2,votos:[{n:"Courtois",c:5},{n:"Alisson",c:2},{n:"Dibu Martínez",c:1}]},
-    {icon:"◈", cat:"Mejor Novato", bg:3,votos:[{n:"Yamal",c:6},{n:"Endrick",c:1},{n:"Mainoo",c:1}]},
-  ],
-  partidos:[
-    {grupo:"Grupo A",hora:"15:00",local:"México",visitante:"Sudáfrica",resultado:null,
-     pronosticos:[{nombre:"Joaquín",local:2,visitante:0},{nombre:"Maii",local:1,visitante:1},{nombre:"Charly",local:2,visitante:1},{nombre:"Papi Juli",local:1,visitante:0},{nombre:"Tio Julito",local:2,visitante:0},{nombre:"Daniel",local:3,visitante:1},{nombre:"Lore",local:1,visitante:2},{nombre:"Agus",local:2,visitante:2}]},
-    {grupo:"Grupo E",hora:"18:00",local:"Ecuador",visitante:"Costa de Marfil",resultado:[2,1],
-     pronosticos:[{nombre:"Joaquín",local:2,visitante:1},{nombre:"Maii",local:1,visitante:1},{nombre:"Charly",local:3,visitante:1},{nombre:"Papi Juli",local:2,visitante:0},{nombre:"Tio Julito",local:3,visitante:0},{nombre:"Daniel",local:2,visitante:1},{nombre:"Lore",local:1,visitante:2},{nombre:"Agus",local:2,visitante:2}]},
-  ],
-  pronosticos_grupos:[
-    {nombre:"Joaquín",    partidos:[[2,0],[1,0],[2,1],[0,1],[1,2],[0,1],[2,1],[1,0],[3,0],[2,1],[1,1],[0,0],[3,1],[1,0],[2,1],[0,0],[2,0],[1,1],[3,0],[1,0],[2,1],[1,1],[2,0],[1,0],[2,1],[1,0],[2,1],[0,1],[2,0],[1,1],[3,0],[1,0],[2,1],[2,0],[1,1],[0,1],[3,1],[1,0],[2,1],[0,0],[2,0],[1,1],[3,0],[1,0],[2,1],[1,1],[2,0],[1,0],[1,0],[2,1],[1,2],[3,0],[2,1],[0,1],[2,0],[1,1],[3,0],[1,0],[2,1],[0,0],[2,0],[1,0],[2,1],[1,0],[2,1],[0,1],[3,1],[1,0],[2,1],[0,0],[1,1],[2,0]]},
-    {nombre:"Maii",       partidos:[[1,1],[0,1],[1,1],[1,2],[0,1],[1,1],[1,1],[2,1],[2,2],[1,1],[2,1],[1,1],[2,1],[0,1],[1,1],[1,1],[2,1],[0,1],[2,1],[0,1],[1,1],[0,1],[1,1],[0,1],[1,1],[0,1],[1,1],[1,1],[1,1],[0,1],[2,1],[0,1],[1,1],[1,1],[0,1],[1,1],[2,1],[0,1],[1,1],[1,1],[1,1],[0,1],[2,1],[0,1],[1,1],[0,1],[1,1],[0,1],[0,1],[1,1],[2,1],[2,1],[1,1],[1,1],[1,1],[0,1],[2,1],[0,1],[1,1],[1,1],[1,1],[0,1],[1,1],[0,1],[1,1],[1,1],[2,1],[0,1],[1,1],[1,1],[0,1],[1,1]]},
-    {nombre:"Charly",     partidos:[[2,1],[1,0],[2,0],[0,1],[1,1],[0,1],[2,0],[1,0],[3,1],[2,0],[1,2],[0,0],[3,0],[1,1],[2,0],[0,1],[2,1],[1,0],[3,1],[1,1],[2,0],[1,0],[2,1],[1,0],[2,0],[1,1],[2,0],[0,1],[2,1],[1,0],[3,1],[1,0],[2,0],[2,1],[1,0],[0,1],[3,0],[1,1],[2,0],[0,1],[2,1],[1,0],[3,0],[1,1],[2,0],[1,0],[2,1],[1,0],[1,1],[2,0],[1,2],[3,1],[2,0],[0,1],[2,1],[1,0],[3,1],[1,0],[2,0],[0,1],[2,1],[1,0],[2,0],[1,1],[2,0],[0,1],[3,0],[1,0],[2,1],[0,1],[1,0],[2,1]]},
-    {nombre:"Papi Juli",  partidos:[[1,0],[2,1],[1,0],[1,1],[2,0],[1,1],[1,0],[2,1],[2,0],[1,0],[2,1],[1,0],[2,0],[2,1],[1,0],[1,1],[2,0],[1,1],[2,0],[1,1],[1,0],[2,1],[1,0],[2,1],[1,0],[2,0],[1,0],[1,1],[2,0],[1,0],[2,1],[1,0],[1,0],[2,0],[1,1],[1,0],[2,0],[2,1],[1,0],[1,1],[2,0],[1,1],[2,0],[1,0],[1,0],[2,1],[1,0],[2,0],[2,0],[1,0],[2,1],[2,0],[1,0],[1,1],[2,0],[1,0],[2,1],[1,0],[1,0],[1,1],[2,0],[1,0],[1,0],[2,1],[1,0],[1,0],[2,0],[2,1],[1,0],[1,1],[2,0],[1,0]]},
-    {nombre:"Tio Julito", partidos:[[2,0],[1,1],[2,1],[1,0],[0,2],[1,0],[2,0],[1,1],[3,0],[1,0],[2,0],[0,1],[3,0],[1,0],[2,0],[0,1],[2,0],[1,0],[3,0],[1,0],[2,0],[1,0],[2,0],[1,0],[2,0],[1,0],[2,0],[1,0],[2,0],[1,0],[3,0],[1,0],[2,0],[2,0],[1,0],[0,1],[3,0],[1,0],[2,0],[0,1],[2,0],[1,0],[3,0],[1,0],[2,0],[1,0],[2,0],[1,0],[1,0],[2,0],[1,2],[3,0],[2,0],[0,1],[2,0],[1,0],[3,0],[1,0],[2,0],[0,1],[2,0],[1,0],[2,0],[1,0],[2,0],[0,1],[3,0],[1,0],[2,0],[0,1],[1,0],[2,0]]},
-    {nombre:"Daniel",     partidos:[[3,1],[0,1],[3,1],[1,2],[1,1],[1,0],[3,1],[0,1],[4,0],[3,1],[0,2],[1,0],[4,1],[0,1],[3,1],[1,0],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[3,1],[0,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[0,1],[3,1],[0,2],[4,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[3,1],[0,1],[4,1],[0,1],[3,1],[0,1],[0,1],[3,1]]},
-    {nombre:"Lore",       partidos:[[1,2],[1,1],[1,1],[0,2],[2,1],[1,1],[1,1],[1,2],[1,1],[1,2],[2,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[2,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,2],[1,1],[1,1],[1,1],[1,1],[1,1]]},
-    {nombre:"Agus",       partidos:[[2,2],[1,0],[2,2],[1,1],[1,2],[0,0],[2,2],[1,0],[3,2],[2,2],[1,1],[0,0],[3,2],[1,0],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[1,0],[2,2],[1,0],[2,2],[1,0],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[2,2],[1,0],[0,0],[3,2],[1,0],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[1,0],[2,2],[1,0],[1,0],[2,2],[1,1],[3,2],[2,2],[0,0],[2,2],[1,0],[3,2],[1,0],[2,2],[0,0],[2,2],[1,0],[2,2],[1,0],[2,2],[0,0],[3,2],[1,0],[2,2],[0,0],[1,0],[2,2]]},
-  ],
-  resultados_grupos:[[2,1],[0,0],[1,1],[2,0],[0,1],[3,1],[1,1],[2,0],[2,0],[1,1],[1,2],[0,0],[3,0],[1,0],[2,1],[1,1],[2,0],[1,1],[2,1],[0,0],[2,1],[1,1],[1,0],[0,1],[2,0],[1,1],[2,1],[0,1],[2,1],[1,0],[3,1],[0,1],[1,1],[2,0],[1,1],[0,0],[3,1],[1,0],[2,0],[0,1],[2,1],[1,0],[3,0],[1,0],[2,1],[1,1],[2,0],[1,0],[1,0],[2,1],[1,2],[2,1],[2,0],[0,1],[2,1],[1,0],[2,1],[1,0],[2,0],[0,1],[2,0],[1,0],[2,1],[1,0],[2,1],[0,1],[3,1],[1,0],[2,1],[0,0],[1,1],[2,0]],
-  ecuador_partidos:[{idx:10,esLocal:false},{idx:34,esLocal:true},{idx:55,esLocal:false}],
-};
-
-// ── UTILS ─────────────────────────────────────────────────
+// ── UTILS ────────────────────────────────────────────────
 function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function ini(n){return n.trim().charAt(0).toUpperCase();}
 
-// ── ESPECIALES ────────────────────────────────────────────
-function calcEsp(){
-  const res=DATA.resultados_grupos,pros=DATA.pronosticos_grupos,ecu=DATA.ecuador_partidos||[];
-  const stats=pros.map(p=>{
-    let exactos=0,ecuGF=0,maxG=0,maxGdet='';
-    p.partidos.forEach((pro,i)=>{
-      const real=res[i];if(!real)return;
-      if(pro[0]===real[0]&&pro[1]===real[1])exactos++;
-      const g=pro[0]+pro[1];if(g>maxG){maxG=g;maxGdet=`${pro[0]}-${pro[1]}`;}
-    });
-    ecu.forEach(ec=>{const pro=p.partidos[ec.idx];if(!pro)return;ecuGF+=ec.esLocal?pro[0]:pro[1];});
-    return {nombre:p.nombre,exactos,ecuGF,maxG,maxGdet};
-  });
-  const adivino=[...stats].sort((a,b)=>b.exactos-a.exactos)[0];
-  const ciego=[...DATA.players].sort((a,b)=>a.grp-b.grp)[0];
-  const hincha=[...stats].sort((a,b)=>b.ecuGF-a.ecuGF)[0];
-  const traidor=[...stats].sort((a,b)=>a.ecuGF-b.ecuGF)[0];
-  let sN='—',sD='—',minC=99;
-  pros.forEach(p=>p.partidos.forEach((pro,i)=>{
-    const real=res[i];if(!real||pro[0]!==real[0]||pro[1]!==real[1])return;
-    const c=pros.filter(q=>q.partidos[i]&&q.partidos[i][0]===real[0]&&q.partidos[i][1]===real[1]).length;
-    if(c<minC){minC=c;sN=p.nombre;sD=`${real[0]}-${real[1]}`;}
-  }));
-  const byG=[...DATA.players].sort((a,b)=>b.grp-a.grp).map((p,i)=>({...p,pg:i+1}));
-  const byT=[...DATA.players].sort((a,b)=>b.total-a.total).map((p,i)=>({...p,pt:i+1}));
-  let maxR=-99,tortN='—',tortD='—';
-  byG.forEach(p=>{const f=byT.find(q=>q.name===p.name);if(!f)return;const r=p.pg-f.pt;if(r>maxR){maxR=r;tortN=p.name;tortD=`${p.pg}º→${f.pt}º`;}});
-  const osado=[...stats].sort((a,b)=>b.maxG-a.maxG)[0];
-  let g1='—',g2='—',gN=0;
-  for(let a=0;a<pros.length;a++)for(let b=a+1;b<pros.length;b++){
-    let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
-    if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
-  }
-  return [
-    {icon:"◎",titulo:"El Adivino",  nombre:adivino?.nombre||'—',  desc:`Acertó <strong>${adivino?.exactos||0} marcadores exactos</strong>. Visión de otro planeta.`,cls:"ee-gold"},
-    {icon:"✕",titulo:"El Ciego",    nombre:ciego?.name||'—',       desc:`Solo <strong>${ciego?.grp||0} pts en grupos</strong>. Vivía en un universo paralelo.`,cls:"ee-red"},
-    {icon:"◈",titulo:"El Suertero", nombre:sN,                     desc:`Único en acertar el <strong>${sD}</strong>. La suerte también es talento.`,cls:"ee-blue"},
-    {icon:"▲",titulo:"El Hincha",   nombre:hincha?.nombre||'—',    desc:`Le dio <strong>${hincha?.ecuGF||0} goles a Ecuador</strong>. Fe incondicional en la Tri.`,cls:"ee-green"},
-    {icon:"▼",titulo:"El Traidor",  nombre:traidor?.nombre||'—',   desc:`Solo <strong>${traidor?.ecuGF||0} goles para Ecuador</strong>. Ni en casa confía.`,cls:"ee-red"},
-    {icon:"↑",titulo:"El Tortuga",  nombre:tortN,                  desc:`Remontada épica: <strong>${tortD}</strong>. Lento pero mortal.`,cls:"ee-purple"},
-    {icon:"!!",titulo:"El Osado",   nombre:osado?.nombre||'—',     desc:`Apostó por un <strong>${osado?.maxGdet||'—'}</strong>. Nadie más se atrevió.`,cls:"ee-orange"},
-    {icon:"=", titulo:"Los Gemelos",nombre:`${g1} & ${g2}`,        desc:`<strong>${gN} pronósticos idénticos</strong>. ¿Trampa o telepatía?`,cls:"ee-teal"},
-  ];
-}
+// ── COLORS ───────────────────────────────────────────────
+const COLORS=["#FFD100","#EF3340","#003DA6","#3CAC3B","#FF6B35","#8B5CF6","#14B8A6","#EC4899","#F97316","#64748B"];
 
-// ── RENDER ────────────────────────────────────────────────
-function render(){
-  const sorted=[...DATA.players].sort((a,b)=>b.total-a.total);
-  const leader=sorted[0];
+// ── DATA ─────────────────────────────────────────────────
+const DATA={
+  lastUpdate:"11 Jun 2026 · 00:00",
+  players:[
+    {name:"Chicho",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Charly",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Agus",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Mata",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Joaquin",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Tio Julito",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Mai",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Tia Lore",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Tia lina",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0},
+    {name:"Manolo",camp_pick:"—",pos_picks:{p1:"—",p2:"—",sf1:"—",sf2:"—"},grp:0,oct:0,qf:0,sf:0,fin:0,camp:0,prem:0,total:0}
+  ],
+  premios:[
+    {icon:"⚽",cat:"Bota de Oro",  player_picks:{}, votos:[]},
+    {icon:"★", cat:"Balón de Oro", player_picks:{}, votos:[]},
+    {icon:"◉", cat:"Mejor Arquero",player_picks:{}, votos:[]},
+    {icon:"◈", cat:"Mejor Novato", player_picks:{}, votos:[]},
+  ],
+  partidos:[],
+  pronosticos_grupos:[],
+  resultados_grupos:[],
+  // Ecuador en grupos: idx en FIXTURE_ORDER_CAPTURA
+  // Grupo E: Ecuador vs Costa de Marfil (idx 27), Ecuador vs Curazao (idx 28), Ecuador vs Alemania (idx 24 — Alemania local)
+  ecuador_partidos:[
+    {idx:24,esLocal:false}, // Alemania vs Ecuador — Ecuador visitante
+    {idx:27,esLocal:true},  // Ecuador vs Costa de Marfil — Ecuador local
+    {idx:28,esLocal:true},  // Ecuador vs Curazao — Ecuador local
+  ],
+};
 
-  // Meta
-  document.getElementById('navUpdate').textContent=DATA.lastUpdate;
-  document.getElementById('heroParticipants').textContent=DATA.players.length;
-  document.getElementById('heroLeader').textContent=leader?.name||'—';
-  document.getElementById('footerUpdate').textContent='Última actualización: '+DATA.lastUpdate;
-  buildTicker(sorted);
-
-  // Podium
-  const ord=sorted.length>=3?[sorted[1],sorted[0],sorted[2]]:sorted;
-  const cls=sorted.length>=3?['pos-2','pos-1','pos-3']:['pos-1','pos-2','pos-3'];
-  const ranks=sorted.length>=3?[2,1,3]:[1,2,3];
-  document.getElementById('podium').innerHTML=ord.map((p,i)=>`
-    <div class="pod-card ${cls[i]}">
-      <div class="pod-rank-big">${ranks[i]}</div>
-      <div class="pod-tag">${ranks[i]===1?'Líder':ranks[i]+'º lugar'}</div>
-      <div class="pod-initial-box"><span class="pod-init-letter">${ini(p.name)}</span></div>
-      <div class="pod-name" onclick="openModal('${e(p.name)}')" style="cursor:pointer">${e(p.name)}</div>
-      <div class="pod-pts-row">
-        <span class="pod-pts-num">${p.total}</span>
-        <span class="pod-pts-lbl">pts</span>
-      </div>
-    </div>`).join('');
-
-  // Leaderboard
-  document.getElementById('leaderboard').innerHTML=sorted.map((p,i)=>{
-    const rank=i+1,rC=rank<=3?`rk${rank}`:'rkn',rbC=rank<=3?`rb${rank}`:'rbn';
-    const diff=p.total-leader.total;
-    const dH=diff===0?'<span class="dif">—</span>':`<span class="dif dif-n">${diff}</span>`;
-    return `<tr>
-      <td><span class="rkbar ${rbC}"></span><span class="rk ${rC}">${rank}</span></td>
-      <td><span class="pn" onclick="openModal('${e(p.name)}')" style="cursor:pointer">${e(p.name)}</span></td>
-      <td><span class="pt">${p.total}</span></td>
-      <td>${dH}</td>
-      <td><span class="ph">${p.grp}</span></td><td><span class="ph">${p.oct}</span></td>
-      <td><span class="ph">${p.qf}</span></td><td><span class="ph">${p.sf}</span></td>
-      <td><span class="ph">${p.fin}</span></td><td><span class="ph">${p.camp}</span></td>
-      <td><span class="ph">${p.prem}</span></td>
-    </tr>`;
-  }).join('');
-
-  // Breakdown
-  const bdCont=document.getElementById('breakdown');
-  bdCont.innerHTML=sorted.map(p=>`
-    <div class="bd-row">
-      <div class="bd-cell">${e(p.name)}</div>
-      <div class="bd-cell c-grp">${p.grp}</div>
-      <div class="bd-cell c-oct">${p.oct}</div>
-      <div class="bd-cell c-qf">${p.qf}</div>
-      <div class="bd-cell c-sf">${p.sf}</div>
-      <div class="bd-cell c-fin">${p.fin}</div>
-      <div class="bd-cell c-cam">${p.camp}</div>
-      <div class="bd-cell c-pre">${p.prem}</div>
-      <div class="bd-cell c-tot">${p.total}</div>
-    </div>`).join('');
-
-  // Premios
-  const fillClasses=['vfe1','vfe2','vfe3','vfe4'];
-  document.getElementById('premiosGrid').innerHTML=DATA.premios.map((pr,pi)=>{
-    const mx=Math.max(...pr.votos.map(v=>v.c));
-    return `<div class="prem-card">
-      <div class="pc-bg-num">${pi+1}</div>
-      <div class="pc-icon">${pr.icon}</div>
-      <div class="pc-cat">${e(pr.cat)}</div>
-      ${pr.votos.map((v,vi)=>`
-      <div class="vote-row-ed">
-        <span class="v-pos-ed">${vi+1}</span>
-        <span class="v-name-ed${vi===0?' vt':''}">${e(v.n)}</span>
-        <div class="v-track-ed"><div class="v-fill-ed ${fillClasses[pi]}" style="width:${Math.round(v.c/mx*100)}%"></div></div>
-        <span class="v-n-ed">${v.c}</span>
-      </div>`).join('')}
-    </div>`;
-  }).join('');
-
-  // Partidos
-  const pl=document.getElementById('partidosList');
-  if(!DATA.partidos?.length){
-    pl.innerHTML='<div class="partido-ed" style="padding:2rem;display:block;text-align:center"><span style="font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Sin partidos hoy</span></div>';
-  } else {
-    pl.innerHTML=DATA.partidos.map((p,pi)=>{
-      const chips=p.pronosticos.map(pr=>{
-        let cls='cde';
-        if(pr.local>pr.visitante)cls='che';
-        else if(pr.visitante>pr.local)cls='cae';
-        return `<span class="chip-ed ${cls}">${e(pr.nombre)} ${pr.local}-${pr.visitante}</span>`;
-      }).join('');
-      const ctr=p.resultado
-        ?`<div class="pe-center"><div class="pe-score">${p.resultado[0]}—${p.resultado[1]}</div><div class="pe-vs">FT</div></div>`
-        :`<div class="pe-center"><div class="pe-vs">VS</div><div class="pe-hora">${e(p.hora)}</div></div>`;
-      return `<div class="partido-ed${p.resultado?' played':''}">
-        <div class="pe-group"><div class="pe-group-lbl">Grupo</div><div class="pe-group-name">${e(p.grupo.replace('Grupo ',''))}</div></div>
-        <div class="pe-team"><div class="pe-team-name">${e(p.local)}</div></div>
-        ${ctr}
-        <div class="pe-team right"><div class="pe-team-name">${e(p.visitante)}</div></div>
-        <div class="pe-prono"><div class="pe-prono-lbl">Pronósticos</div>${chips}</div>
-      </div>`;
-    }).join('');
-  }
-
-  // Especiales
-  const esp=calcEsp();
-  document.getElementById('especialesGrid').innerHTML=esp.map((e2,ei)=>`
-    <div class="esp-ed ${e2.cls}" style="animation-delay:${ei*.04}s">
-      <div class="ee-icon">${e2.icon}</div>
-      <div class="ee-nombre">${e(e2.titulo)}</div>
-      <div class="ee-titulo">${e(e2.titulo)}</div>
-      <div class="ee-winner">${e(e2.nombre)}</div>
-      <div class="ee-desc">${e2.desc}</div>
-    </div>`).join('');
-}
-
-
-function drawChart(canvasId, players, isDark){
-  var phases=["Grp","Oct","Cto","SF","Fin","Camp","Prem"];
-  var colors=["#FFD100","#EF3340","#003DA6","#3CAC3B","#FF6B35","#8B5CF6","#14B8A6","#EC4899"];
-  var phaseKeys=["grp","oct","qf","sf","fin","camp","prem"];
-
-  var canvas=document.getElementById(canvasId);
-  if(!canvas) return;
-  var ctx=canvas.getContext("2d");
-
-  var cumData=players.map(function(p){
-    var cum=0;
-    return phaseKeys.map(function(k){cum+=(p[k]||0);return cum;});
-  });
-
-  var dpr=window.devicePixelRatio||1;
-  var W=canvas.parentElement.offsetWidth||340;
-  var H=isDark?230:280;
-  canvas.width=W*dpr;
-  canvas.height=H*dpr;
-  canvas.style.width=W+"px";
-  canvas.style.height=H+"px";
-  ctx.scale(dpr,dpr);
-
-  // Fill canvas background
-  ctx.fillStyle=isDark?"#111620":"#F5F0E8";
-  ctx.fillRect(0,0,W,H);
-
-  var PAD={top:16,right:isDark?20:80,bottom:12,left:38};
-  var CW=W-PAD.left-PAD.right;
-  var CH=H-PAD.top-PAD.bottom;
-  var maxVal=Math.max.apply(null,cumData.map(function(d){return Math.max.apply(null,d);}));
-  maxVal=Math.ceil(maxVal/20)*20||100;
-
-  var gridColor=isDark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)";
-  var dashColor=isDark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.04)";
-  var labelColor=isDark?"rgba(255,255,255,0.22)":"rgba(0,0,0,0.3)";
-  var dotStroke=isDark?"#111620":"#F5F0E8";
-
-  function xPos(i){return PAD.left+i*(CW/(phases.length-1));}
-  function yPos(v){return PAD.top+CH-(v/maxVal)*CH;}
-
-  // Grid lines
-  [0,.25,.5,.75,1].forEach(function(t){
-    var y=PAD.top+CH*(1-t);
-    var val=Math.round(maxVal*t);
-    ctx.strokeStyle=gridColor;
-    ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(PAD.left+CW,y);ctx.stroke();
-    ctx.fillStyle=labelColor;
-    ctx.font="bold 8px 'Syne',sans-serif";
-    ctx.textAlign="right";ctx.textBaseline="middle";
-    ctx.fillText(val,PAD.left-5,y);
-  });
-
-  // Phase vertical dashes
-  phases.forEach(function(_,i){
-    if(i===0||i===phases.length-1)return;
-    ctx.strokeStyle=dashColor;
-    ctx.lineWidth=1;ctx.setLineDash([2,5]);
-    ctx.beginPath();ctx.moveTo(xPos(i),PAD.top);ctx.lineTo(xPos(i),PAD.top+CH);ctx.stroke();
-    ctx.setLineDash([]);
-  });
-
-  // Draw areas first (behind lines)
-  cumData.forEach(function(data,pi){
-    var color=colors[pi%colors.length];
-    ctx.beginPath();
-    ctx.moveTo(xPos(0),yPos(0));
-    data.forEach(function(v,i){ctx.lineTo(xPos(i),yPos(v));});
-    ctx.lineTo(xPos(data.length-1),yPos(0));
-    ctx.closePath();
-    ctx.save();
-    ctx.globalAlpha=isDark?0.07:0.06;
-    ctx.fillStyle=color;
-    ctx.fill();
-    ctx.restore();
-  });
-
-  // Draw lines + dots
-  cumData.forEach(function(data,pi){
-    var color=colors[pi%colors.length];
-    // Line
-    ctx.beginPath();
-    data.forEach(function(v,i){i===0?ctx.moveTo(xPos(i),yPos(v)):ctx.lineTo(xPos(i),yPos(v));});
-    ctx.strokeStyle=color;
-    ctx.lineWidth=isDark?2:2.5;
-    ctx.lineJoin="round";ctx.lineCap="round";
-    ctx.stroke();
-    // Dots
-    data.forEach(function(v,i){
-      ctx.beginPath();ctx.arc(xPos(i),yPos(v),isDark?3:3.5,0,Math.PI*2);
-      ctx.fillStyle=color;ctx.fill();
-      ctx.strokeStyle=dotStroke;ctx.lineWidth=1.5;ctx.stroke();
-    });
-  });
-
-  // Desktop: labels at end of each line
-  if(!isDark){
-    var lastIdx=phases.length-1;
-    // Sort by last value to offset overlapping labels
-    var sorted=cumData.map(function(d,i){return{v:d[lastIdx],i:i};}).sort(function(a,b){return b.v-a.v;});
-    var minGap=14;
-    var usedY=[];
-    sorted.forEach(function(item){
-      var color=colors[item.i%colors.length];
-      var rawY=yPos(item.v);
-      // Push label down if too close to previous
-      var labelY=rawY;
-      for(var k=0;k<usedY.length;k++){
-        if(Math.abs(labelY-usedY[k])<minGap) labelY=usedY[k]+minGap;
-      }
-      usedY.push(labelY);
-      // Connector dot
-      ctx.beginPath();ctx.arc(xPos(lastIdx),rawY,2.5,0,Math.PI*2);
-      ctx.fillStyle=color;ctx.fill();
-      // Label
-      ctx.fillStyle=color;
-      ctx.font="bold 9px 'Syne',sans-serif";
-      ctx.textAlign="left";ctx.textBaseline="middle";
-      ctx.fillText(players[item.i].name.toUpperCase(),xPos(lastIdx)+8,labelY);
-      // Pts
-      ctx.fillStyle="rgba(0,0,0,0.4)";
-      ctx.font="8px 'Syne',sans-serif";
-      ctx.fillText(cumData[item.i][lastIdx]+" pts",xPos(lastIdx)+8,labelY+11);
-    });
-  }
-
-  // Mobile: just leader label
-  if(isDark){
-    var lastIdx2=phases.length-1;
-    var best=cumData.reduce(function(b,d,i){return d[lastIdx2]>b.v?{v:d[lastIdx2],i:i}:b;},{v:-1,i:0});
-    ctx.fillStyle=colors[best.i%colors.length];
-    ctx.font="bold 8px 'Syne',sans-serif";
-    ctx.textAlign="left";ctx.textBaseline="middle";
-    var lx=xPos(lastIdx2)+4;
-    var ly=yPos(best.v);
-    if(ly<PAD.top+8)ly=PAD.top+10;
-    ctx.fillText(players[best.i].name.toUpperCase().substring(0,7),lx,ly);
-  }
-}
-
-function buildChart(players){
-  var phases=["Grp","Oct","Cto","SF","Fin","Camp","Prem"];
-  var colors=["#FFD100","#EF3340","#003DA6","#3CAC3B","#FF6B35","#8B5CF6","#14B8A6","#EC4899"];
-
-  // Populate legends
-  var legHtml=players.map(function(p,i){
-    return '<div class="legend-item"><span class="legend-dot" style="background:'+colors[i%colors.length]+'"></span>'+e(p.name)+'</div>';
-  }).join("");
-  ["chartLegendDesktop","chartLegendMobile"].forEach(function(id){
-    var el=document.getElementById(id);if(el)el.innerHTML=legHtml;
-  });
-
-  // Populate phase labels
-  var phaseHtml=phases.map(function(p){return '<span class="chart-phase-lbl">'+p+'</span>';}).join("");
-  ["chartPhasesDesktop","chartPhasesMobile"].forEach(function(id){
-    var el=document.getElementById(id);if(el)el.innerHTML=phaseHtml;
-  });
-
-  drawChart("evolutionChart",players,false);
-  drawChart("evolutionChartMobile",players,false);
-}
-
-
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// GOOGLE SHEETS LIVE DATA — 3 fuentes
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const CSV_CLASIFICACION = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVEtamI-Br4186ROUKb00QrVdSYUNNxdBiFcWw_yzV266IBDjxmQxwQ/pub?gid=221142825&single=true&output=csv';
-const CSV_RESULTADOS    = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVEtamI-Br4186ROUKb00QrVdSYUNNxdBiFcWw_yzV266IBDjxmQxwQ/pub?gid=467036788&single=true&output=csv';
-const CSV_CAPTURA       = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVEtamI-Br4186ROUKb00QrVdSYUNNxdBiFcWw_yzV266IBDjxmQxwQ/pub?gid=1113171896&single=true&output=csv';
-
-// Fixture order: 72 group stage matches — mismo orden que columnas de CAPTURA
-const FIXTURE_ORDER=[
-  // Jun 11
-  ['México','Sudáfrica'],['Corea del Sur','Chequia'],
-  // Jun 12
-  ['Canadá','Bosnia y Herzegovina'],['Estados Unidos','Paraguay'],
-  // Jun 13
-  ['Qatar','Suiza'],['Brasil','Marruecos'],['Haití','Escocia'],['Australia','Turquía'],
-  // Jun 14
-  ['Alemania','Curazao'],['Países Bajos','Japón'],['Costa de Marfil','Ecuador'],['Suecia','Túnez'],
-  // Jun 15
-  ['España','Cabo Verde'],['Bélgica','Egipto'],['Arabia Saudita','Uruguay'],['Irán','Nueva Zelanda'],
-  // Jun 16
-  ['Francia','Senegal'],['Irak','Noruega'],['Argentina','Argelia'],['Austria','Jordania'],
-  // Jun 17
-  ['Portugal','Congo DR'],['Inglaterra','Croacia'],['Ghana','Panamá'],['Uzbekistán','Colombia'],
-  // Jun 18
-  ['Chequia','Sudáfrica'],['Suiza','Bosnia y Herzegovina'],['Canadá','Qatar'],['México','Corea del Sur'],
-  // Jun 19
-  ['Estados Unidos','Australia'],['Escocia','Marruecos'],['Brasil','Haití'],['Turquía','Paraguay'],
-  // Jun 20
-  ['Países Bajos','Suecia'],['Alemania','Costa de Marfil'],['Ecuador','Curazao'],['Túnez','Japón'],
-  // Jun 21
-  ['España','Arabia Saudita'],['Bélgica','Irán'],['Uruguay','Cabo Verde'],['Nueva Zelanda','Egipto'],
-  // Jun 22
-  ['Argentina','Austria'],['Francia','Irak'],['Noruega','Senegal'],['Jordania','Argelia'],
-  // Jun 23
-  ['Portugal','Uzbekistán'],['Inglaterra','Ghana'],['Panamá','Croacia'],['Colombia','Congo DR'],
-  // Jun 24
-  ['Suiza','Canadá'],['Bosnia y Herzegovina','Qatar'],['Marruecos','Haití'],['Escocia','Brasil'],['Chequia','México'],['Sudáfrica','Corea del Sur'],
-  // Jun 25
-  ['Ecuador','Alemania'],['Curazao','Costa de Marfil'],['Túnez','Países Bajos'],['Japón','Suecia'],['Turquía','Estados Unidos'],['Paraguay','Australia'],
-  // Jun 26
-  ['Noruega','Francia'],['Senegal','Irak'],['Uruguay','España'],['Cabo Verde','Arabia Saudita'],['Nueva Zelanda','Bélgica'],['Egipto','Irán'],
-  // Jun 27
-  ['Panamá','Inglaterra'],['Croacia','Ghana'],['Colombia','Portugal'],['Congo DR','Uzbekistán'],['Jordania','Argentina'],['Argelia','Austria'],
-];
-
-// FIXTURE_ORDER_CAPTURA: orden por grupos — para parsear columnas del Sheet CAPTURA
+// ── FIXTURE ORDERS ────────────────────────────────────────
+// FIXTURE_ORDER_CAPTURA: orden por grupos A→L — igual que columnas del Sheet CAPTURA
 const FIXTURE_ORDER_CAPTURA=[
   ['México','Corea del Sur'],['México','Sudáfrica'],['México','Chequia'],
   ['Corea del Sur','Sudáfrica'],['Corea del Sur','Chequia'],['Sudáfrica','Chequia'],
@@ -1675,8 +1276,35 @@ const FIXTURE_ORDER_CAPTURA=[
   ['Croacia','Panamá'],['Croacia','Ghana'],['Panamá','Ghana'],
 ];
 
+// FIXTURE_ORDER: orden cronológico real (Jun 11→Jun 27) — para calcular racha
+const FIXTURE_ORDER=[
+  ['México','Sudáfrica'],['Corea del Sur','Chequia'],
+  ['Canadá','Bosnia y Herzegovina'],['Estados Unidos','Paraguay'],
+  ['Qatar','Suiza'],['Brasil','Marruecos'],['Haití','Escocia'],['Australia','Turquía'],
+  ['Alemania','Curazao'],['Países Bajos','Japón'],['Costa de Marfil','Ecuador'],['Suecia','Túnez'],
+  ['España','Cabo Verde'],['Bélgica','Egipto'],['Arabia Saudita','Uruguay'],['Irán','Nueva Zelanda'],
+  ['Francia','Senegal'],['Irak','Noruega'],['Argentina','Argelia'],['Austria','Jordania'],
+  ['Portugal','Congo DR'],['Inglaterra','Croacia'],['Ghana','Panamá'],['Uzbekistán','Colombia'],
+  ['Chequia','Sudáfrica'],['Suiza','Bosnia y Herzegovina'],['Canadá','Qatar'],['México','Corea del Sur'],
+  ['Estados Unidos','Australia'],['Escocia','Marruecos'],['Brasil','Haití'],['Turquía','Paraguay'],
+  ['Países Bajos','Suecia'],['Alemania','Costa de Marfil'],['Ecuador','Curazao'],['Túnez','Japón'],
+  ['España','Arabia Saudita'],['Bélgica','Irán'],['Uruguay','Cabo Verde'],['Nueva Zelanda','Egipto'],
+  ['Argentina','Austria'],['Francia','Irak'],['Noruega','Senegal'],['Jordania','Argelia'],
+  ['Portugal','Uzbekistán'],['Inglaterra','Ghana'],['Panamá','Croacia'],['Colombia','Congo DR'],
+  ['Suiza','Canadá'],['Bosnia y Herzegovina','Qatar'],['Marruecos','Haití'],['Escocia','Brasil'],
+  ['Chequia','México'],['Sudáfrica','Corea del Sur'],
+  ['Ecuador','Alemania'],['Curazao','Costa de Marfil'],
+  ['Túnez','Países Bajos'],['Japón','Suecia'],
+  ['Turquía','Estados Unidos'],['Paraguay','Australia'],
+  ['Noruega','Francia'],['Senegal','Irak'],
+  ['Uruguay','España'],['Cabo Verde','Arabia Saudita'],
+  ['Nueva Zelanda','Bélgica'],['Egipto','Irán'],
+  ['Panamá','Inglaterra'],['Croacia','Ghana'],
+  ['Colombia','Portugal'],['Congo DR','Uzbekistán'],
+  ['Jordania','Argentina'],['Argelia','Austria'],
+];
 
-// ── PARTIDOS COMPLETOS (72) con fechas y horarios ────────────────────
+// ── PARTIDOS COMPLETOS (72) con fechas hora ECT ───────────────────────
 const PARTIDOS_COMPLETOS=[
   {grupo:"Grupo A",hora:"Jun 11 · 14:00 ECT",local:"México",visitante:"Sudáfrica",resultado:null,pronosticos:[]},
   {grupo:"Grupo A",hora:"Jun 11 · 21:00 ECT",local:"Corea del Sur",visitante:"Chequia",resultado:null,pronosticos:[]},
@@ -1751,476 +1379,561 @@ const PARTIDOS_COMPLETOS=[
   {grupo:"Grupo J",hora:"Jun 27 · 21:00 ECT",local:"Jordania",visitante:"Argentina",resultado:null,pronosticos:[]},
   {grupo:"Grupo J",hora:"Jun 27 · 21:00 ECT",local:"Argelia",visitante:"Austria",resultado:null,pronosticos:[]},
 ];
+DATA.partidos=PARTIDOS_COMPLETOS.map(p=>Object.assign({},p,{pronosticos:[]}));
 
-// ── CSV PARSER ───────────────────────────────────────────────────────
-function parseCSV(text){
-  return text.trim().split('
-').map(function(row){
-    var cells=[],cur='',inQ=false;
-    for(var i=0;i<row.length;i++){
-      var c=row[i];
-      if(c==='"'){inQ=!inQ;}
-      else if(c===','&&!inQ){cells.push(cur.trim());cur='';}
-      else cur+=c;
-    }
-    cells.push(cur.trim());
-    return cells;
-  });
+// ── TICKER ────────────────────────────────────────────────
+function buildTicker(players){
+  const msgs=['Quiniela Granjas · Mundial 2026',`Líder: ${players[0]?.name||'—'} con ${players[0]?.total||0} pts`,'Ecuador · Vamos la Tri','Canada · México · Estados Unidos · 2026','#WEARE26'];
+  const all=[...msgs,...msgs].map(m=>`<span class="ticker-item"><span class="ticker-dot"></span>${m}</span>`).join('');
+  document.getElementById('tickerInner').innerHTML=all+all;
 }
 
-// ── PARSE CAPTURA ────────────────────────────────────────────────────
-function parseCaptura(csv){
-  var rows=parseCSV(csv);
-  var hIdx=rows.findIndex(function(r){return r[0]==='Participante'||r[0].includes('Participante');});
-  if(hIdx<0)return null;
-  var headerRow=rows[hIdx];
-
-  var result={players_captura:[],pronosticos_grupos:[],partidos_pronosticos:{},premios_raw:{}};
-  var premCats=['Bota de Oro','Balón de Oro','Mejor Arquero','Mejor Novato'];
-  var premIcons=['⚽','★','◉','◈'];
-  var premPicksMap=[{},{},{},{}];
-  var premVotosMap=[{},{},{},{}];
-
-  // Find special column indices
-  var COL_CAMP=headerRow.indexOf('CAMPEÓN');
-  if(COL_CAMP<0)COL_CAMP=headerRow.indexOf('Campeon');
-  if(COL_CAMP<0)COL_CAMP=199; // fallback
-  var COL_BOTA=headerRow.indexOf('Bota')+0||200;
-  var COL_BALON=headerRow.indexOf('Balón')||201;
-  var COL_ARQ=headerRow.indexOf('Arquero')||202;
-  var COL_NOV=headerRow.indexOf('Novato')||203;
-
-  for(var i=hIdx+1;i<rows.length;i++){
-    var r=rows[i];
-    var name=(r[0]||'').trim();
-    if(!name||name==='Participante')continue;
-
-    // 72 group stage pronósticos (cols 1..144, pairs of L,V)
-    var partidos=[];
-    for(var j=0;j<72;j++){
-      var L=parseInt(r[1+j*2])||0;
-      var V=parseInt(r[2+j*2])||0;
-      partidos.push([L,V]);
-    }
-    result.pronosticos_grupos.push({nombre:name,partidos:partidos});
-
-    // Build partidos_pronosticos
-    FIXTURE_ORDER_CAPTURA.forEach(function(pair,idx){
-      var key=pair[0]+'|'+pair[1];
-      if(!result.partidos_pronosticos[key])result.partidos_pronosticos[key]=[];
-      result.partidos_pronosticos[key].push({nombre:name,local:partidos[idx][0],visitante:partidos[idx][1]});
+// ── ESPECIALES ─────────────────────────────────────────────
+function calcEsp(){
+  const res=DATA.resultados_grupos;
+  const pros=DATA.pronosticos_grupos;
+  const ecu=DATA.ecuador_partidos||[];
+  const stats=pros.map(p=>{
+    let exactos=0,ecuGF=0,maxG=0,maxGdet='',maxGmatch='';
+    p.partidos.forEach((pro,i)=>{
+      const real=res[i];
+      if(real&&pro[0]===real[0]&&pro[1]===real[1])exactos++;
+      const g=pro[0]+pro[1];
+      if(g>maxG){maxG=g;maxGdet=`${pro[0]}-${pro[1]}`;
+        const fix=FIXTURE_ORDER_CAPTURA[i];
+        maxGmatch=fix?`${fix[0]} vs ${fix[1]}`:'—';}
     });
-
-    // camp_pick
-    var camp=(r[COL_CAMP]||'').trim();
-
-    // pos_picks — find SF/Fin columns
-    var sf1Idx=headerRow.indexOf('SF1'); var sf2Idx=headerRow.indexOf('SF2');
-    var fin1Idx=headerRow.indexOf('Fin1'); var fin2Idx=headerRow.indexOf('Fin2');
-    var sf1=sf1Idx>=0?(r[sf1Idx]||'').trim():'—';
-    var sf2=sf2Idx>=0?(r[sf2Idx]||'').trim():'—';
-    var fin2=fin2Idx>=0?(r[fin2Idx]||'').trim():'—';
-
-    result.players_captura.push({name:name,camp_pick:camp,pos_picks:{p1:camp,p2:fin2||'—',sf1:sf1,sf2:sf2}});
-
-    // Premios
-    [COL_BOTA,COL_BALON,COL_ARQ,COL_NOV].forEach(function(col,pi){
-      var voto=(r[col]||'').trim();
-      if(voto){premPicksMap[pi][name]=voto;premVotosMap[pi][voto]=(premVotosMap[pi][voto]||0)+1;}
-    });
-  }
-
-  result.premios=premCats.map(function(cat,pi){
-    var votos=Object.entries(premVotosMap[pi]).sort(function(a,b){return b[1]-a[1];}).map(function(e){return{n:e[0],c:e[1]};});
-    return{icon:premIcons[pi],cat:cat,player_picks:premPicksMap[pi],votos:votos};
+    ecu.forEach(ec=>{const pro=p.partidos[ec.idx];if(!pro)return;ecuGF+=ec.esLocal?pro[0]:pro[1];});
+    return{nombre:p.nombre,exactos,ecuGF,maxG,maxGdet,maxGmatch};
   });
-  return result;
-}
-
-// ── PARSE CLASIFICACION ──────────────────────────────────────────────
-function parseClasificacion(csv){
-  var rows=parseCSV(csv);
-  var hIdx=rows.findIndex(function(r){return r.some(function(c){return c.includes('Participante');});});
-  if(hIdx<0)return null;
-  var players=[];
-  for(var i=hIdx+1;i<rows.length;i++){
-    var r=rows[i];
-    var name=(r[1]||'').replace(/"/g,'').trim();
-    if(!name)continue;
-    players.push({name:name,grp:parseInt(r[2])||0,oct:parseInt(r[3])||0,qf:parseInt(r[4])||0,sf:parseInt(r[5])||0,fin:parseInt(r[6])||0,camp:parseInt(r[7])||0,prem:parseInt(r[8])||0,total:parseInt(r[9])||0});
+  const adivino=[...stats].sort((a,b)=>b.exactos-a.exactos)[0];
+  const ciego=[...DATA.players].sort((a,b)=>a.grp-b.grp)[0];
+  const hincha=[...stats].sort((a,b)=>b.ecuGF-a.ecuGF)[0];
+  const traidor=[...stats].sort((a,b)=>a.ecuGF-b.ecuGF)[0];
+  let sN='—',sD='—',minC=99;
+  pros.forEach(p=>p.partidos.forEach((pro,i)=>{
+    const real=res[i];if(!real||pro[0]!==real[0]||pro[1]!==real[1])return;
+    const c=pros.filter(q=>q.partidos[i]&&q.partidos[i][0]===real[0]&&q.partidos[i][1]===real[1]).length;
+    if(c<minC){minC=c;sN=p.nombre;sD=`${real[0]}-${real[1]}`;}
+  }));
+  const osado=[...stats].sort((a,b)=>b.maxG-a.maxG)[0];
+  let g1='—',g2='—',gN=0;
+  for(let a=0;a<pros.length;a++)for(let b=a+1;b<pros.length;b++){
+    let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
+    if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
   }
-  return players.length?players:null;
+  // Tortuga: mayor remontada (pos en grupos → pos final)
+  const byGrp=[...DATA.players].sort((a,b)=>b.grp-a.grp).map((p,i)=>({...p,pg:i+1}));
+  const byTot=[...DATA.players].sort((a,b)=>b.total-a.total).map((p,i)=>({...p,pt:i+1}));
+  let maxR=-99,tortN='—',tortD='—';
+  byGrp.forEach(p=>{const f=byTot.find(q=>q.name===p.name);if(!f)return;const r=p.pg-f.pt;if(r>maxR){maxR=r;tortN=p.name;tortD=`${p.pg}º→${f.pt}º`;}});
+
+  return[
+    {icon:"◎",titulo:"El Adivino", nombre:adivino?.nombre||'—',desc:`Acertó <strong>${adivino?.exactos||0} marcadores exactos</strong>. Visión de cristal.`,cls:"ee-gold"},
+    {icon:"✕",titulo:"El Ciego",   nombre:ciego?.name||'—',   desc:`Solo <strong>${ciego?.grp||0} pts en grupos</strong>. Vivía en otro universo.`,cls:"ee-red"},
+    {icon:"◈",titulo:"El Suertero",nombre:sN,                  desc:`El único que acertó el <strong>${sD}</strong>. Solo, con fe.`,cls:"ee-blue"},
+    {icon:"▲",titulo:"El Hincha",  nombre:hincha?.nombre||'—', desc:`Le dio <strong>${hincha?.ecuGF||0} goles a Ecuador</strong>. Fe total en la Tri.`,cls:"ee-green"},
+    {icon:"▼",titulo:"El Traidor", nombre:traidor?.nombre||'—',desc:`Solo <strong>${traidor?.ecuGF||0} goles para Ecuador</strong>. Ni en casa confía.`,cls:"ee-red"},
+    {icon:"↑",titulo:"El Tortuga", nombre:tortN,               desc:`Remontada épica: <strong>${tortD}</strong>. Lento pero mortal.`,cls:"ee-purple"},
+    {icon:"!!",titulo:"El Osado",  nombre:osado?.nombre||'—',  desc:`Apostó por un <strong>${osado?.maxGdet||'—'}</strong> en <strong>${osado?.maxGmatch||'—'}</strong>.`,cls:"ee-orange"},
+    {icon:"=", titulo:"Los Gemelos",nombre:`${g1} & ${g2}`,    desc:`<strong>${gN} pronósticos idénticos</strong>. ¿Se copiaron?`,cls:"ee-teal"},
+  ];
 }
 
-// ── PARSE RESULTADOS ─────────────────────────────────────────────────
-function parseResultados(csv){
-  var rows=parseCSV(csv);
-  var grpIdx=rows.findIndex(function(r){return r.some(function(c){return c==='Grp'||c==='Local';});});
-  if(grpIdx<0)return{resultados:{},lastUpdate:'—'};
-  var resultados={};
-  for(var i=grpIdx+1;i<rows.length;i++){
-    var r=rows[i];
-    var local=(r[1]||'').trim(); var visita=(r[4]||'').trim();
-    if(!local||!visita)continue;
-    var gL=(r[2]||'').trim(); var gV=(r[3]||'').trim();
-    if(gL!==''&&gV!==''&&!isNaN(parseInt(gL))){
-      resultados[local+'|'+visita]=[parseInt(gL),parseInt(gV)];
+// ── RACHA (cronológica, sin historial hardcodeado) ─────────
+function calcRacha(){
+  const resMap={};
+  FIXTURE_ORDER_CAPTURA.forEach(([local,visita],idx)=>{
+    const real=DATA.resultados_grupos[idx];
+    if(real) resMap[`${local}|${visita}`]=real;
+  });
+  return DATA.players.map(p=>{
+    const prosData=DATA.pronosticos_grupos.find(pg=>pg.nombre===p.name);
+    const proMap={};
+    if(prosData){
+      FIXTURE_ORDER_CAPTURA.forEach(([local,visita],idx)=>{
+        proMap[`${local}|${visita}`]=prosData.partidos[idx];
+      });
     }
-  }
-  var today=new Date().toLocaleDateString('es-EC',{day:'2-digit',month:'short',year:'numeric'});
-  return{resultados:resultados,lastUpdate:today};
-}
-
-// ── RACHA (desde resultados_grupos automático, sin historial hardcodeado) ─
-function calcRacha(players){
-  return players.map(function(p){
-    var prosData=DATA.pronosticos_grupos.find(function(pg){return pg.nombre===p.name;});
-    var dots=[];
-    // Build lookup from pair key to captura index
-    var capturaIdx={};
-    FIXTURE_ORDER_CAPTURA.forEach(function(pair,idx){capturaIdx[pair[0]+'|'+pair[1]]=idx;});
-    FIXTURE_ORDER.forEach(function(pair){
-      var cIdx=capturaIdx[pair[0]+'|'+pair[1]];
-      if(cIdx===undefined)return;
-      var real=DATA.resultados_grupos[cIdx];
+    const dots=[];
+    FIXTURE_ORDER.forEach(([local,visita])=>{
+      const real=resMap[`${local}|${visita}`];
       if(!real)return;
-      var pro=prosData&&prosData.partidos[cIdx];
+      const pro=proMap[`${local}|${visita}`];
       if(!pro){dots.push('draw');return;}
-      var gR=real[0]>real[1]?1:real[1]>real[0]?-1:0;
-      var gP=pro[0]>pro[1]?1:pro[1]>pro[0]?-1:0;
+      const gR=real[0]>real[1]?1:real[1]>real[0]?-1:0;
+      const gP=pro[0]>pro[1]?1:pro[1]>pro[0]?-1:0;
       dots.push(gP===gR?'hit':'miss');
     });
-    var racha=0;
-    for(var i=dots.length-1;i>=0;i--){
+    let racha=0;
+    for(let i=dots.length-1;i>=0;i--){
       if(dots[i]==='draw')continue;
       if(racha===0)racha=dots[i]==='hit'?1:-1;
       else if(racha>0&&dots[i]==='hit')racha++;
       else if(racha<0&&dots[i]==='miss')racha--;
       else break;
     }
-    return{name:p.name,racha:racha,dots:dots.slice(-10)};
+    return{name:p.name,racha,dots:dots.slice(-10)};
   });
 }
 
-// ── HELPER: partidos del día más próximo ─────────────────────────────
-function getPartidosHoy(){
-  function parseFecha(hora){
-    try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}
-  }
-  var pendientes=DATA.partidos.filter(function(p){return !p.resultado;});
-  var fechas=[...new Set(pendientes.map(function(p){return parseFecha(p.hora).toDateString();}))].sort(function(a,b){return new Date(a)-new Date(b);});
-  var fTarget=fechas[0]||null;
-  var hoy=fTarget?pendientes.filter(function(p){return parseFecha(p.hora).toDateString()===fTarget;}):pendientes.slice(0,6);
-  var jugados=DATA.partidos.filter(function(p){return p.resultado;}).slice(-2);
-  return jugados.concat(hoy);
+// ── AMBICIOSO (usa partidos del día más próximo) ───────────
+function calcAmbicioso(){
+  function parseFechaPartido(hora){try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}}
+  const pendientes=DATA.partidos.filter(p=>!p.resultado);
+  const fechas=[...new Set(pendientes.map(p=>parseFechaPartido(p.hora).toDateString()))].sort((a,b)=>new Date(a)-new Date(b));
+  const fechaTarget=fechas[0]||null;
+  const partidosDelDia=fechaTarget?pendientes.filter(p=>parseFechaPartido(p.hora).toDateString()===fechaTarget):pendientes.slice(0,4);
+  if(!partidosDelDia.length)return null;
+  let topG=-1,topN='—',topS='—',topM='—';
+  partidosDelDia.forEach(p=>{p.pronosticos.forEach(pr=>{const g=pr.local+pr.visitante;if(g>topG){topG=g;topN=pr.nombre;topS=`${pr.local}-${pr.visitante}`;topM=`${p.local} vs ${p.visitante}`;}});});
+  let counts={};
+  partidosDelDia.forEach(p=>{p.pronosticos.forEach(pr=>{const k=`${p.local}-${p.visitante}:${pr.local}-${pr.visitante}`;counts[k]=(counts[k]||0)+1;});});
+  let minC=99,rN='—',rS='—',rM='—';
+  partidosDelDia.forEach(p=>{p.pronosticos.forEach(pr=>{const k=`${p.local}-${p.visitante}:${pr.local}-${pr.visitante}`;if(counts[k]<minC){minC=counts[k];rN=pr.nombre;rS=`${pr.local}-${pr.visitante}`;rM=`${p.local} vs ${p.visitante}`;}});});
+  return{topName:topN,topScore:topS,topMatch:topM,rareName:rN,rareScore:rS,rareMatch:rM};
 }
 
-// ── RENDER RACHA ─────────────────────────────────────────────────────
-function renderRacha(players){
-  var rd=calcRacha(players);
-  var el=document.getElementById('rachaGrid');
-  if(!el)return;
-  el.innerHTML=rd.map(function(r){
-    var hot=r.racha>0,streak=Math.abs(r.racha);
-    var dots=r.dots.map(function(d){return'<div class="racha-dot '+(d==='hit'?'rd-hit':d==='miss'?'rd-miss':'rd-draw')+'"></div>';}).join('');
-    return'<div class="racha-card '+(hot?'hot':'racha-cold')+'">'+
-      '<div class="racha-name">'+e(r.name)+'</div>'+
-      '<div class="racha-num">'+streak+'</div>'+
-      '<div class="racha-lbl">'+(hot?'aciertos seguidos':'fallos seguidos')+'</div>'+
-      '<div class="racha-dots">'+dots+'</div></div>';
-  }).join('');
-}
-
-// ── RENDER AMBICIOSO ─────────────────────────────────────────────────
-function renderAmbicioso(){
-  var wrap=document.getElementById('ambiciosoWrap');
-  if(!wrap)return;
-  var hoy=getPartidosHoy().filter(function(p){return !p.resultado;});
-  if(!hoy.length){wrap.innerHTML='<div style="padding:2rem;font-family:Syne,sans-serif;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Sin partidos hoy</div>';return;}
-  var topG=-1,topN='—',topS='—',topM='—';
-  hoy.forEach(function(p){p.pronosticos.forEach(function(pr){var g=pr.local+pr.visitante;if(g>topG){topG=g;topN=pr.nombre;topS=pr.local+'-'+pr.visitante;topM=p.local+' vs '+p.visitante;}});});
-  var counts={};
-  hoy.forEach(function(p){p.pronosticos.forEach(function(pr){var k=p.local+':'+pr.local+'-'+pr.visitante;counts[k]=(counts[k]||0)+1;});});
-  var minC=99,rN='—',rS='—',rM='—';
-  hoy.forEach(function(p){p.pronosticos.forEach(function(pr){var k=p.local+':'+pr.local+'-'+pr.visitante;if(counts[k]<minC){minC=counts[k];rN=pr.nombre;rS=pr.local+'-'+pr.visitante;rM=p.local+' vs '+p.visitante;}});});
-  wrap.innerHTML=
-    '<div class="amb-card top"><div class="amb-bg">⚽</div><div class="amb-tag">Marcador más goleador del día</div>'+
-    '<div class="amb-score">'+e(topS)+'</div><div class="amb-match">'+e(topM)+'</div><div class="amb-name">'+e(topN)+'</div></div>'+
-    '<div class="amb-card"><div class="amb-bg">!</div><div class="amb-tag">El pronóstico que nadie más se atrevió</div>'+
-    '<div class="amb-score">'+e(rS)+'</div><div class="amb-match">'+e(rM)+'</div><div class="amb-name">'+e(rN)+'</div></div>';
-}
-
-// ── RENDER HEATMAP ───────────────────────────────────────────────────
-function renderHeatmap(players){
-  var wrap=document.getElementById('heatmapWrap');
-  if(!wrap)return;
-  var hoy=getPartidosHoy().filter(function(p){return !p.resultado;});
-  if(!hoy.length){
-    wrap.innerHTML='<div style="padding:2rem;font-family:Syne,sans-serif;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);background:var(--ink2)">Sin partidos para mostrar</div>';
-    return;
-  }
-  var pNames=players.map(function(p){return p.name;});
-  var html='';
-  hoy.forEach(function(partido){
-    var picks={};
-    partido.pronosticos.forEach(function(pr){var k=pr.local+'-'+pr.visitante;picks[k]=picks[k]||[];picks[k].push(pr.nombre);});
-    var nP=Math.max(partido.pronosticos.length,1);
-    html+='<div class="hm-row" style="grid-template-columns:150px repeat('+pNames.length+',1fr);margin-bottom:1px;">'+
-      '<div class="hm-partido-lbl">'+e(partido.local)+' <span>vs</span> '+e(partido.visitante)+'</div>'+
-      pNames.map(function(n){return'<div class="hm-name-cell">'+e(n.substring(0,6))+'</div>';}).join('')+'</div>';
-    html+='<div class="hm-row" style="grid-template-columns:150px repeat('+pNames.length+',1fr);margin-bottom:4px;">'+
-      '<div style="background:var(--ink2);padding:.4rem .75rem;display:flex;align-items:center;"><span style="font-family:Syne,sans-serif;font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase">'+e(partido.hora)+'</span></div>'+
-      pNames.map(function(name){
-        var pr=partido.pronosticos.find(function(p){return p.nombre===name;});
-        if(!pr)return'<div class="hm-cell" style="background:var(--ink2)"><div class="hm-val" style="opacity:.2">—</div></div>';
-        var k=pr.local+'-'+pr.visitante; var cnt=(picks[k]||[]).length;
-        var heat=cnt/nP;
-        var bg=heat>=0.6?'rgba(0,61,166,.65)':heat>=0.4?'rgba(0,61,166,.35)':heat>=0.25?'rgba(255,209,0,.3)':'rgba(239,51,64,.35)';
-        return'<div class="hm-cell" style="background:'+bg+'"><div><div class="hm-val">'+pr.local+'-'+pr.visitante+'</div><div class="hm-sub">'+cnt+'/'+nP+'</div></div></div>';
-      }).join('')+'</div>';
-  });
-  html+='<div class="hm-legend"><span class="hm-legend-lbl">Consenso:</span><div class="hm-legend-scale">'+
-    '<div class="hm-legend-box" style="background:rgba(239,51,64,.35)"></div><span style="font-family:Syne,sans-serif;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Único</span>'+
-    '<div class="hm-legend-box" style="background:rgba(255,209,0,.3)"></div><span style="font-family:Syne,sans-serif;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Pocos</span>'+
-    '<div class="hm-legend-box" style="background:rgba(0,61,166,.35)"></div><span style="font-family:Syne,sans-serif;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Varios</span>'+
-    '<div class="hm-legend-box" style="background:rgba(0,61,166,.65)"></div><span style="font-family:Syne,sans-serif;font-size:.5rem;color:rgba(255,255,255,.3)"> Mayoría</span>'+
-  '</div></div>';
-  wrap.innerHTML=html;
-}
-
-// ── H2H ─────────────────────────────────────────────────────────────
-function renderH2H(){
-  var nA=document.getElementById('h2hA').value;
-  var nB=document.getElementById('h2hB').value;
-  var pA=DATA.players.find(function(p){return p.name===nA;});
-  var pB=DATA.players.find(function(p){return p.name===nB;});
-  if(!pA||!pB)return;
-  var sAll=[...DATA.players].sort(function(a,b){return b.total-a.total;});
-  var posA=sAll.findIndex(function(p){return p.name===nA;})+1;
-  var posB=sAll.findIndex(function(p){return p.name===nB;})+1;
-  var winA=pA.total>pB.total,tie=pA.total===pB.total;
-  document.getElementById('h2hResult').innerHTML=
-    '<div class="h2h-side '+(winA&&!tie?'winner':'')+'"><div class="h2h-side-name">'+e(nA)+'</div><div class="h2h-side-pts">'+pA.total+'</div><div class="h2h-side-lbl">'+posA+'º · '+pA.total+' pts</div></div>'+
-    '<div class="h2h-center"><div class="h2h-vs">VS</div></div>'+
-    '<div class="h2h-side '+(!winA&&!tie?'winner':'')+'"><div class="h2h-side-name">'+e(nB)+'</div><div class="h2h-side-pts">'+pB.total+'</div><div class="h2h-side-lbl">'+posB+'º · '+pB.total+' pts</div></div>';
-  var phases=[{k:'grp',l:'Grupos'},{k:'oct',l:'Octavos'},{k:'qf',l:'Cuartos'},{k:'sf',l:'Semis'},{k:'fin',l:'Final'},{k:'camp',l:'Campeón'},{k:'prem',l:'Premios'}];
-  document.getElementById('h2hPhases').innerHTML=phases.map(function(ph){
-    var vA=pA[ph.k]||0,vB=pB[ph.k]||0,wA=vA>vB,wB=vB>vA;
-    return'<div class="h2h-ph-cell '+(wA?'best':'')+'"><div class="h2h-ph-val">'+vA+'</div><div class="h2h-ph-lbl">'+ph.l+'</div></div>'+
-      '<div class="h2h-ph-name"><span>'+ph.l+'</span></div>'+
-      '<div class="h2h-ph-cell '+(wB?'best':'')+'"><div class="h2h-ph-val">'+vB+'</div><div class="h2h-ph-lbl">'+ph.l+'</div></div>';
-  }).join('');
-}
-
-// ── PERFIL MODAL ─────────────────────────────────────────────────────
-function openModal(name){
-  var players=DATA.players;
-  var p=players.find(function(x){return x.name===name;});
-  if(!p)return;
-  var sorted=[...players].sort(function(a,b){return b.total-a.total;});
-  var pos=sorted.findIndex(function(x){return x.name===name;})+1;
-  var ci=players.findIndex(function(x){return x.name===name;});
-  var color=COLORS[ci%COLORS.length];
-  var rd=calcRacha(players);
-  var rp=rd.find(function(r){return r.name===name;})||{racha:0,dots:[]};
-  var phases=[{k:'grp',l:'Grupos',max:80},{k:'oct',l:'Octavos',max:40},{k:'qf',l:'Cuartos',max:30},{k:'sf',l:'Semis',max:24},{k:'fin',l:'Final',max:12},{k:'camp',l:'Campeón',max:20},{k:'prem',l:'Premios',max:30}];
-  var dots=rp.dots.map(function(d){return'<div class="racha-dot" style="width:10px;height:10px;border-radius:50%;background:'+(d==='hit'?'var(--ecu-b)':d==='miss'?'var(--ecu-r)':'var(--border)')+'"></div>';}).join('');
-  var premVotos=(DATA.premios||[]).map(function(pr){return{cat:pr.cat,voto:(pr.player_picks||{})[name]||'—'};});
-  var pp=p.pos_picks||{p1:p.camp_pick||'—',p2:'—',sf1:'—',sf2:'—'};
-  document.getElementById('perfilBox').innerHTML=
-    '<div class="perfil-header" style="background:'+color+'">'+
-      '<div class="perfil-initial" style="background:rgba(0,0,0,.25)">'+ini(name)+'</div>'+
-      '<div style="flex:1"><div class="perfil-nombre">'+e(name)+'</div><div class="perfil-pos">'+pos+'º lugar · '+p.total+' pts</div></div>'+
-      '<button class="perfil-close" onclick="closeModal()">✕</button></div>'+
-    '<div class="perfil-body">'+
-      '<div class="perfil-stats">'+
-        '<div class="ps-cell"><div class="ps-val">'+p.total+'</div><div class="ps-lbl">Total</div></div>'+
-        '<div class="ps-cell"><div class="ps-val">'+pos+'°</div><div class="ps-lbl">Posición</div></div>'+
-        '<div class="ps-cell"><div class="ps-val">'+p.grp+'</div><div class="ps-lbl">Grupos</div></div>'+
-        '<div class="ps-cell"><div class="ps-val">'+Math.abs(rp.racha)+'</div><div class="ps-lbl">Racha</div></div>'+
-      '</div>'+
-      '<div class="perfil-fase-title" style="margin-bottom:.75rem">Pronóstico final del torneo</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:1.5rem;">'+
-        '<div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">Campeón 🥇</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:var(--ecu-y)">'+e(pp.p1)+'</div></div>'+
-        '<div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">2do lugar 🥈</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:#fff">'+e(pp.p2)+'</div></div>'+
-        '<div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">Semifinalista</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.6)">'+e(pp.sf1)+'</div></div>'+
-        '<div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">Semifinalista</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.6)">'+e(pp.sf2)+'</div></div>'+
-      '</div>'+
-      (premVotos.length?'<div class="perfil-fase-title" style="margin-bottom:.5rem">Votos — premios</div><div style="display:flex;flex-direction:column;gap:2px;margin-bottom:1.5rem;">'+premVotos.map(function(pv){return'<div style="display:flex;align-items:center;justify-content:space-between;background:var(--ink2);padding:.6rem 1rem;"><span style="font-family:Syne,sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3)">'+e(pv.cat)+'</span><span style="font-family:Syne,sans-serif;font-size:.82rem;font-weight:800;color:#fff;text-transform:uppercase">'+e(pv.voto)+'</span></div>';}).join('')+'</div>':'')+
-      '<div class="perfil-fase-title">Puntos por fase</div>'+
-      '<div class="perfil-fase-bars">'+phases.map(function(ph){return'<div class="pf-bar-row"><span class="pf-bar-lbl">'+ph.l+'</span><div class="pf-bar-track"><div class="pf-bar-fill" style="width:'+Math.round((p[ph.k]||0)/ph.max*100)+'%;background:'+color+'"></div></div><span class="pf-bar-val">'+(p[ph.k]||0)+'</span></div>';}).join('')+'</div>'+
-      '<div class="perfil-fase-title" style="margin-top:1.25rem">Últimos resultados</div>'+
-      '<div class="perfil-racha-row" style="margin-top:.5rem">'+(dots||'<span style="font-size:.75rem;color:var(--muted)">Sin historial aún</span>')+'</div>'+
-    '</div>';
-  document.getElementById('perfilModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeModal(){document.getElementById('perfilModal').classList.remove('open');document.body.style.overflow='';}
-document.addEventListener('keydown',function(ev){if(ev.key==='Escape')closeModal();});
-
-// ── RENDER PRINCIPAL ─────────────────────────────────────────────────
+// ── RENDER PRINCIPAL ──────────────────────────────────────
 function render(){
-  var sorted=[...DATA.players].sort(function(a,b){return b.total-a.total;});
-  var leader=sorted[0];
+  const sorted=[...DATA.players].sort((a,b)=>b.total-a.total);
+  const leader=sorted[0];
   document.getElementById('navUpdate').textContent=DATA.lastUpdate;
   document.getElementById('heroParticipants').textContent=DATA.players.length;
-  document.getElementById('heroLeader').textContent=leader?leader.name:'—';
+  document.getElementById('heroLeader').textContent=leader?.name||'—';
   document.getElementById('footerUpdate').textContent='Última actualización: '+DATA.lastUpdate;
   buildTicker(sorted);
 
   // Podium
-  var ord=sorted.length>=3?[sorted[1],sorted[0],sorted[2]]:sorted;
-  var cls=sorted.length>=3?['pos-2','pos-1','pos-3']:['pos-1','pos-2','pos-3'];
-  var ranks=sorted.length>=3?[2,1,3]:[1,2,3];
-  document.getElementById('podium').innerHTML=ord.map(function(p,i){
-    var rank=ranks[i];
-    return'<div class="pod-card '+cls[i]+'">'+
-      '<div class="pod-rank-big">'+rank+'</div>'+
-      '<div class="pod-tag">'+(rank===1?'Líder':rank+'º lugar')+'</div>'+
-      '<div class="pod-initial-box"><span class="pod-init-letter">'+ini(p.name)+'</span></div>'+
-      '<div class="pod-name" onclick="openModal(''+e(p.name)+'')" style="cursor:pointer">'+e(p.name)+'</div>'+
-      '<div class="pod-pts-row"><span class="pod-pts-num">'+p.total+'</span><span class="pod-pts-lbl">pts</span></div>'+
-    '</div>';
-  }).join('');
+  const ord=sorted.length>=3?[sorted[1],sorted[0],sorted[2]]:sorted;
+  const cls=sorted.length>=3?['pos-2','pos-1','pos-3']:['pos-1','pos-2','pos-3'];
+  const ranks=sorted.length>=3?[2,1,3]:[1,2,3];
+  document.getElementById('podium').innerHTML=ord.map((p,i)=>`
+    <div class="pod-card ${cls[i]}">
+      <div class="pod-rank-big">${ranks[i]}</div>
+      <div class="pod-tag">${ranks[i]===1?'Líder':ranks[i]+'º lugar'}</div>
+      <div class="pod-initial-box"><span class="pod-init-letter">${ini(p.name)}</span></div>
+      <div class="pod-name" onclick="openModal('${e(p.name)}')" style="cursor:pointer">${e(p.name)}</div>
+      <div class="pod-pts-row"><span class="pod-pts-num">${p.total}</span><span class="pod-pts-lbl">pts</span></div>
+    </div>`).join('');
 
   // Leaderboard
-  document.getElementById('leaderboard').innerHTML=sorted.map(function(p,i){
-    var rank=i+1,rC=rank<=3?'rk'+rank:'rkn',rbC=rank<=3?'rb'+rank:'rbn';
-    var diff=p.total-leader.total;
-    var dH=diff===0?'<span class="dif">—</span>':'<span class="dif dif-n">'+diff+'</span>';
-    return'<tr>'+
-      '<td><span class="rkbar '+rbC+'"></span><span class="rk '+rC+'">'+rank+'</span></td>'+
-      '<td><span class="pn" onclick="openModal(''+e(p.name)+'')" style="cursor:pointer">'+e(p.name)+'</span></td>'+
-      '<td><span class="pt">'+p.total+'</span></td><td>'+dH+'</td>'+
-      '<td><span class="ph">'+p.grp+'</span></td><td><span class="ph">'+p.oct+'</span></td>'+
-      '<td><span class="ph">'+p.qf+'</span></td><td><span class="ph">'+p.sf+'</span></td>'+
-      '<td><span class="ph">'+p.fin+'</span></td><td><span class="ph">'+p.camp+'</span></td>'+
-      '<td><span class="ph">'+p.prem+'</span></td></tr>';
+  document.getElementById('leaderboard').innerHTML=sorted.map((p,i)=>{
+    const rank=i+1,rC=rank<=3?`rk${rank}`:'rkn',rbC=rank<=3?`rb${rank}`:'rbn';
+    const diff=p.total-leader.total;
+    const dH=diff===0?'<span class="dif">—</span>':`<span class="dif dif-n">${diff}</span>`;
+    return`<tr>
+      <td><span class="rkbar ${rbC}"></span><span class="rk ${rC}">${rank}</span></td>
+      <td><span class="pn" onclick="openModal('${e(p.name)}')">${e(p.name)}</span></td>
+      <td><span class="pt">${p.total}</span></td><td>${dH}</td>
+      <td><span class="ph">${p.grp}</span></td><td><span class="ph">${p.oct}</span></td>
+      <td><span class="ph">${p.qf}</span></td><td><span class="ph">${p.sf}</span></td>
+      <td><span class="ph">${p.fin}</span></td><td><span class="ph">${p.camp}</span></td>
+      <td><span class="ph">${p.prem}</span></td></tr>`;
   }).join('');
 
   // Breakdown
-  document.getElementById('breakdown').innerHTML=sorted.map(function(p){
-    return'<div class="bd-row">'+
-      '<div class="bd-cell">'+e(p.name)+'</div>'+
-      '<div class="bd-cell c-grp">'+p.grp+'</div><div class="bd-cell c-oct">'+p.oct+'</div>'+
-      '<div class="bd-cell c-qf">'+p.qf+'</div><div class="bd-cell c-sf">'+p.sf+'</div>'+
-      '<div class="bd-cell c-fin">'+p.fin+'</div><div class="bd-cell c-cam">'+p.camp+'</div>'+
-      '<div class="bd-cell c-pre">'+p.prem+'</div><div class="bd-cell c-tot">'+p.total+'</div></div>';
-  }).join('');
+  document.getElementById('breakdown').innerHTML=sorted.map(p=>`
+    <div class="bd-row">
+      <div class="bd-cell">${e(p.name)}</div>
+      <div class="bd-cell c-grp">${p.grp}</div><div class="bd-cell c-oct">${p.oct}</div>
+      <div class="bd-cell c-qf">${p.qf}</div><div class="bd-cell c-sf">${p.sf}</div>
+      <div class="bd-cell c-fin">${p.fin}</div><div class="bd-cell c-cam">${p.camp}</div>
+      <div class="bd-cell c-pre">${p.prem}</div><div class="bd-cell c-tot">${p.total}</div>
+    </div>`).join('');
 
   // Premios
-  document.getElementById('premiosGrid').innerHTML=(DATA.premios||[]).map(function(pr,pi){
-    var mx=Math.max.apply(null,(pr.votos||[{c:1}]).map(function(v){return v.c;}));
-    return'<div class="prem-card"><div class="pc-bg-num">'+(pi+1)+'</div><div class="pc-icon">'+pr.icon+'</div><div class="pc-cat">'+e(pr.cat)+'</div>'+
-      (pr.votos||[]).map(function(v,vi){return'<div class="vote-row-ed"><span class="v-pos-ed">'+(vi+1)+'</span><span class="v-name-ed'+(vi===0?' vt':'')+'">'+e(v.n)+'</span><div class="v-track-ed"><div class="v-fill-ed vfe'+(pi+1)+'" style="width:'+Math.round(v.c/mx*100)+'%"></div></div><span class="v-n-ed">'+v.c+'</span></div>';}).join('')+
-    '</div>';
+  document.getElementById('premiosGrid').innerHTML=(DATA.premios||[]).map((pr,pi)=>{
+    const mx=Math.max(...(pr.votos.length?pr.votos.map(v=>v.c):[1]));
+    return`<div class="prem-card"><div class="pc-bg-num">${pi+1}</div><div class="pc-icon">${pr.icon}</div><div class="pc-cat">${e(pr.cat)}</div>${pr.votos.map((v,vi)=>`
+      <div class="vote-row-ed"><span class="v-pos-ed">${vi+1}</span><span class="v-name-ed${vi===0?' vt':''}">${e(v.n)}</span>
+      <div class="v-track-ed"><div class="v-fill-ed vfe${pi+1}" style="width:${Math.round(v.c/mx*100)}%"></div></div>
+      <span class="v-n-ed">${v.c}</span></div>`).join('')}</div>`;
   }).join('');
 
-  // Partidos del día
-  var pl=document.getElementById('partidosList');
-  var displayPartidos=getPartidosHoy();
-  if(!displayPartidos.length){
+  // Juegos — partidos del día más próximo + últimos 2 jugados
+  const pl=document.getElementById('partidosList');
+  function parseFechaPartido(hora){try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}}
+  const pendientes=DATA.partidos.filter(p=>!p.resultado);
+  const fechas=[...new Set(pendientes.map(p=>parseFechaPartido(p.hora).toDateString()))].sort((a,b)=>new Date(a)-new Date(b));
+  const fechaTarget=fechas[0]||null;
+  const display=fechaTarget?pendientes.filter(p=>parseFechaPartido(p.hora).toDateString()===fechaTarget):pendientes.slice(0,6);
+  const jugados=DATA.partidos.filter(p=>p.resultado).slice(-2);
+  const displayFinal=[...jugados,...display];
+
+  if(!displayFinal.length){
     pl.innerHTML='<div class="partido-ed" style="padding:2rem;display:block;text-align:center"><span style="font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Sin partidos próximos</span></div>';
   } else {
-    pl.innerHTML=displayPartidos.map(function(p){
-      var chips=p.pronosticos.map(function(pr){
-        var cls='cde';if(pr.local>pr.visitante)cls='che';else if(pr.visitante>pr.local)cls='cae';
-        return'<span class="chip-ed '+cls+'">'+e(pr.nombre)+' '+pr.local+'-'+pr.visitante+'</span>';
+    pl.innerHTML=displayFinal.map(p=>{
+      const chips=p.pronosticos.filter(pr=>pr.nombre&&pr.nombre.length<30).map(pr=>{
+        let cls='cde';if(pr.local>pr.visitante)cls='che';else if(pr.visitante>pr.local)cls='cae';
+        return`<span class="chip-ed ${cls}">${e(pr.nombre)} ${pr.local}-${pr.visitante}</span>`;
       }).join('');
-      var ctr=p.resultado?'<div class="pe-center"><div class="pe-score">'+p.resultado[0]+'—'+p.resultado[1]+'</div><div class="pe-vs">FT</div></div>':'<div class="pe-center"><div class="pe-vs">VS</div><div class="pe-hora">'+e(p.hora)+'</div></div>';
-      return'<div class="partido-ed'+(p.resultado?' played':'')+'">'+
-        '<div class="pe-group"><div class="pe-group-lbl">Grupo</div><div class="pe-group-name">'+e(p.grupo.replace('Grupo ',''))+'</div></div>'+
-        '<div class="pe-team"><div class="pe-team-name">'+e(p.local)+'</div></div>'+ctr+
-        '<div class="pe-team right"><div class="pe-team-name">'+e(p.visitante)+'</div></div>'+
-        '<div class="pe-prono"><div class="pe-prono-lbl">Pronósticos</div>'+(chips||'<span style="font-size:.6rem;color:rgba(255,255,255,.2);font-family:Syne;letter-spacing:.1em">—</span>')+'</div></div>';
+      const ctr=p.resultado?`<div class="pe-center"><div class="pe-score">${p.resultado[0]}—${p.resultado[1]}</div><div class="pe-vs">FT</div></div>`:`<div class="pe-center"><div class="pe-vs">VS</div><div class="pe-hora">${e(p.hora)}</div></div>`;
+      return`<div class="partido-ed${p.resultado?' played':''}">
+        <div class="pe-group"><div class="pe-group-lbl">Grupo</div><div class="pe-group-name">${e(p.grupo.replace('Grupo ',''))}</div></div>
+        <div class="pe-team"><div class="pe-team-name">${e(p.local)}</div></div>${ctr}
+        <div class="pe-team right"><div class="pe-team-name">${e(p.visitante)}</div></div>
+        <div class="pe-prono"><div class="pe-prono-lbl">Pronósticos</div>${chips||'<span style="font-size:.6rem;color:rgba(255,255,255,.2);font-family:Syne;letter-spacing:.1em">—</span>'}</div></div>`;
     }).join('');
   }
 
   // Especiales
-  var esp=calcEsp();
-  document.getElementById('especialesGrid').innerHTML=esp.map(function(e2){
-    return'<div class="esp-ed '+e2.cls+'"><div class="ee-icon">'+e2.icon+'</div><div class="ee-nombre">'+e(e2.titulo)+'</div><div class="ee-titulo">'+e(e2.titulo)+'</div><div class="ee-winner">'+e(e2.nombre)+'</div><div class="ee-desc">'+e2.desc+'</div></div>';
+  const esp=calcEsp();
+  document.getElementById('especialesGrid').innerHTML=esp.map(e2=>`
+    <div class="esp-ed ${e2.cls}">
+      <div class="ee-icon">${e2.icon}</div><div class="ee-nombre">${e(e2.titulo)}</div>
+      <div class="ee-titulo">${e(e2.titulo)}</div><div class="ee-winner">${e(e2.nombre)}</div>
+      <div class="ee-desc">${e2.desc}</div></div>`).join('');
+
+  // Ambicioso
+  const amb=calcAmbicioso();
+  if(amb){
+    document.getElementById('ambiciosoWrap').innerHTML=`
+      <div class="amb-card top"><div class="amb-bg">⚽</div>
+        <div class="amb-tag">Marcador más goleador del día</div>
+        <div class="amb-score">${e(amb.topScore)}</div>
+        <div class="amb-match">${e(amb.topMatch)}</div>
+        <div class="amb-name">${e(amb.topName)}</div>
+      </div>
+      <div class="amb-card"><div class="amb-bg">!</div>
+        <div class="amb-tag">El pronóstico que nadie más se atrevió</div>
+        <div class="amb-score">${e(amb.rareScore)}</div>
+        <div class="amb-match">${e(amb.rareMatch)}</div>
+        <div class="amb-name">${e(amb.rareName)}</div>
+      </div>`;
+  } else {
+    document.getElementById('ambiciosoWrap').innerHTML='<div style="padding:2rem;font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Sin partidos hoy</div>';
+  }
+
+  // Racha
+  const rachaData=calcRacha();
+  document.getElementById('rachaGrid').innerHTML=rachaData.map(r=>{
+    const hot=r.racha>0,streak=Math.abs(r.racha);
+    const dots=r.dots.map(d=>`<div class="racha-dot ${d==='hit'?'rd-hit':d==='miss'?'rd-miss':'rd-draw'}"></div>`).join('');
+    return`<div class="racha-card ${hot?'hot':'racha-cold'}">
+      <div class="racha-name">${e(r.name)}</div>
+      <div class="racha-num">${streak}</div>
+      <div class="racha-lbl">${hot?'aciertos seguidos':'fallos seguidos'}</div>
+      <div class="racha-dots">${dots}</div>
+    </div>`;
   }).join('');
 
-  // Secciones nuevas
-  renderRacha(sorted);
-  renderAmbicioso();
-  renderHeatmap(sorted);
-
   // H2H selects
-  var names=DATA.players.map(function(p){return p.name;});
-  ['h2hA','h2hB'].forEach(function(id,i){
-    var sel=document.getElementById(id);
+  const names=DATA.players.map(p=>p.name);
+  ['h2hA','h2hB'].forEach((id,i)=>{
+    const sel=document.getElementById(id);
     if(!sel)return;
-    sel.innerHTML=names.map(function(n,ni){return'<option value="'+e(n)+'" '+(ni===i?'selected':'')+'>'+e(n)+'</option>';}).join('');
+    sel.innerHTML=names.map((n,ni)=>`<option value="${e(n)}" ${ni===i?'selected':''}>${e(n)}</option>`).join('');
   });
   renderH2H();
+  renderHeatmap();
 }
 
-// ── LOAD LIVE DATA ────────────────────────────────────────────────────
+// ── H2H ───────────────────────────────────────────────────
+function renderH2H(){
+  const nA=document.getElementById('h2hA').value;
+  const nB=document.getElementById('h2hB').value;
+  const pA=DATA.players.find(p=>p.name===nA);
+  const pB=DATA.players.find(p=>p.name===nB);
+  if(!pA||!pB)return;
+  const sAll=[...DATA.players].sort((a,b)=>b.total-a.total);
+  const posA=sAll.findIndex(p=>p.name===nA)+1;
+  const posB=sAll.findIndex(p=>p.name===nB)+1;
+  const winA=pA.total>pB.total,tie=pA.total===pB.total;
+  document.getElementById('h2hResult').innerHTML=`
+    <div class="h2h-side ${winA&&!tie?'winner':''}"><div class="h2h-side-name">${e(nA)}</div><div class="h2h-side-pts">${pA.total}</div><div class="h2h-side-lbl">${posA}º · ${pA.total} pts</div></div>
+    <div class="h2h-center"><div class="h2h-vs">VS</div></div>
+    <div class="h2h-side ${!winA&&!tie?'winner':''}"><div class="h2h-side-name">${e(nB)}</div><div class="h2h-side-pts">${pB.total}</div><div class="h2h-side-lbl">${posB}º · ${pB.total} pts</div></div>`;
+  const phases=[{k:'grp',l:'Grupos'},{k:'oct',l:'Octavos'},{k:'qf',l:'Cuartos'},{k:'sf',l:'Semis'},{k:'fin',l:'Final'},{k:'camp',l:'Campeón'},{k:'prem',l:'Premios'}];
+  document.getElementById('h2hPhases').innerHTML=phases.map(ph=>{
+    const vA=pA[ph.k]||0,vB=pB[ph.k]||0,wA=vA>vB,wB=vB>vA;
+    return`<div class="h2h-ph-cell ${wA?'best':''}"><div class="h2h-ph-val">${vA}</div><div class="h2h-ph-lbl">${ph.l}</div></div>
+      <div class="h2h-ph-name"><span>${ph.l}</span></div>
+      <div class="h2h-ph-cell ${wB?'best':''}"><div class="h2h-ph-val">${vB}</div><div class="h2h-ph-lbl">${ph.l}</div></div>`;
+  }).join('');
+}
+
+// ── HEATMAP ────────────────────────────────────────────────
+function renderHeatmap(){
+  function parseFechaPartido(hora){try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}}
+  const pendientes=DATA.partidos.filter(p=>!p.resultado);
+  const fechas=[...new Set(pendientes.map(p=>parseFechaPartido(p.hora).toDateString()))].sort((a,b)=>new Date(a)-new Date(b));
+  const fechaTarget=fechas[0]||null;
+  const porFecha=fechaTarget?pendientes.filter(p=>parseFechaPartido(p.hora).toDateString()===fechaTarget):pendientes.slice(0,6);
+  const wrap=document.getElementById('heatmapWrap');
+  if(!wrap)return;
+  if(!porFecha.length){wrap.innerHTML='<div style="padding:2rem;font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);background:var(--ink2)">Sin partidos próximos</div>';return;}
+  const players=DATA.players.map(p=>p.name);
+  let html='';
+  porFecha.forEach(partido=>{
+    let picks={};
+    partido.pronosticos.forEach(pr=>{const k=`${pr.local}-${pr.visitante}`;picks[k]=picks[k]||[];picks[k].push(pr.nombre);});
+    const nP=Math.max(partido.pronosticos.length,1);
+    html+=`<div class="hm-row" style="grid-template-columns:150px repeat(${players.length},1fr);margin-bottom:1px;">
+      <div class="hm-partido-lbl">${e(partido.local)} <span>vs</span> ${e(partido.visitante)}</div>
+      ${players.map(n=>`<div class="hm-name-cell">${e(n.substring(0,6))}</div>`).join('')}</div>`;
+    html+=`<div class="hm-row" style="grid-template-columns:150px repeat(${players.length},1fr);margin-bottom:4px;">
+      <div style="background:var(--ink2);padding:.4rem .75rem;display:flex;align-items:center;"><span style="font-family:Syne;font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase">${e(partido.hora)}</span></div>
+      ${players.map(name=>{
+        const pr=partido.pronosticos.find(p=>p.nombre===name);
+        if(!pr)return`<div class="hm-cell" style="background:var(--ink2)"><div class="hm-val" style="opacity:.2">—</div></div>`;
+        const k=`${pr.local}-${pr.visitante}`;const cnt=(picks[k]||[]).length;
+        const heat=cnt/nP;
+        const bg=heat>=0.6?'rgba(0,61,166,.65)':heat>=0.4?'rgba(0,61,166,.35)':heat>=0.25?'rgba(255,209,0,.3)':'rgba(239,51,64,.35)';
+        return`<div class="hm-cell" style="background:${bg}"><div><div class="hm-val">${pr.local}-${pr.visitante}</div><div class="hm-sub">${cnt}/${nP}</div></div></div>`;
+      }).join('')}</div>`;
+  });
+  html+=`<div class="hm-legend"><span class="hm-legend-lbl">Consenso:</span><div class="hm-legend-scale">
+    <div class="hm-legend-box" style="background:rgba(239,51,64,.35)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Único</span>
+    <div class="hm-legend-box" style="background:rgba(255,209,0,.3)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Pocos</span>
+    <div class="hm-legend-box" style="background:rgba(0,61,166,.35)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Varios</span>
+    <div class="hm-legend-box" style="background:rgba(0,61,166,.65)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3)"> Mayoría</span>
+  </div></div>`;
+  wrap.innerHTML=html;
+}
+
+// ── PERFIL MODAL ───────────────────────────────────────────
+function openModal(name){
+  const p=DATA.players.find(x=>x.name===name);if(!p)return;
+  const sorted=[...DATA.players].sort((a,b)=>b.total-a.total);
+  const pos=sorted.findIndex(x=>x.name===name)+1;
+  const ci=DATA.players.findIndex(x=>x.name===name);
+  const color=COLORS[ci%COLORS.length];
+  const rd=calcRacha();
+  const rp=rd.find(r=>r.name===name)||{racha:0,dots:[]};
+  const phases=[{k:'grp',l:'Grupos',max:80},{k:'oct',l:'Octavos',max:40},{k:'qf',l:'Cuartos',max:30},{k:'sf',l:'Semis',max:24},{k:'fin',l:'Final',max:12},{k:'camp',l:'Campeón',max:20},{k:'prem',l:'Premios',max:30}];
+  const dots=rp.dots.map(d=>`<div class="racha-dot" style="width:10px;height:10px;border-radius:50%;background:${d==='hit'?'var(--ecu-b)':d==='miss'?'var(--ecu-r)':'var(--border)'}"></div>`).join('');
+  const pp=p.pos_picks||{p1:p.camp_pick||'—',p2:'—',sf1:'—',sf2:'—'};
+  const premVotos=(DATA.premios||[]).map(pr=>({cat:pr.cat,voto:(pr.player_picks||{})[name]||'—'}));
+  document.getElementById('perfilBox').innerHTML=`
+    <div class="perfil-header" style="background:${color}">
+      <div class="perfil-initial" style="background:rgba(0,0,0,.25)">${ini(name)}</div>
+      <div style="flex:1"><div class="perfil-nombre">${e(name)}</div><div class="perfil-pos">${pos}º lugar · ${p.total} pts</div></div>
+      <button class="perfil-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="perfil-body">
+      <div class="perfil-stats">
+        <div class="ps-cell"><div class="ps-val">${p.total}</div><div class="ps-lbl">Total</div></div>
+        <div class="ps-cell"><div class="ps-val">${pos}°</div><div class="ps-lbl">Posición</div></div>
+        <div class="ps-cell"><div class="ps-val">${p.grp}</div><div class="ps-lbl">Grupos</div></div>
+        <div class="ps-cell"><div class="ps-val">${Math.abs(rp.racha)}</div><div class="ps-lbl">Racha</div></div>
+      </div>
+      <div class="perfil-fase-title" style="margin-bottom:.75rem">Pronóstico final del torneo</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:1.5rem;">
+        <div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">Campeón 🥇</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:var(--ecu-y)">${e(pp.p1)}</div></div>
+        <div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">2do lugar 🥈</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:#fff">${e(pp.p2)}</div></div>
+        <div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">Semifinalista</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.6)">${e(pp.sf1)}</div></div>
+        <div style="background:var(--ink2);padding:.75rem 1rem;"><div style="font-family:Syne;font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.25rem">Semifinalista</div><div style="font-family:Syne;font-size:.9rem;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.6)">${e(pp.sf2)}</div></div>
+      </div>
+      ${premVotos.length?`<div class="perfil-fase-title" style="margin-bottom:.5rem">Votos — premios</div><div style="display:flex;flex-direction:column;gap:2px;margin-bottom:1.5rem;">${premVotos.map(pv=>`<div style="display:flex;align-items:center;justify-content:space-between;background:var(--ink2);padding:.6rem 1rem;"><span style="font-family:Syne;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3)">${e(pv.cat)}</span><span style="font-family:Syne;font-size:.82rem;font-weight:800;color:#fff;text-transform:uppercase">${e(pv.voto)}</span></div>`).join('')}</div>`:''}
+      <div class="perfil-fase-title">Puntos por fase</div>
+      <div class="perfil-fase-bars">${phases.map(ph=>`<div class="pf-bar-row"><span class="pf-bar-lbl">${ph.l}</span><div class="pf-bar-track"><div class="pf-bar-fill" style="width:${Math.round((p[ph.k]||0)/ph.max*100)}%;background:${color}"></div></div><span class="pf-bar-val">${p[ph.k]||0}</span></div>`).join('')}</div>
+      <div class="perfil-fase-title" style="margin-top:1.25rem">Últimos resultados</div>
+      <div class="perfil-racha-row" style="margin-top:.5rem">${dots||'<span style="font-size:.75rem;color:var(--muted)">Sin historial aún</span>'}</div>
+    </div>`;
+  document.getElementById('perfilModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('perfilModal').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape')closeModal();});
+
+// ── CHART ──────────────────────────────────────────────────
+function drawChart(canvasId,players,isDark){
+  const phases=["Grp","Oct","Cto","SF","Fin","Camp","Prem"];
+  const phaseKeys=["grp","oct","qf","sf","fin","camp","prem"];
+  const canvas=document.getElementById(canvasId);if(!canvas)return;
+  const ctx=canvas.getContext("2d");
+  const cumData=players.map(p=>{let c=0;return phaseKeys.map(k=>{c+=(p[k]||0);return c;});});
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.parentElement.offsetWidth||340,H=isDark?230:280;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.scale(dpr,dpr);
+  ctx.fillStyle=isDark?"#111620":"#F5F0E8";ctx.fillRect(0,0,W,H);
+  const PAD={top:16,right:isDark?20:90,bottom:12,left:38};
+  const CW=W-PAD.left-PAD.right,CH=H-PAD.top-PAD.bottom;
+  let maxVal=Math.max(...cumData.map(d=>Math.max(...d)));
+  maxVal=Math.ceil(maxVal/20)*20||100;
+  const gc=isDark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)";
+  const lc=isDark?"rgba(255,255,255,0.22)":"rgba(0,0,0,0.3)";
+  const ds=isDark?"#111620":"#F5F0E8";
+  const xP=i=>PAD.left+i*(CW/(phases.length-1));
+  const yP=v=>PAD.top+CH-(v/maxVal)*CH;
+  [0,.25,.5,.75,1].forEach(t=>{
+    const y=PAD.top+CH*(1-t),val=Math.round(maxVal*t);
+    ctx.strokeStyle=gc;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(PAD.left+CW,y);ctx.stroke();
+    ctx.fillStyle=lc;ctx.font="bold 8px 'Syne',sans-serif";ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillText(val,PAD.left-5,y);
+  });
+  cumData.forEach((data,pi)=>{
+    const color=COLORS[pi%COLORS.length];
+    ctx.beginPath();ctx.moveTo(xP(0),yP(0));data.forEach((v,i)=>ctx.lineTo(xP(i),yP(v)));ctx.lineTo(xP(data.length-1),yP(0));ctx.closePath();
+    ctx.save();ctx.globalAlpha=0.06;ctx.fillStyle=color;ctx.fill();ctx.restore();
+  });
+  cumData.forEach((data,pi)=>{
+    const color=COLORS[pi%COLORS.length];
+    ctx.beginPath();data.forEach((v,i)=>i===0?ctx.moveTo(xP(i),yP(v)):ctx.lineTo(xP(i),yP(v)));
+    ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin="round";ctx.lineCap="round";ctx.stroke();
+    data.forEach((v,i)=>{ctx.beginPath();ctx.arc(xP(i),yP(v),3.5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle=ds;ctx.lineWidth=1.5;ctx.stroke();});
+  });
+  if(!isDark){
+    const li=phases.length-1;
+    const sortedL=cumData.map((d,i)=>({v:d[li],i})).sort((a,b)=>b.v-a.v);
+    let usedY=[];
+    sortedL.forEach(item=>{
+      const color=COLORS[item.i%COLORS.length];
+      let rawY=yP(item.v),labelY=rawY;
+      usedY.forEach(y=>{if(Math.abs(labelY-y)<14)labelY=y+14;});
+      usedY.push(labelY);
+      ctx.fillStyle=color;ctx.font="bold 9px 'Syne',sans-serif";ctx.textAlign="left";ctx.textBaseline="middle";
+      ctx.fillText(players[item.i].name.toUpperCase(),xP(li)+8,labelY);
+      ctx.fillStyle="rgba(0,0,0,0.4)";ctx.font="8px 'Syne',sans-serif";ctx.fillText(cumData[item.i][li]+" pts",xP(li)+8,labelY+11);
+    });
+  }
+}
+function buildChart(players){
+  const phases=["Grp","Oct","Cto","SF","Fin","Camp","Prem"];
+  const legHtml=players.map((p,i)=>`<div class="legend-item"><span class="legend-dot" style="background:${COLORS[i%COLORS.length]}"></span>${e(p.name)}</div>`).join('');
+  ['chartLegendDesktop','chartLegendMobile'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=legHtml;});
+  const phHtml=phases.map(p=>`<span class="chart-phase-lbl">${p}</span>`).join('');
+  ['chartPhasesDesktop','chartPhasesMobile'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=phHtml;});
+  drawChart('evolutionChart',players,false);
+  drawChart('evolutionChartMobile',players,false);
+}
+
+// ── GOOGLE SHEETS LIVE DATA ────────────────────────────────
+const CSV_CLASIFICACION='https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVEtamI-Br4186ROUKb00QrVdSYUNNxdBiFcWw_yzV266IBDjxmQxwQ/pub?gid=221142825&single=true&output=csv';
+const CSV_RESULTADOS='https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVEtamI-Br4186ROUKb00QrVdSYUNNxdBiFcWw_yzV266IBDjxmQxwQ/pub?gid=467036788&single=true&output=csv';
+const CSV_CAPTURA='https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVEtamI-Br4186ROUKb00QrVdSYUNNxdBiFcWw_yzV266IBDjxmQxwQ/pub?gid=1113171896&single=true&output=csv';
+
+function parseCSV(text){
+  return text.trim().split('\n').map(row=>{
+    const cells=[];let cur='',inQ=false;
+    for(let i=0;i<row.length;i++){
+      const c=row[i];
+      if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){cells.push(cur.trim());cur='';}else cur+=c;
+    }
+    cells.push(cur.trim());return cells;
+  });
+}
+
+function parseCaptura(csv){
+  const rows=parseCSV(csv);
+  const hIdx=rows.findIndex(r=>r[0]==='Participante');
+  if(hIdx<0)return null;
+  const header=rows[hIdx];
+  const COL_CAMP =header.indexOf('CAMPEÓN');
+  const COL_BOTA =header.indexOf('Bota');
+  const COL_BALON=header.indexOf('Balón');
+  const COL_ARQ  =header.indexOf('Arquero');
+  const COL_NOV  =header.indexOf('Novato');
+  const COL_SF1  =header.indexOf('SF1');
+  const COL_SF2  =header.indexOf('SF2');
+  const COL_SF3  =header.indexOf('SF3');
+  const COL_SF4  =header.indexOf('SF4');
+  const COL_FIN1 =header.indexOf('Fin1');
+  const COL_FIN2 =header.indexOf('Fin2');
+  const premCats=['Bota de Oro','Balón de Oro','Mejor Arquero','Mejor Novato'];
+  const premIcons=['⚽','★','◉','◈'];
+  const premPicksMap=[{},{},{},{}];
+  const premVotosMap=[{},{},{},{}];
+  const result={players_captura:[],pronosticos_grupos:[],partidos_pronosticos:{},premios:[]};
+  const validNames=DATA.players.map(p=>p.name);
+  for(let i=hIdx+1;i<rows.length;i++){
+    const r=rows[i];
+    const name=(r[0]||'').trim();
+    if(!name||!validNames.includes(name))continue;
+    const partidos=[];
+    for(let j=0;j<72;j++){partidos.push([parseInt(r[1+j*2])||0,parseInt(r[2+j*2])||0]);}
+    result.pronosticos_grupos.push({nombre:name,partidos});
+    FIXTURE_ORDER_CAPTURA.forEach(([local,visita],idx)=>{
+      if(idx>=72)return;
+      const key=`${local}|${visita}`;
+      if(!result.partidos_pronosticos[key])result.partidos_pronosticos[key]=[];
+      const L=partidos[idx][0],V=partidos[idx][1];
+      if(!isNaN(L)&&!isNaN(V))result.partidos_pronosticos[key].push({nombre:name,local:L,visitante:V});
+    });
+    const clean=v=>(v||'').replace(/[\t\r\n]+/g,' ').trim();
+    const camp=clean(r[COL_CAMP]);
+    const sf1=COL_SF1>=0?clean(r[COL_SF1]):'';
+    const sf2=COL_SF2>=0?clean(r[COL_SF2]):'';
+    const sf3=COL_SF3>=0?clean(r[COL_SF3]):'';
+    const sf4=COL_SF4>=0?clean(r[COL_SF4]):'';
+    const fin1=COL_FIN1>=0?clean(r[COL_FIN1]):'—';
+    const fin2=COL_FIN2>=0?clean(r[COL_FIN2]):'—';
+    const allSemis=[sf1,sf2,sf3,sf4].filter(s=>s&&s!==fin1&&s!==fin2);
+    result.players_captura.push({name,camp_pick:camp,pos_picks:{p1:camp,p2:fin1===camp?fin2:fin1,sf1:allSemis[0]||'—',sf2:allSemis[1]||'—'}});
+    [COL_BOTA,COL_BALON,COL_ARQ,COL_NOV].forEach((col,pi)=>{
+      const voto=clean(r[col]);
+      if(voto){premPicksMap[pi][name]=voto;premVotosMap[pi][voto]=(premVotosMap[pi][voto]||0)+1;}
+    });
+  }
+  result.premios=premCats.map((cat,pi)=>({icon:premIcons[pi],cat,player_picks:premPicksMap[pi],votos:Object.entries(premVotosMap[pi]).sort((a,b)=>b[1]-a[1]).map(([n,c])=>({n,c}))}));
+  return result;
+}
+
+function parseClasificacion(csv){
+  const rows=parseCSV(csv);
+  const hIdx=rows.findIndex(r=>r.some(c=>c.includes('Participante')));
+  if(hIdx<0)return null;
+  const players=[];
+  for(let i=hIdx+1;i<rows.length;i++){
+    const r=rows[i];const name=(r[1]||'').replace(/"/g,'').trim();if(!name)continue;
+    const existing=DATA.players.find(p=>p.name===name)||{};
+    players.push({...existing,name,grp:parseInt(r[2])||0,oct:parseInt(r[3])||0,qf:parseInt(r[4])||0,sf:parseInt(r[5])||0,fin:parseInt(r[6])||0,camp:parseInt(r[7])||0,prem:parseInt(r[8])||0,total:parseInt(r[9])||0});
+  }
+  return players.length?players:null;
+}
+
+function parseResultados(csv){
+  const rows=parseCSV(csv);
+  const grpIdx=rows.findIndex(r=>r.some(c=>c==='Grp'||c==='Local'));
+  if(grpIdx<0)return{resultados:{},lastUpdate:'—'};
+  const resultados={};
+  for(let i=grpIdx+1;i<rows.length;i++){
+    const r=rows[i];const local=(r[1]||'').trim();const visita=(r[4]||'').trim();
+    if(!local||!visita)continue;
+    const gL=(r[2]||'').trim();const gV=(r[3]||'').trim();
+    if(gL!==''&&gV!==''&&!isNaN(parseInt(gL)))resultados[`${local}|${visita}`]=[parseInt(gL),parseInt(gV)];
+  }
+  const today=new Date().toLocaleDateString('es-EC',{day:'2-digit',month:'short',year:'numeric'});
+  return{resultados,lastUpdate:today};
+}
+
 async function loadLiveData(){
   document.getElementById('navUpdate').textContent='Cargando...';
   try{
-    var [csvClas,csvRes,csvCap]=await Promise.all([
-      fetch(CSV_CLASIFICACION+'&t='+Date.now()).then(function(r){return r.text();}),
-      fetch(CSV_RESULTADOS+'&t='+Date.now()).then(function(r){return r.text();}),
-      fetch(CSV_CAPTURA+'&t='+Date.now()).then(function(r){return r.text();}),
+    const [csvClas,csvRes,csvCap]=await Promise.all([
+      fetch(CSV_CLASIFICACION+'&t='+Date.now()).then(r=>r.text()),
+      fetch(CSV_RESULTADOS+'&t='+Date.now()).then(r=>r.text()),
+      fetch(CSV_CAPTURA+'&t='+Date.now()).then(r=>r.text()),
     ]);
-
-    // 1. CAPTURA → pronósticos, premios, pos_picks
-    var captura=parseCaptura(csvCap);
+    const captura=parseCaptura(csvCap);
     if(captura&&captura.players_captura.length){
       DATA.pronosticos_grupos=captura.pronosticos_grupos;
       DATA.premios=captura.premios;
-      // Merge pronósticos en partidos
-      DATA.partidos.forEach(function(p){
-        var key=p.local+'|'+p.visitante;
-        if(captura.partidos_pronosticos[key]) p.pronosticos=captura.partidos_pronosticos[key];
-      });
-      // Merge pos_picks
-      captura.players_captura.forEach(function(cp){
-        var ex=DATA.players.find(function(p){return p.name===cp.name;});
-        if(ex){ex.camp_pick=cp.camp_pick;ex.pos_picks=cp.pos_picks;}
-      });
+      DATA.partidos.forEach(p=>{const key=`${p.local}|${p.visitante}`;if(captura.partidos_pronosticos[key])p.pronosticos=captura.partidos_pronosticos[key];});
+      captura.players_captura.forEach(cp=>{const ex=DATA.players.find(p=>p.name===cp.name);if(ex){ex.camp_pick=cp.camp_pick;ex.pos_picks=cp.pos_picks;}});
     }
-
-    // 2. CLASIFICACION → puntos
-    var livePlayers=parseClasificacion(csvClas);
+    const livePlayers=parseClasificacion(csvClas);
     if(livePlayers&&livePlayers.length){
-      livePlayers.forEach(function(lp){
-        var ex=DATA.players.find(function(p){return p.name===lp.name;});
-        if(ex){Object.assign(ex,{grp:lp.grp,oct:lp.oct,qf:lp.qf,sf:lp.sf,fin:lp.fin,camp:lp.camp,prem:lp.prem,total:lp.total});}
-        else{var cap=(captura&&captura.players_captura.find(function(c){return c.name===lp.name;}))||{};DATA.players.push(Object.assign({},lp,cap));}
+      livePlayers.forEach(lp=>{
+        const ex=DATA.players.find(p=>p.name===lp.name);
+        if(ex)Object.assign(ex,{grp:lp.grp,oct:lp.oct,qf:lp.qf,sf:lp.sf,fin:lp.fin,camp:lp.camp,prem:lp.prem,total:lp.total});
+        else{const cap=(captura?.players_captura.find(c=>c.name===lp.name))||{};DATA.players.push(Object.assign({},lp,cap));}
       });
-      DATA.players=DATA.players.filter(function(p){return livePlayers.some(function(lp){return lp.name===p.name;});});
+      DATA.players=DATA.players.filter(p=>livePlayers.some(lp=>lp.name===p.name));
     }
-
-    // 3. RESULTADOS → marcar partidos jugados
-    var liveRes=parseResultados(csvRes);
-    DATA.partidos.forEach(function(p){
-      var key=p.local+'|'+p.visitante;
-      if(liveRes.resultados[key])p.resultado=liveRes.resultados[key];
-    });
-    // resultados_grupos indexado por FIXTURE_ORDER
-    DATA.resultados_grupos=FIXTURE_ORDER_CAPTURA.map(function(pair){
-      return liveRes.resultados[pair[0]+'|'+pair[1]]||null;
-    });
-
+    const liveRes=parseResultados(csvRes);
+    DATA.partidos.forEach(p=>{const key=`${p.local}|${p.visitante}`;if(liveRes.resultados[key])p.resultado=liveRes.resultados[key];});
+    DATA.resultados_grupos=FIXTURE_ORDER_CAPTURA.map(([local,visita])=>liveRes.resultados[`${local}|${visita}`]||null);
     DATA.lastUpdate=liveRes.lastUpdate;
-  }catch(err){
-    console.warn('Live fetch failed, usando datos estáticos.',err);
-  }
-
+  }catch(err){console.warn('Live fetch failed, usando datos estáticos.',err);}
   render();
-  setTimeout(function(){buildChart(DATA.players);},50);
+  setTimeout(()=>buildChart(DATA.players),50);
 }
 
 loadLiveData();
 setInterval(loadLiveData,5*60*1000);
-
-}
-
-initLive();
 </script>
 </body>
 </html>
