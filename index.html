@@ -1697,7 +1697,7 @@ function renderHeatmap(){
         if(!pr)return`<div class="hm-cell" style="background:var(--ink2)"><div class="hm-val" style="opacity:.2">—</div></div>`;
         const k=`${pr.local}-${pr.visitante}`;const cnt=(picks[k]||[]).length;
         const heat=cnt/nP;
-        const bg=heat>=0.6?'rgba(0,61,166,.65)':heat>=0.4?'rgba(0,61,166,.35)':heat>=0.25?'rgba(255,209,0,.3)':'rgba(239,51,64,.35)';
+        const bg=cnt>=Math.ceil(nP*0.5)?'rgba(0,61,166,.65)':cnt>=3?'rgba(0,61,166,.35)':cnt>=2?'rgba(255,209,0,.3)':'rgba(239,51,64,.35)';
         return`<div class="hm-cell" style="background:${bg}"><div><div class="hm-val">${pr.local}-${pr.visitante}</div><div class="hm-sub">${cnt}/${nP}</div></div></div>`;
       }).join('')}</div>`;
   });
