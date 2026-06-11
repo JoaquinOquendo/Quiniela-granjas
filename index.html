@@ -1224,32 +1224,61 @@ function renderHeatmap(){
   const wrap=document.getElementById('heatmapWrap');
   if(!wrap)return;
   if(!porFecha.length){wrap.innerHTML='<div style="padding:2rem;font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);background:var(--ink2)">Sin partidos próximos</div>';return;}
+
   const players=DATA.players.map(p=>p.name);
-  let html='';
+  const N=players.length;
+  // One unified grid for all rows — prevents column drift between header and data rows
+  const LABEL_W=140;
+  const COL_W=42;
+  const minW=LABEL_W+(COL_W*N)+(N+1); // +gaps
+  const colTemplate=`${LABEL_W}px repeat(${N},minmax(${COL_W}px,1fr))`;
+
+  let html=`<div style="display:grid;grid-template-columns:${colTemplate};min-width:${minW}px;gap:1px;background:rgba(255,255,255,.07);">`;
+
+  // Single header row: empty corner + all player names
+  html+=`<div style="background:var(--ink2);padding:.4rem .5rem;"></div>`;
+  players.forEach(n=>{
+    html+=`<div class="hm-name-cell" style="justify-content:center;text-align:center;font-size:.55rem">${e(n.substring(0,6))}</div>`;
+  });
+
+  // One row per match
   porFecha.forEach(partido=>{
     let picks={};
     partido.pronosticos.forEach(pr=>{const k=`${pr.local}-${pr.visitante}`;picks[k]=picks[k]||[];picks[k].push(pr.nombre);});
     const nP=Math.max(partido.pronosticos.length,1);
-    html+=`<div class="hm-row" style="grid-template-columns:150px repeat(${players.length},1fr);margin-bottom:1px;">
-      <div class="hm-partido-lbl">${e(partido.local)} <span>vs</span> ${e(partido.visitante)}</div>
-      ${players.map(n=>`<div class="hm-name-cell">${e(n.substring(0,6))}</div>`).join('')}</div>`;
-    html+=`<div class="hm-row" style="grid-template-columns:150px repeat(${players.length},1fr);margin-bottom:4px;">
-      <div style="background:var(--ink2);padding:.4rem .75rem;display:flex;align-items:center;"><span style="font-family:Syne;font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase">${e(partido.hora)}</span></div>
-      ${players.map(name=>{
-        const pr=partido.pronosticos.find(p=>p.nombre===name);
-        if(!pr)return`<div class="hm-cell" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)"><div class="hm-val" style="opacity:.22">—</div></div>`;
-        const k=`${pr.local}-${pr.visitante}`;const cnt=(picks[k]||[]).length;
-        const heat=cnt/nP;
-        const bg=cnt>=Math.ceil(nP*0.5)?'rgba(0,61,166,.65)':cnt>=3?'rgba(0,61,166,.35)':cnt>=2?'rgba(255,209,0,.3)':'rgba(239,51,64,.35)';
-        return`<div class="hm-cell" style="background:${bg}"><div><div class="hm-val">${pr.local}-${pr.visitante}</div><div class="hm-sub">${cnt}/${nP}</div></div></div>`;
-      }).join('')}</div>`;
+
+    // Label cell: match + hora stacked
+    html+=`<div style="background:var(--ink);padding:.55rem .65rem;display:flex;flex-direction:column;justify-content:center;gap:.2rem;">
+      <span style="font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:rgba(255,255,255,.8);line-height:1.2">${e(partido.local)} <span style="color:rgba(255,255,255,.3)">vs</span> ${e(partido.visitante)}</span>
+      <span style="font-family:'Syne',sans-serif;font-size:.45rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase">${e(partido.hora)}</span>
+    </div>`;
+
+    // Data cells — same order as header
+    players.forEach(name=>{
+      const pr=partido.pronosticos.find(p=>p.nombre===name);
+      if(!pr){
+        html+=`<div class="hm-cell" style="background:rgba(255,255,255,.03)"><div class="hm-val" style="opacity:.2;font-size:.6rem">—</div></div>`;
+        return;
+      }
+      const k=`${pr.local}-${pr.visitante}`;
+      const cnt=(picks[k]||[]).length;
+      const bg=cnt>=Math.ceil(nP*0.5)?'rgba(0,61,166,.7)':cnt>=3?'rgba(0,61,166,.4)':cnt>=2?'rgba(255,209,0,.35)':'rgba(239,51,64,.45)';
+      html+=`<div class="hm-cell" style="background:${bg}"><div><div class="hm-val" style="font-size:.62rem">${pr.local}-${pr.visitante}</div><div class="hm-sub">${cnt}/${nP}</div></div></div>`;
+    });
   });
-  html+=`<div class="hm-legend"><span class="hm-legend-lbl">Consenso:</span><div class="hm-legend-scale">
-    <div class="hm-legend-box" style="background:rgba(239,51,64,.35)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Único</span>
-    <div class="hm-legend-box" style="background:rgba(255,209,0,.3)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Pocos</span>
-    <div class="hm-legend-box" style="background:rgba(0,61,166,.35)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Varios</span>
-    <div class="hm-legend-box" style="background:rgba(0,61,166,.65)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3)"> Mayoría</span>
-  </div></div>`;
+
+  html+=`</div>`;
+
+  html+=`<div class="hm-legend" style="min-width:${minW}px;flex-wrap:wrap;gap:.4rem .75rem;">
+    <span class="hm-legend-lbl">Consenso:</span>
+    <div class="hm-legend-scale">
+      <div class="hm-legend-box" style="background:rgba(239,51,64,.45)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Único</span>
+      <div class="hm-legend-box" style="background:rgba(255,209,0,.35)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Pocos</span>
+      <div class="hm-legend-box" style="background:rgba(0,61,166,.4)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3);margin-right:.5rem"> Varios</span>
+      <div class="hm-legend-box" style="background:rgba(0,61,166,.7)"></div><span style="font-family:Syne;font-size:.5rem;color:rgba(255,255,255,.3)"> Mayoría</span>
+    </div>
+  </div>`;
+
   wrap.innerHTML=html;
 }
 
