@@ -1237,7 +1237,7 @@ function renderHeatmap(){
       <div style="background:var(--ink2);padding:.4rem .75rem;display:flex;align-items:center;"><span style="font-family:Syne;font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase">${e(partido.hora)}</span></div>
       ${players.map(name=>{
         const pr=partido.pronosticos.find(p=>p.nombre===name);
-        if(!pr)return`<div class="hm-cell" style="background:var(--ink2)"><div class="hm-val" style="opacity:.2">—</div></div>`;
+        if(!pr)return`<div class="hm-cell" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)"><div class="hm-val" style="opacity:.22">—</div></div>`;
         const k=`${pr.local}-${pr.visitante}`;const cnt=(picks[k]||[]).length;
         const heat=cnt/nP;
         const bg=cnt>=Math.ceil(nP*0.5)?'rgba(0,61,166,.65)':cnt>=3?'rgba(0,61,166,.35)':cnt>=2?'rgba(255,209,0,.3)':'rgba(239,51,64,.35)';
@@ -1373,6 +1373,13 @@ function parseCSV(text){
   });
 }
 
+// ── NAME NORMALIZATION ────────────────────────────────────
+// Removes accents and normalizes casing so CSV names like
+// "Jose Tomas" match DATA.players entries like "Jose Tomás"
+function normalizeName(n){
+  return (n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/\s+/g,' ');
+}
+
 function parseCaptura(csv){
   const rows=parseCSV(csv);
   const hIdx=rows.findIndex(r=>r[0]==='Participante');
@@ -1395,10 +1402,15 @@ function parseCaptura(csv){
   const premVotosMap=[{},{},{},{}];
   const result={players_captura:[],pronosticos_grupos:[],partidos_pronosticos:{},premios:[]};
   const validNames=DATA.players.map(p=>p.name);
+  // Build a normalized → canonical name lookup so accent differences don't break matching
+  const normToCanonical={};
+  validNames.forEach(vn=>{ normToCanonical[normalizeName(vn)]=vn; });
   for(let i=hIdx+1;i<rows.length;i++){
     const r=rows[i];
-    const name=(r[0]||'').trim();
-    if(!name||!validNames.includes(name))continue;
+    const rawName=(r[0]||'').trim();
+    // Try exact match first, then normalized match as fallback
+    const name=validNames.includes(rawName) ? rawName : (normToCanonical[normalizeName(rawName)]||null);
+    if(!name)continue;
     const partidos=[];
     for(let j=0;j<72;j++){partidos.push([parseInt(r[1+j*2])||0,parseInt(r[2+j*2])||0]);}
     result.pronosticos_grupos.push({nombre:name,partidos});
