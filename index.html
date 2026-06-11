@@ -542,17 +542,9 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   padding:.12rem .45rem;border-radius:2px;
   letter-spacing:.04em;text-transform:uppercase;
 }
-
-/* Estados anteriores (compatibilidad) */
 .che{background:rgba(60,172,59,.2);color:#4ade80;}
 .cae{background:rgba(239,51,64,.2);color:#f87171;}
 .cde{background:rgba(255,209,0,.15);color:var(--ecu-y);}
-
-/* Nuevos estados para pronósticos según resultado final */
-.chip-neutral{background:rgba(107,107,107,.15);color:#888;} /* Sin resultado: gris */
-.chip-exacto{background:rgba(0,61,166,.25);color:#60a5fa;font-weight:600;} /* Marcador exacto: azul */
-.chip-ganador{background:rgba(60,172,59,.2);color:#4ade80;} /* Solo ganador: verde */
-.chip-fallo{background:rgba(239,51,64,.2);color:#f87171;} /* No acertó: rojo */
 
 /* ── ESPECIALES ───────────────────────────────────────────── */
 .esp-editorial{
@@ -802,7 +794,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   .footer-brand{font-size:1.2rem;}
 }
 
-/* ── SMALL MOBILE 400px ───────────────────────────────── */
+/* ── SMALL MOBILE 400px ───────────────────────────── */
 @media(max-width:420px){
   .hero-title{font-size:3.2rem;}
   .premios-editorial{grid-template-columns:1fr;}
@@ -1051,6 +1043,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 </head>
 <body>
 
+
 <div class="perfil-modal" id="perfilModal">
   <div class="perfil-backdrop" onclick="closeModal()"></div>
   <div class="perfil-box" id="perfilBox"></div>
@@ -1146,9 +1139,10 @@ tr:nth-child(3) .pt{color:#cd7f32;}
     <div class="strip-y" style="flex:2"></div>
   </div>
 
-  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
+  
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 <!-- 02 DESGLOSE -->
   <div class="section">
     <div class="sec-header">
@@ -1206,9 +1200,10 @@ tr:nth-child(3) .pt{color:#cd7f32;}
     <div class="strip-r" style="flex:1"></div>
   </div>
 
-  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
+  
   <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
 
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
 <!-- 03 JUEGOS -->
   <div class="section">
     <div class="sec-header">
@@ -1219,9 +1214,10 @@ tr:nth-child(3) .pt{color:#cd7f32;}
     <div class="partidos-editorial" id="partidosList"></div>
   </div>
 
+  
   <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
-  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 <!-- 04 CALOR -->
   <div class="section">
     <div class="sec-header"><div class="sec-num">04 ——</div><div class="sec-title">Calor</div><div class="sec-sub">Mapa de<br>pronósticos</div></div>
@@ -1230,8 +1226,9 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   </div>
 
   <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
-  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 
+  
+  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 <!-- 05 AMBICIOSO -->
   <div class="section">
     <div class="sec-header"><div class="sec-num">05 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
@@ -1239,8 +1236,8 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   </div>
 
   <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
-  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
 
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
 <!-- 06 RACHA -->
   <div class="section">
     <div class="sec-header"><div class="sec-num">06 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
@@ -1248,7 +1245,6 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   </div>
 
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
-
 <!-- 07 VOTOS -->
   <div class="section">
     <div class="sec-header">
@@ -1271,9 +1267,10 @@ tr:nth-child(3) .pt{color:#cd7f32;}
     <div class="h2h-phase-row" id="h2hPhases"></div>
   </div>
 
+  
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
-  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 
+  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 <!-- 09 ESPECIALES -->
   <div class="section">
     <div class="sec-header">
@@ -1345,14 +1342,17 @@ const DATA={
   partidos:[],
   pronosticos_grupos:[],
   resultados_grupos:[],
+  // Ecuador en grupos: idx en FIXTURE_ORDER_CAPTURA
+  // Grupo E: Ecuador vs Costa de Marfil (idx 27), Ecuador vs Curazao (idx 28), Ecuador vs Alemania (idx 24 — Alemania local)
   ecuador_partidos:[
-    {idx:24,esLocal:false},
-    {idx:27,esLocal:true},
-    {idx:28,esLocal:true},
+    {idx:24,esLocal:false}, // Alemania vs Ecuador — Ecuador visitante
+    {idx:27,esLocal:true},  // Ecuador vs Costa de Marfil — Ecuador local
+    {idx:28,esLocal:true},  // Ecuador vs Curazao — Ecuador local
   ],
 };
 
 // ── FIXTURE ORDERS ────────────────────────────────────────
+// FIXTURE_ORDER_CAPTURA: orden por grupos A→L — igual que columnas del Sheet CAPTURA
 const FIXTURE_ORDER_CAPTURA=[
   ['México','Corea del Sur'],['México','Sudáfrica'],['México','Chequia'],
   ['Corea del Sur','Sudáfrica'],['Corea del Sur','Chequia'],['Sudáfrica','Chequia'],
@@ -1380,6 +1380,7 @@ const FIXTURE_ORDER_CAPTURA=[
   ['Croacia','Panamá'],['Croacia','Ghana'],['Panamá','Ghana'],
 ];
 
+// FIXTURE_ORDER: orden cronológico real (Jun 11→Jun 27) — para calcular racha
 const FIXTURE_ORDER=[
   ['México','Sudáfrica'],['Corea del Sur','Chequia'],
   ['Canadá','Bosnia y Herzegovina'],['Estados Unidos','Paraguay'],
@@ -1407,6 +1408,7 @@ const FIXTURE_ORDER=[
   ['Jordania','Argentina'],['Argelia','Austria'],
 ];
 
+// ── PARTIDOS COMPLETOS (72) con fechas hora ECT ───────────────────────
 const PARTIDOS_COMPLETOS=[
   {grupo:"Grupo A",hora:"Jun 11 · 14:00 ECT",local:"México",visitante:"Sudáfrica",resultado:null,pronosticos:[]},
   {grupo:"Grupo A",hora:"Jun 11 · 21:00 ECT",local:"Corea del Sur",visitante:"Chequia",resultado:null,pronosticos:[]},
@@ -1524,6 +1526,7 @@ function calcEsp(){
     let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
     if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
   }
+  // Tortuga: mayor remontada (pos en grupos → pos final)
   const byGrp=[...DATA.players].sort((a,b)=>b.grp-a.grp).map((p,i)=>({...p,pg:i+1}));
   const byTot=[...DATA.players].sort((a,b)=>b.total-a.total).map((p,i)=>({...p,pt:i+1}));
   let maxR=-99,tortN='—',tortD='—';
@@ -1541,7 +1544,7 @@ function calcEsp(){
   ];
 }
 
-// ── RACHA ──────────────────────────────────────────────────
+// ── RACHA (cronológica, sin historial hardcodeado) ─────────
 function calcRacha(){
   const resMap={};
   FIXTURE_ORDER_CAPTURA.forEach(([local,visita],idx)=>{
@@ -1578,7 +1581,7 @@ function calcRacha(){
   });
 }
 
-// ── AMBICIOSO ──────────────────────────────────────────────
+// ── AMBICIOSO (usa partidos del día más próximo) ───────────
 function calcAmbicioso(){
   function parseFechaPartido(hora){try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}}
   const pendientes=DATA.partidos.filter(p=>!p.resultado);
@@ -1595,7 +1598,7 @@ function calcAmbicioso(){
   return{topName:topN,topScore:topS,topMatch:topM,rareName:rN,rareScore:rS,rareMatch:rM};
 }
 
-// ── RENDER PRINCIPAL ───────────────────────────────────────
+// ── RENDER PRINCIPAL ──────────────────────────────────────
 function render(){
   const sorted=[...DATA.players].sort((a,b)=>b.total-a.total);
   const leader=sorted[0];
@@ -1652,7 +1655,7 @@ function render(){
       <span class="v-n-ed">${v.c}</span></div>`).join('')}</div>`;
   }).join('');
 
-  // ════ JUEGOS ════ SECCIÓN ACTUALIZADA CON NUEVO LÓGICA DE CHIPS
+  // Juegos — partidos del día más próximo + últimos 2 jugados
   const pl=document.getElementById('partidosList');
   function parseFechaPartido(hora){try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}}
   const pendientes=DATA.partidos.filter(p=>!p.resultado);
@@ -1666,35 +1669,18 @@ function render(){
     pl.innerHTML='<div class="partido-ed" style="padding:2rem;display:block;text-align:center"><span style="font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)">Sin partidos próximos</span></div>';
   } else {
     pl.innerHTML=displayFinal.map(p=>{
-      // 🎯 NUEVA LÓGICA DE CHIPS CON COLORES POR RESULTADO
       const chips=p.pronosticos.filter(pr=>pr.nombre&&pr.nombre.length<30).map(pr=>{
-        let cls='chip-neutral'; // Default: gris (sin resultado)
-        
-        if(p.resultado){ 
-          const [gL, gV] = p.resultado; // Resultado real del partido
-          const [pL, pV] = [pr.local, pr.visitante]; // Pronóstico del usuario
-          
-          // EXACTO: acertó marcador exacto
-          if(pL === gL && pV === gV){
-            cls='chip-exacto'; // Azul ✓✓
-          } else {
-            // Comparar ganador/resultado
-            const resReal = gL > gV ? 1 : gL < gV ? -1 : 0;
-            const resPro = pL > pV ? 1 : pL < pV ? -1 : 0;
-            
-            // GANADOR: acertó solo el ganador (pero no el marcador exacto)
-            if(resReal === resPro && resReal !== 0){
-              cls='chip-ganador'; // Verde ✓
-            } else {
-              // FALLO: no acertó nada
-              cls='chip-fallo'; // Rojo ✗
-            }
-          }
+        let cls='cneutral';
+        if(p.resultado){
+          const rL=p.resultado[0],rV=p.resultado[1];
+          const gR=rL>rV?1:rV>rL?-1:0;
+          const gP=pr.local>pr.visitante?1:pr.visitante>pr.local?-1:0;
+          if(pr.local===rL&&pr.visitante===rV) cls='cexact';       // azul — exacto
+          else if(gP===gR) cls='chit';                              // verde — ganador correcto
+          else cls='cmiss';                                         // rojo — falló
         }
-        
-        return`<span class="chip-ed ${cls}">${e(pr.nombre)} ${pL}-${pV}</span>`;
+        return`<span class="chip-ed ${cls}">${e(pr.nombre)} ${pr.local}-${pr.visitante}</span>`;
       }).join('');
-      
       const ctr=p.resultado?`<div class="pe-center"><div class="pe-score">${p.resultado[0]}—${p.resultado[1]}</div><div class="pe-vs">FT</div></div>`:`<div class="pe-center"><div class="pe-vs">VS</div><div class="pe-hora">${e(p.hora)}</div></div>`;
       return`<div class="partido-ed${p.resultado?' played':''}">
         <div class="pe-group"><div class="pe-group-lbl">Grupo</div><div class="pe-group-name">${e(p.grupo.replace('Grupo ',''))}</div></div>
