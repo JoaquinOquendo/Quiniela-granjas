@@ -709,7 +709,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">04 ——</div><div class="sec-title">Calor</div><div class="sec-sub">Mapa de<br>pronósticos</div></div>
+    <div class="sec-header"><div class="sec-num">04 ——</div><div class="sec-title">Calor</div><div class="sec-sub">Mapa de<br>calor</div></div>
     <div class="heatmap-hint">← Desliza para ver todos →</div>
     <div class="heatmap-wrap" id="heatmapWrap"></div>
   </div>
@@ -1092,7 +1092,7 @@ function renderDayTabs(){
   }).join('');
 }
 
-function selectDay(offset){currentDayOffset=offset;renderDayTabs();renderPartidos();}
+function selectDay(offset){currentDayOffset=offset;renderDayTabs();renderPartidos();renderHeatmap();}
 
 function buildPartidoCard(p){
   const chips=p.pronosticos.filter(pr=>pr.nombre&&pr.nombre.length<30).map(pr=>{
@@ -1256,11 +1256,8 @@ function renderH2H(){
 }
 
 function renderHeatmap(){
-  function parseFechaPartido(hora){try{return new Date(hora.split('·')[0].trim()+' 2026');}catch(e){return new Date(9999,0,1);}}
-  const pendientes=DATA.partidos.filter(p=>!p.resultado);
-  const fechas=[...new Set(pendientes.map(p=>parseFechaPartido(p.hora).toDateString()))].sort((a,b)=>new Date(a)-new Date(b));
-  const fechaTarget=fechas[0]||null;
-  const porFecha=fechaTarget?pendientes.filter(p=>parseFechaPartido(p.hora).toDateString()===fechaTarget):pendientes.slice(0,6);
+  // Uses same day as the Juegos selector (currentDayOffset)
+  const porFecha=getPartidosByDay(currentDayOffset);
   const wrap=document.getElementById('heatmapWrap');
   if(!wrap)return;
   if(!porFecha.length){wrap.innerHTML='<div style="padding:2rem;font-family:Syne;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);background:var(--ink2)">Sin partidos próximos</div>';return;}
