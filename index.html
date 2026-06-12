@@ -1546,7 +1546,16 @@ async function loadLiveData(){
     if(captura&&captura.players_captura.length){
       DATA.pronosticos_grupos=captura.pronosticos_grupos;
       DATA.premios=captura.premios;
-      DATA.partidos.forEach(p=>{const key=`${p.local}|${p.visitante}`;if(captura.partidos_pronosticos[key])p.pronosticos=captura.partidos_pronosticos[key];});
+      DATA.partidos.forEach(p=>{
+      const key=`${p.local}|${p.visitante}`;
+      const keyAlt=`${p.visitante}|${p.local}`;
+      if(captura.partidos_pronosticos[key]){
+        p.pronosticos=captura.partidos_pronosticos[key];
+      } else if(captura.partidos_pronosticos[keyAlt]){
+        // CAPTURA sheet has teams in reverse order — swap local/visitante scores so display is correct
+        p.pronosticos=captura.partidos_pronosticos[keyAlt].map(pr=>({nombre:pr.nombre,local:pr.visitante,visitante:pr.local}));
+      }
+    });
       captura.players_captura.forEach(cp=>{const ex=DATA.players.find(p=>p.name===cp.name);if(ex){ex.camp_pick=cp.camp_pick;ex.pos_picks=cp.pos_picks;}});
     }
     const livePlayers=parseClasificacion(csvClas);
