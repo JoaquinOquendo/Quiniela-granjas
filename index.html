@@ -143,8 +143,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 .ph{font-family:'Syne',sans-serif;font-size:.78rem;color:rgba(255,255,255,.4);}
 
 /* ── BREAKDOWN ────────────────────────────────────────────── */
-.bd-editorial{display:none;}
-@media(max-width:768px){.bd-editorial{display:grid;gap:2px;}}
+.bd-editorial{display:grid;gap:2px;}
 .bd-row-hd{display:grid;grid-template-columns:180px repeat(8,1fr);gap:2px;padding:.6rem 0;margin-bottom:2px;}
 .bd-hd-cell{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center;}
 .bd-hd-cell:first-child{text-align:left;}
@@ -473,6 +472,8 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 ::-webkit-scrollbar-thumb:hover{background:var(--ink2);}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
 .reveal.in{opacity:1;transform:none;}
+@keyframes hero-line{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes hero-fade{from{opacity:0;}to{opacity:1;}}
 .hero-title .line1,.hero-title .line2,.hero-title .line3{opacity:0;transform:translateY(30px);animation:hero-line .8s cubic-bezier(.22,1,.36,1) forwards;}
 .hero-title .line2{animation-delay:.12s;}
 .hero-title .line3{animation-delay:.24s;}
@@ -751,7 +752,7 @@ const COLORS=["#FFD100","#EF3340","#003DA6","#3CAC3B","#FF6B35","#8B5CF6","#14B8
 
 // ── FAMILIAS ─────────────────────────────────────────────
 const FAMILIAS=[
-  {nombre:"Oquendo", miembros:["Joaquin","Tia Lore","Mai","Charly"]},
+  {nombre:"Oquendo/Flores", miembros:["Joaquin","Tia Lore","Mai","Charly"]},
   {nombre:"Sojos", miembros:["Tio Julito","Tia lina","Jose Tomás","Manolo"]},
   {nombre:"Vasquez", miembros:["Daniel","Chicho","Jose A"]},
   {nombre:"Del Pozo", miembros:["Agus","Mata","Tío Juan"]},
@@ -1454,6 +1455,23 @@ function normalizeName(n){
   return (n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/\s+/g,' ');
 }
 
+// ── NAME ALIASES ───────────────────────────────────────────
+// Maps known alternate spellings in the Google Sheet (normalized) to the
+// canonical name used throughout DATA.players. This keeps "Jose Andres
+// Vasquez" / "José Andrés Vásquez" / etc. matching as "Jose A" even if the
+// sheet itself hasn't been updated.
+const NOMBRE_ALIAS={
+  'jose andres vasquez':'Jose A',
+  'jose andres':'Jose A',
+  'jose a vasquez':'Jose A',
+  'jose a.':'Jose A',
+  'jose a':'Jose A',
+};
+function resolveAlias(rawName){
+  const norm=normalizeName(rawName);
+  return NOMBRE_ALIAS[norm]||null;
+}
+
 function parseCaptura(csv){
   const rows=parseCSV(csv);
   const hIdx=rows.findIndex(r=>r[0]==='Participante');
@@ -1482,8 +1500,8 @@ function parseCaptura(csv){
   for(let i=hIdx+1;i<rows.length;i++){
     const r=rows[i];
     const rawName=(r[0]||'').trim();
-    // Try exact match first, then normalized match as fallback
-    const name=validNames.includes(rawName) ? rawName : (normToCanonical[normalizeName(rawName)]||null);
+    // Try exact match, then alias map, then normalized match as fallback
+    const name=validNames.includes(rawName) ? rawName : (resolveAlias(rawName) || normToCanonical[normalizeName(rawName)] || null);
     if(!name)continue;
     const partidos=[];
     for(let j=0;j<72;j++){partidos.push([parseInt(r[1+j*2])||0,parseInt(r[2+j*2])||0]);}
@@ -1520,7 +1538,8 @@ function parseClasificacion(csv){
   if(hIdx<0)return null;
   const players=[];
   for(let i=hIdx+1;i<rows.length;i++){
-    const r=rows[i];const name=(r[1]||'').replace(/"/g,'').trim();if(!name)continue;
+    const r=rows[i];let name=(r[1]||'').replace(/"/g,'').trim();if(!name)continue;
+    name=resolveAlias(name)||name;
     const existing=DATA.players.find(p=>p.name===name)||{};
     players.push({...existing,name,grp:parseInt(r[2])||0,oct:parseInt(r[3])||0,qf:parseInt(r[4])||0,sf:parseInt(r[5])||0,fin:parseInt(r[6])||0,camp:parseInt(r[7])||0,prem:parseInt(r[8])||0,total:parseInt(r[9])||0});
   }
