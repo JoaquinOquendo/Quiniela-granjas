@@ -142,24 +142,6 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 .dif-n{color:rgba(239,51,64,.7);}
 .ph{font-family:'Syne',sans-serif;font-size:.78rem;color:rgba(255,255,255,.4);}
 
-/* ── BREAKDOWN ────────────────────────────────────────────── */
-.bd-editorial{display:grid;gap:2px;}
-.bd-row-hd{display:grid;grid-template-columns:180px repeat(8,1fr);gap:2px;padding:.6rem 0;margin-bottom:2px;}
-.bd-hd-cell{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center;}
-.bd-hd-cell:first-child{text-align:left;}
-.bd-row{display:grid;grid-template-columns:180px repeat(8,1fr);gap:2px;background:var(--border);}
-.bd-cell{background:var(--cream);padding:.75rem .5rem;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;text-align:center;transition:background .1s;}
-.bd-cell:first-child{text-align:left;font-size:.82rem;font-weight:700;padding-left:1rem;text-transform:uppercase;letter-spacing:.02em;}
-.bd-cell:hover{background:#ede8df;}
-.bd-cell.c-grp{color:var(--wc-green);}
-.bd-cell.c-oct{color:var(--ecu-b);}
-.bd-cell.c-qf{color:#e07000;}
-.bd-cell.c-sf{color:var(--ecu-r);}
-.bd-cell.c-fin{color:#8b5cf6;}
-.bd-cell.c-cam{color:#b8860b;}
-.bd-cell.c-pre{color:#7c3aed;}
-.bd-cell.c-tot{background:var(--ink);color:var(--ecu-y);font-size:1rem;font-weight:800;}
-
 /* ── PREMIOS INDIVIDUALES ─────────────────────────────────── */
 .premios-editorial{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
 .prem-card{padding:2rem 1.5rem;position:relative;overflow:hidden;}
@@ -272,8 +254,6 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 @media(max-width:900px){
   .esp-editorial{grid-template-columns:1fr 1fr;}
   .premios-editorial{grid-template-columns:1fr 1fr;}
-  .bd-row,.bd-row-hd{grid-template-columns:130px repeat(4,1fr);}
-  .bd-cell:nth-child(n+7),.bd-hd-cell:nth-child(n+7){display:none;}
   .hero{grid-template-columns:60% 40%;}
   .hero-title{font-size:clamp(3rem,10vw,6rem);}
   .hero-year{font-size:clamp(5rem,14vw,9rem);}
@@ -315,12 +295,6 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   .lb-editorial thead th,.lb-editorial td{padding:.75rem .75rem;font-size:.78rem;}
   .pn{font-size:.85rem;}
   .pt{font-size:1.1rem;}
-  .bd-row-hd{display:none;}
-  .bd-row{grid-template-columns:1fr 1fr 1fr;gap:1px;margin-bottom:2px;}
-  .bd-cell{padding:.6rem .4rem;font-size:.78rem;}
-  .bd-cell:first-child{grid-column:1/-1;text-align:center;background:var(--ink);color:#fff;font-size:.75rem;padding:.5rem;}
-  .bd-cell:nth-child(n+9){display:none;}
-  .bd-cell.c-tot{grid-column:1/-1;font-size:.9rem;padding:.6rem;}
   .premios-editorial{grid-template-columns:1fr 1fr;gap:2px;}
   .prem-card{padding:1.25rem 1rem;}
   .pc-bg-num{font-size:5rem;}
@@ -619,34 +593,12 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
+
   <div class="section">
     <div class="sec-header">
       <div class="sec-num">02 ——</div>
-      <div class="sec-title">Puntos</div>
-      <div class="sec-sub">Desglose<br>por Fase</div>
-    </div>
-    <div class="bd-editorial">
-      <div class="bd-row-hd">
-        <div class="bd-hd-cell">Participante</div>
-        <div class="bd-hd-cell" style="color:var(--wc-green)">Grupos</div>
-        <div class="bd-hd-cell" style="color:var(--ecu-b)">Octavos</div>
-        <div class="bd-hd-cell" style="color:#e07000">Cuartos</div>
-        <div class="bd-hd-cell" style="color:var(--ecu-r)">Semis</div>
-        <div class="bd-hd-cell" style="color:#8b5cf6">Final</div>
-        <div class="bd-hd-cell" style="color:#b8860b">Campeón</div>
-        <div class="bd-hd-cell" style="color:#7c3aed">Premios</div>
-        <div class="bd-hd-cell" style="color:var(--ink)">Total</div>
-      </div>
-      <div id="breakdown"></div>
-    </div>
-  </div>
-
-  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
-  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
-
-  <div class="section">
-    <div class="sec-header">
-      <div class="sec-num">03 ——</div>
       <div class="sec-title">Juegos</div>
       <div class="sec-sub">Partidos<br>por día</div>
     </div>
@@ -659,7 +611,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
   <div class="section">
     <div class="sec-header">
-      <div class="sec-num">04 ——</div>
+      <div class="sec-num">03 ——</div>
       <div class="sec-title">Rey del Día</div>
       <div class="sec-sub" id="ganadorDiaSub">Ganador<br>del día</div>
     </div>
@@ -670,7 +622,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">05 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
+    <div class="sec-header"><div class="sec-num">04 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
     <div id="ambiciosoWrap"></div>
   </div>
 
@@ -678,7 +630,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">06 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
+    <div class="sec-header"><div class="sec-num">05 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
     <div class="racha-grid" id="rachaGrid"></div>
   </div>
 
@@ -686,7 +638,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
   <div class="section">
     <div class="sec-header">
-      <div class="sec-num">07 ——</div>
+      <div class="sec-num">06 ——</div>
       <div class="sec-title">Votos</div>
       <div class="sec-sub">Premios<br>Individuales</div>
     </div>
@@ -697,13 +649,13 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">08 ——</div><div class="sec-title">Familias</div><div class="sec-sub">Promedio<br>por familia</div></div>
+    <div class="sec-header"><div class="sec-num">07 ——</div><div class="sec-title">Familias</div><div class="sec-sub">Promedio<br>por familia</div></div>
     <div class="fam-wrap"><div class="fam-bars" id="famBars"></div></div>
   </div>
 
   <div class="section">
     <div class="sec-header">
-      <div class="sec-num">09 ——</div>
+      <div class="sec-num">08 ——</div>
       <div class="sec-title">Premios</div>
       <div class="sec-sub">Especiales<br>del Torneo</div>
     </div>
@@ -714,7 +666,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">10 ——</div><div class="sec-title">H2H</div><div class="sec-sub">Cara a cara<br>entre dos</div></div>
+    <div class="sec-header"><div class="sec-num">09 ——</div><div class="sec-title">H2H</div><div class="sec-sub">Cara a cara<br>entre dos</div></div>
     <div class="h2h-controls">
       <select class="h2h-select" id="h2hA" onchange="renderH2H()"></select>
       <span class="h2h-vs-lbl">vs</span>
@@ -1314,15 +1266,6 @@ function render(){
       <td><span class="ph">${p.fin}</span></td><td><span class="ph">${p.camp}</span></td>
       <td><span class="ph">${p.prem}</span></td></tr>`;
   }).join('');
-
-  document.getElementById('breakdown').innerHTML=sorted.map(p=>`
-    <div class="bd-row">
-      <div class="bd-cell">${e(p.name)}</div>
-      <div class="bd-cell c-grp">${p.grp}</div><div class="bd-cell c-oct">${p.oct}</div>
-      <div class="bd-cell c-qf">${p.qf}</div><div class="bd-cell c-sf">${p.sf}</div>
-      <div class="bd-cell c-fin">${p.fin}</div><div class="bd-cell c-cam">${p.camp}</div>
-      <div class="bd-cell c-pre">${p.prem}</div><div class="bd-cell c-tot">${p.total}</div>
-    </div>`).join('');
 
   document.getElementById('premiosGrid').innerHTML=(DATA.premios||[]).map((pr,pi)=>{
     const mx=Math.max(...(pr.votos.length?pr.votos.map(v=>v.c):[1]));
