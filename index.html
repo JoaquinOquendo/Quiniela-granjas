@@ -399,6 +399,29 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 .racha-dot{width:8px;height:8px;border-radius:50%;}
 .rd-hit{background:var(--ecu-b);}.rd-miss{background:var(--ecu-r);}.rd-draw{background:var(--border);}
 
+/* ── GANADOR DEL DÍA ─────────────────────────────────────── */
+.gdia-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.gdia-card{padding:2rem 1.75rem;background:var(--ink);color:#fff;position:relative;overflow:hidden;}
+.gdia-card.gdia-main{background:var(--ecu-b);}
+.gdia-status{font-family:'Syne',sans-serif;font-size:.55rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.4rem;padding:.2rem .6rem;border-radius:2px;margin-bottom:1rem;}
+.gdia-status.prelim{background:var(--ecu-y);color:var(--ink);}
+.gdia-status.def{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);}
+.gdia-tag{font-family:'Syne',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.45;margin-bottom:.6rem;}
+.gdia-name{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1;margin-bottom:.6rem;}
+.gdia-main .gdia-name{color:var(--ecu-y);}
+.gdia-big{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--ecu-y);margin-bottom:.3rem;}
+.gdia-big span{font-size:1rem;font-weight:600;opacity:.55;}
+.gdia-match{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.55;margin-bottom:.3rem;}
+.gdia-detail{font-family:'Syne',sans-serif;font-size:.58rem;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-top:.65rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.1);}
+.gdia-empty{padding:2.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;border:1.5px solid var(--border);grid-column:1/-1;text-align:center;}
+.gdia-empty-icon{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--border);line-height:1;}
+.gdia-empty-txt{font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+@media(max-width:768px){
+  .gdia-grid{grid-template-columns:1fr;}
+  .gdia-card{padding:1.5rem 1.25rem;}
+  .gdia-big{font-size:2.4rem;}
+}
+
 /* ── AMBICIOSO ──────────────────────────────────── */
 .ambicioso-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
 .amb-card{padding:2rem;background:var(--ink);color:#fff;position:relative;overflow:hidden;}
@@ -704,7 +727,16 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">04 ——</div><div class="sec-title">Calor</div><div class="sec-sub">Mapa de<br>calor</div></div>
+    <div class="sec-header">
+      <div class="sec-num">04 ——</div>
+      <div class="sec-title">Rey del Día</div>
+      <div class="sec-sub" id="ganadorDiaSub">Ganador<br>del día</div>
+    </div>
+    <div id="ganadorDia"></div>
+  </div>
+
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div></div>
+  <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div><div class="sec-sub">Mapa de<br>calor</div></div>
     <div class="heatmap-hint">← Desliza para ver todos →</div>
     <div class="heatmap-wrap" id="heatmapWrap"></div>
   </div>
@@ -713,7 +745,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">05 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
+    <div class="sec-header"><div class="sec-num">06 ——</div><div class="sec-title">Ambicioso</div><div class="sec-sub">Pronósticos<br>del día</div></div>
     <div class="ambicioso-wrap" id="ambiciosoWrap"></div>
   </div>
 
@@ -721,7 +753,7 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   <div class="strip"><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div><div class="strip-r" style="flex:1"></div></div>
 
   <div class="section">
-    <div class="sec-header"><div class="sec-num">06 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
+    <div class="sec-header"><div class="sec-num">07 ——</div><div class="sec-title">Racha</div><div class="sec-sub">Racha actual<br>de aciertos</div></div>
     <div class="racha-grid" id="rachaGrid"></div>
   </div>
 
@@ -729,26 +761,12 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
   <div class="section">
     <div class="sec-header">
-      <div class="sec-num">07 ——</div>
+      <div class="sec-num">08 ——</div>
       <div class="sec-title">Votos</div>
       <div class="sec-sub">Premios<br>Individuales</div>
     </div>
     <div class="premios-editorial" id="premiosGrid"></div>
   </div>
-
-  <div class="section">
-    <div class="sec-header"><div class="sec-num">08 ——</div><div class="sec-title">H2H</div><div class="sec-sub">Cara a cara<br>entre dos</div></div>
-    <div class="h2h-controls">
-      <select class="h2h-select" id="h2hA" onchange="renderH2H()"></select>
-      <span class="h2h-vs-lbl">vs</span>
-      <select class="h2h-select" id="h2hB" onchange="renderH2H()"></select>
-    </div>
-    <div class="h2h-result" id="h2hResult"></div>
-    <div class="h2h-phase-row" id="h2hPhases"></div>
-  </div>
-
-  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
-  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
 
   <div class="section">
     <div class="sec-header">
@@ -757,6 +775,20 @@ tr:nth-child(3) .pt{color:#cd7f32;}
       <div class="sec-sub">Especiales<br>del Torneo</div>
     </div>
     <div class="esp-editorial" id="especialesGrid"></div>
+  </div>
+
+  <div class="strip"><div class="strip-r" style="flex:1"></div><div class="strip-b" style="flex:1"></div><div class="strip-y" style="flex:2"></div></div>
+  <div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
+
+  <div class="section">
+    <div class="sec-header"><div class="sec-num">10 ——</div><div class="sec-title">H2H</div><div class="sec-sub">Cara a cara<br>entre dos</div></div>
+    <div class="h2h-controls">
+      <select class="h2h-select" id="h2hA" onchange="renderH2H()"></select>
+      <span class="h2h-vs-lbl">vs</span>
+      <select class="h2h-select" id="h2hB" onchange="renderH2H()"></select>
+    </div>
+    <div class="h2h-result" id="h2hResult"></div>
+    <div class="h2h-phase-row" id="h2hPhases"></div>
   </div>
 
 </div>
@@ -1095,7 +1127,7 @@ function renderDayTabs(){
   }).join('');
 }
 
-function selectDay(offset){currentDayOffset=offset;renderDayTabs();renderPartidos();renderHeatmap();}
+function selectDay(offset){currentDayOffset=offset;renderDayTabs();renderPartidos();renderHeatmap();renderGanadorDia();}
 
 function buildPartidoCard(p){
   const chips=p.pronosticos.filter(pr=>pr.nombre&&pr.nombre.length<30).map(pr=>{
@@ -1130,6 +1162,106 @@ function renderPartidos(){
     return;
   }
   pl.innerHTML=matches.map(p=>buildPartidoCard(p)).join('');
+}
+
+// ── GANADOR DEL DÍA ──────────────────────────────────────
+function calcDayStats(offset){
+  const matches=getPartidosByDay(offset);
+  const scored=matches.filter(m=>m.resultado);
+  if(!scored.length)return null;
+
+  // Per-player points: exact score = 3pts, correct direction = 1pt
+  const ps={};
+  DATA.players.forEach(p=>{ps[p.name]={pts:0,exact:0,hit:0,games:0};});
+
+  // Most unexpected of day: fewest % correct direction, ≥1 got it right
+  let rIW='—',rIN='—',rIM='—',rIpct=1.1;
+
+  scored.forEach(m=>{
+    const rL=m.resultado[0],rV=m.resultado[1];
+    const gR=rL>rV?1:rV>rL?-1:0;
+    if(!m.pronosticos.length)return;
+
+    // Points
+    m.pronosticos.forEach(pr=>{
+      if(!ps[pr.nombre])return;
+      ps[pr.nombre].games++;
+      if(pr.local===rL&&pr.visitante===rV){ps[pr.nombre].pts+=3;ps[pr.nombre].exact++;}
+      else{const gP=pr.local>pr.visitante?1:pr.visitante>pr.local?-1:0;if(gP===gR){ps[pr.nombre].pts+=1;ps[pr.nombre].hit++;}}
+    });
+
+    // Most unexpected
+    const correct=m.pronosticos.filter(pr=>(pr.local>pr.visitante?1:pr.visitante>pr.local?-1:0)===gR);
+    if(!correct.length)return;
+    const pct=correct.length/m.pronosticos.length;
+    if(pct<rIpct){
+      rIpct=pct;rIM=`${m.local} vs ${m.visitante}`;
+      const ex=correct.filter(pr=>pr.local===rL&&pr.visitante===rV);
+      rIW=(ex.length?ex[0]:correct[0]).nombre;
+      rIN=`${rL}-${rV}`;
+    }
+  });
+
+  const sorted=Object.entries(ps).filter(([,v])=>v.games>0).sort(([,a],[,b])=>b.pts-a.pts||b.exact-a.exact);
+  const top=sorted[0];
+  return{
+    played:scored.length,total:matches.length,
+    topName:top?top[0]:'—',topPts:top?top[1].pts:0,
+    topExact:top?top[1].exact:0,topHit:top?top[1].hit:0,
+    rIW,rIN,rIM,rIpct
+  };
+}
+
+function renderGanadorDia(){
+  const el=document.getElementById('ganadorDia');
+  const sub=document.getElementById('ganadorDiaSub');
+  if(!el)return;
+
+  const isMañana=currentDayOffset===1;
+  const isHoy=currentDayOffset===0;
+  const dayLabel=currentDayOffset===-1?'Ayer':currentDayOffset===0?'Hoy':'Mañana';
+  if(sub)sub.innerHTML=`${dayLabel}<br>rey del día`;
+
+  if(isMañana){
+    el.innerHTML=`<div class="gdia-grid"><div class="gdia-empty">
+      <div class="gdia-empty-icon">—</div>
+      <div class="gdia-empty-txt">Pendiente · Los partidos de mañana no se han jugado</div>
+    </div></div>`;
+    return;
+  }
+
+  const stats=calcDayStats(currentDayOffset);
+  if(!stats){
+    el.innerHTML=`<div class="gdia-grid"><div class="gdia-empty">
+      <div class="gdia-empty-icon">—</div>
+      <div class="gdia-empty-txt">Sin partidos jugados este día</div>
+    </div></div>`;
+    return;
+  }
+
+  const {played,total,topName,topPts,topExact,topHit,rIW,rIN,rIM,rIpct}=stats;
+  const badge=isHoy
+    ?`<div class="gdia-status prelim">● Preliminar</div>`
+    :`<div class="gdia-status def">✓ Definitivo</div>`;
+  const allPlayed=played===total;
+
+  el.innerHTML=`<div class="gdia-grid">
+    <div class="gdia-card gdia-main">
+      ${badge}
+      <div class="gdia-tag">Mejor del día</div>
+      <div class="gdia-name">${e(topName)}</div>
+      <div class="gdia-big">${topPts}<span> pts</span></div>
+      <div class="gdia-detail">${topExact} exactos · ${topHit} resultados · ${played} de ${total} partidos jugados${!allPlayed?' · en curso':''}</div>
+    </div>
+    <div class="gdia-card">
+      ${badge.replace('gdia-status','gdia-status').replace('Preliminar','Preliminar').replace('Definitivo','Definitivo')}
+      <div class="gdia-tag">Lo más inesperado</div>
+      <div class="gdia-name">${e(shortName(rIW))}</div>
+      <div class="gdia-match">${e(rIM)}</div>
+      <div class="gdia-big">${rIN}</div>
+      <div class="gdia-detail">Solo el ${Math.round(rIpct*100)}% lo vio venir</div>
+    </div>
+  </div>`;
 }
 
 function render(){
@@ -1186,6 +1318,7 @@ function render(){
 
   renderDayTabs();
   renderPartidos();
+  renderGanadorDia();
 
   const esp=calcEsp();
   document.getElementById('especialesGrid').innerHTML=esp.map(e2=>`
