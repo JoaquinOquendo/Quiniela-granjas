@@ -381,6 +381,30 @@ tr:nth-child(3) .pt{color:#cd7f32;}
   .fam-wrap{padding:1.25rem;}
 }
 
+/* ── SISTEMA DE PUNTOS ───────────────────────────────────── */
+.pts-sistema{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.pts-bloque{background:var(--cream);padding:2rem 1.75rem;border:1.5px solid var(--border);}
+.pts-bloque-titulo{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding-bottom:.75rem;border-bottom:1.5px solid var(--ink);}
+.pts-ico{font-size:1rem;}
+.pts-tag{font-family:'Syne',sans-serif;font-size:.48rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:var(--ink);color:var(--cream);padding:.2rem .55rem;border-radius:2px;}
+.pts-reglas{display:flex;flex-direction:column;gap:1px;}
+.pts-fila{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--border);}
+.pts-fila:last-child{border-bottom:none;}
+.pts-fila-unico{padding:.7rem .75rem;background:rgba(139,92,246,.06);border-left:3px solid #8b5cf6;margin:0 -.75rem;border-bottom:1px solid var(--border);}
+.pts-desc{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:600;color:var(--ink);line-height:1.4;}
+.pts-val{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;color:var(--ink);white-space:nowrap;letter-spacing:.02em;}
+.pts-val-gold{color:#8b6914;}
+.pts-unico-badge{display:inline-block;font-family:'Syne',sans-serif;font-size:.44rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;background:#8b5cf6;color:#fff;padding:.15rem .45rem;border-radius:2px;margin-left:.4rem;vertical-align:middle;}
+.pts-maximo{display:flex;align-items:center;justify-content:space-between;margin-top:1rem;padding:.85rem 1rem;background:var(--ink);color:var(--cream);}
+.pts-maximo span:first-child{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.pts-max-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--ecu-y);letter-spacing:-.01em;}
+@media(max-width:768px){
+  .pts-sistema{grid-template-columns:1fr;}
+  .pts-bloque{padding:1.5rem 1.1rem;}
+  .pts-desc{font-size:.68rem;}
+  .pts-fila-unico{margin:0 -.5rem;}
+}
+
 /* ── H2H ────────────────────────────────────────── */
 .h2h-controls{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center;}
 .h2h-select{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:.6rem 1rem;border-radius:2px;cursor:pointer;appearance:none;-webkit-appearance:none;}
@@ -678,11 +702,73 @@ tr:nth-child(3) .pt{color:#cd7f32;}
 
 </div>
 
-<div class="strip">
-  <div class="strip-y" style="flex:2"></div>
-  <div class="strip-b" style="flex:1"></div>
-  <div class="strip-r" style="flex:1"></div>
+<div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
+<div class="strip"><div class="strip-y" style="flex:2"></div><div class="strip-b" style="flex:1"></div><div class="strip-r" style="flex:1"></div></div>
+
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-num">10 ——</div>
+    <div class="sec-title">Sistema</div>
+    <div class="sec-sub">Reglas<br>de puntos</div>
+  </div>
+  <div class="pts-sistema">
+    <div class="pts-bloque">
+      <div class="pts-bloque-titulo"><span class="pts-ico">⚽</span> Fase de grupos <span class="pts-tag">por partido</span></div>
+      <div class="pts-reglas">
+        <div class="pts-fila">
+          <div class="pts-desc">Aciertas resultado (G / E / P)</div>
+          <div class="pts-val">+1 pt</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Aciertas diferencia de goles</div>
+          <div class="pts-val">+1 pt</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Aciertas el marcador exacto</div>
+          <div class="pts-val">+1 pt</div>
+        </div>
+        <div class="pts-fila pts-fila-unico">
+          <div class="pts-desc">Eres el único en acertar ese resultado <span class="pts-unico-badge">único</span></div>
+          <div class="pts-val pts-val-gold">+2 pts</div>
+        </div>
+        <div class="pts-maximo">
+          <span>Máximo por partido</span><span class="pts-max-num">5 pts</span>
+        </div>
+      </div>
+    </div>
+    <div class="pts-bloque">
+      <div class="pts-bloque-titulo"><span class="pts-ico">🏆</span> Eliminatorias <span class="pts-tag">pronóstico pre-torneo</span></div>
+      <div class="pts-reglas">
+        <div class="pts-fila">
+          <div class="pts-desc">Octavos de final</div>
+          <div class="pts-val">2 pts c/u</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Cuartos de final</div>
+          <div class="pts-val">3 pts c/u</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Semifinales</div>
+          <div class="pts-val">4 pts c/u</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Final (subcampeón)</div>
+          <div class="pts-val">7 pts</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Campeón del mundo</div>
+          <div class="pts-val pts-val-gold">10 pts</div>
+        </div>
+        <div class="pts-fila">
+          <div class="pts-desc">Premios individuales (Bota, Balón, Arquero, Novato)</div>
+          <div class="pts-val">5 pts c/u</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
 <div class="footer-ed">
   <div class="footer-left">
     <div class="footer-brand">Quiniela <span>Granjas</span></div>
@@ -915,29 +1001,227 @@ function calcEsp(){
     let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
     if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
   }
-  // El Resultado Más Inesperado: partido jugado donde el menor % acertó el resultado (pero ≥1 sí)
+// ── RESULTADOS INESPERADOS — HARDCODE ────────────────────────
+// Cada entrada: partido jugado, resultado real, probabilidad implícita
+// de ESE resultado según Kalshi/Polymarket/BetMGM/Opta pre-partido.
+// Ordenados de mayor a menor sorpresa (menor prob = más inesperado).
+// Actualizar al final de cada jornada.
+//
+// prob: probabilidad del resultado que ocurrió (0-100)
+// Cada entrada es un partido de la fase de grupos con su prob. implícita
+// de mercado (Kalshi/Polymarket/BetMGM/Opta) ANTES del partido.
+// resultado: marcador final "L-V" — vacío ("") si aún no se jugó
+// prob: probabilidad del resultado que OCURRIÓ (o del favorito si no hay resultado aún)
+// Solo los partidos con resultado != "" compiten para "El Inesperado"
+const RESULTADOS_INESPERADOS = [
+
+  // ══════════════════════════════════════════════════════════════════
+  // JORNADA 1 — Jun 11–17  (todos jugados)
+  // ══════════════════════════════════════════════════════════════════
+
+  // Grupo A
+  { local:'Mexico',        visita:'South Africa', resultado:'2-0', ganador_resultado:'local',     prob:82, fuente:'Kalshi' },
+  { local:'South Korea',   visita:'Czechia',      resultado:'2-1', ganador_resultado:'local',     prob:48, fuente:'Kalshi' },
+
+  // Grupo B
+  { local:'Canada',        visita:'Bosnia and Herzegovina', resultado:'1-1', ganador_resultado:'empate', prob:26, fuente:'Kalshi' },
+  { local:'Switzerland',   visita:'Qatar',        resultado:'1-1', ganador_resultado:'empate',    prob:18, fuente:'BetMGM' },
+
+  // Grupo C
+  { local:'Brazil',        visita:'Morocco',      resultado:'1-1', ganador_resultado:'empate',    prob:22, fuente:'Opta' },
+  { local:'Scotland',      visita:'Haiti',        resultado:'1-0', ganador_resultado:'local',     prob:60, fuente:'Kalshi' },
+
+  // Grupo D
+  { local:'United States', visita:'Paraguay',     resultado:'4-1', ganador_resultado:'local',     prob:62, fuente:'Kalshi' },
+  { local:'Australia',     visita:'Turkiye',      resultado:'2-0', ganador_resultado:'local',     prob:36, fuente:'Kalshi' },
+
+  // Grupo E
+  { local:'Germany',       visita:'Curacao',      resultado:'7-1', ganador_resultado:'local',     prob:94, fuente:'Opta' },
+  { local:'Ivory Coast',   visita:'Ecuador',      resultado:'1-0', ganador_resultado:'local',     prob:27, fuente:'BetMGM' },
+
+  // Grupo F
+  { local:'Netherlands',   visita:'Japan',        resultado:'2-2', ganador_resultado:'empate',    prob:25, fuente:'Kalshi' },
+  { local:'Sweden',        visita:'Tunisia',      resultado:'5-1', ganador_resultado:'local',     prob:52, fuente:'Kalshi' },
+
+  // Grupo G
+  { local:'Belgium',       visita:'Egypt',        resultado:'1-1', ganador_resultado:'empate',    prob:28, fuente:'Opta' },
+  { local:'Iran',          visita:'New Zealand',  resultado:'2-2', ganador_resultado:'empate',    prob:26, fuente:'Opta' },
+
+  // Grupo H — MAYOR SORPRESA DEL TORNEO: empate España 0-0 Cabo Verde (empate tenía 8%)
+  { local:'Spain',         visita:'Cabo Verde',   resultado:'0-0', ganador_resultado:'empate',    prob: 8, fuente:'BetMGM/Opta' },
+  { local:'Saudi Arabia',  visita:'Uruguay',      resultado:'1-1', ganador_resultado:'empate',    prob:22, fuente:'Kalshi' },
+
+  // Grupo I
+  { local:'France',        visita:'Senegal',      resultado:'3-1', ganador_resultado:'local',     prob:75, fuente:'Kalshi' },
+  { local:'Iraq',          visita:'Norway',       resultado:'1-4', ganador_resultado:'visitante', prob:62, fuente:'Kalshi' },
+
+  // Grupo J
+  { local:'Argentina',     visita:'Algeria',      resultado:'3-0', ganador_resultado:'local',     prob:80, fuente:'Kalshi' },
+  { local:'Austria',       visita:'Jordan',       resultado:'3-1', ganador_resultado:'local',     prob:65, fuente:'BetMGM' },
+
+  // Grupo K
+  { local:'Portugal',      visita:'Congo DR',     resultado:'1-1', ganador_resultado:'empate',    prob:17, fuente:'Kalshi' },
+  { local:'Colombia',      visita:'Uzbekistan',   resultado:'2-1', ganador_resultado:'local',     prob:60, fuente:'Oddschecker' },
+
+  // Grupo L
+  { local:'England',       visita:'Croatia',      resultado:'4-2', ganador_resultado:'local',     prob:58, fuente:'Kalshi' },
+  { local:'Ghana',         visita:'Panama',       resultado:'1-0', ganador_resultado:'local',     prob:40, fuente:'BetMGM' },
+
+  // ══════════════════════════════════════════════════════════════════
+  // JORNADA 2 — Jun 18–23  (resultado vacío hasta que se jueguen)
+  // ══════════════════════════════════════════════════════════════════
+
+  // Grupo A
+  { local:'Czechia',       visita:'South Africa', resultado:'', ganador_resultado:'local',     prob:56, fuente:'Kalshi' },
+  { local:'Mexico',        visita:'South Korea',  resultado:'', ganador_resultado:'local',     prob:51, fuente:'Kalshi' },
+
+  // Grupo B
+  { local:'Switzerland',   visita:'Bosnia and Herzegovina', resultado:'', ganador_resultado:'local', prob:62, fuente:'Kalshi' },
+  { local:'Canada',        visita:'Qatar',        resultado:'', ganador_resultado:'local',     prob:72, fuente:'Kalshi' },
+
+  // Grupo C
+  { local:'Scotland',      visita:'Morocco',      resultado:'', ganador_resultado:'visitante', prob:45, fuente:'Kalshi' },
+  { local:'Brazil',        visita:'Haiti',        resultado:'', ganador_resultado:'local',     prob:89, fuente:'Kalshi' },
+
+  // Grupo D
+  { local:'United States', visita:'Australia',    resultado:'', ganador_resultado:'local',     prob:62, fuente:'Kalshi' },
+  { local:'Turkiye',       visita:'Paraguay',     resultado:'', ganador_resultado:'local',     prob:38, fuente:'Kalshi' },
+
+  // Grupo E
+  { local:'Germany',       visita:'Ivory Coast',  resultado:'', ganador_resultado:'local',     prob:71, fuente:'Kalshi' },
+  { local:'Ecuador',       visita:'Curacao',      resultado:'', ganador_resultado:'local',     prob:77, fuente:'Kalshi' },
+
+  // Grupo F
+  { local:'Netherlands',   visita:'Sweden',       resultado:'', ganador_resultado:'local',     prob:48, fuente:'Kalshi' },
+  { local:'Tunisia',       visita:'Japan',        resultado:'', ganador_resultado:'visitante', prob:44, fuente:'Kalshi' },
+
+  // Grupo G
+  { local:'Spain',         visita:'Saudi Arabia', resultado:'', ganador_resultado:'local',     prob:72, fuente:'Kalshi' },
+  { local:'Belgium',       visita:'Iran',         resultado:'', ganador_resultado:'local',     prob:61, fuente:'Kalshi' },
+  { local:'Uruguay',       visita:'Cabo Verde',   resultado:'', ganador_resultado:'local',     prob:68, fuente:'Kalshi' },
+  { local:'New Zealand',   visita:'Egypt',        resultado:'', ganador_resultado:'visitante', prob:41, fuente:'Kalshi' },
+
+  // Grupo I
+  { local:'France',        visita:'Iraq',         resultado:'', ganador_resultado:'local',     prob:82, fuente:'Kalshi' },
+  { local:'Norway',        visita:'Senegal',      resultado:'', ganador_resultado:'local',     prob:52, fuente:'Kalshi' },
+
+  // Grupo J
+  { local:'Argentina',     visita:'Austria',      resultado:'', ganador_resultado:'local',     prob:65, fuente:'Kalshi' },
+  { local:'Jordan',        visita:'Algeria',      resultado:'', ganador_resultado:'visitante', prob:60, fuente:'Kalshi' },
+
+  // Grupo K
+  { local:'Portugal',      visita:'Uzbekistan',   resultado:'', ganador_resultado:'local',     prob:82, fuente:'Kalshi' },
+  { local:'Colombia',      visita:'Congo DR',     resultado:'', ganador_resultado:'local',     prob:68, fuente:'Kalshi' },
+
+  // Grupo L
+  { local:'England',       visita:'Ghana',        resultado:'', ganador_resultado:'local',     prob:66, fuente:'Kalshi' },
+  { local:'Panama',        visita:'Croatia',      resultado:'', ganador_resultado:'visitante', prob:55, fuente:'Kalshi' },
+
+  // ══════════════════════════════════════════════════════════════════
+  // JORNADA 3 — Jun 24–27  (resultado vacío hasta que se jueguen)
+  // ══════════════════════════════════════════════════════════════════
+
+  // Grupo A
+  { local:'Czechia',       visita:'Mexico',       resultado:'', ganador_resultado:'visitante', prob:57, fuente:'Kalshi' },
+  { local:'South Africa',  visita:'South Korea',  resultado:'', ganador_resultado:'visitante', prob:55, fuente:'Kalshi' },
+
+  // Grupo B
+  { local:'Switzerland',   visita:'Canada',       resultado:'', ganador_resultado:'local',     prob:54, fuente:'Kalshi' },
+  { local:'Bosnia and Herzegovina', visita:'Qatar', resultado:'', ganador_resultado:'local',  prob:62, fuente:'Kalshi' },
+
+  // Grupo C
+  { local:'Scotland',      visita:'Brazil',       resultado:'', ganador_resultado:'visitante', prob:65, fuente:'Kalshi' },
+  { local:'Morocco',       visita:'Haiti',        resultado:'', ganador_resultado:'local',     prob:80, fuente:'Kalshi' },
+
+  // Grupo D
+  { local:'Turkiye',       visita:'United States',resultado:'', ganador_resultado:'visitante', prob:55, fuente:'Kalshi' },
+  { local:'Paraguay',      visita:'Australia',    resultado:'', ganador_resultado:'visitante', prob:50, fuente:'Kalshi' },
+
+  // Grupo E
+  { local:'Ecuador',       visita:'Germany',      resultado:'', ganador_resultado:'visitante', prob:65, fuente:'Kalshi' },
+  { local:'Curacao',       visita:'Ivory Coast',  resultado:'', ganador_resultado:'visitante', prob:60, fuente:'Kalshi' },
+
+  // Grupo F
+  { local:'Japan',         visita:'Sweden',       resultado:'', ganador_resultado:'local',     prob:46, fuente:'Kalshi' },
+  { local:'Tunisia',       visita:'Netherlands',  resultado:'', ganador_resultado:'visitante', prob:64, fuente:'Kalshi' },
+
+  // Grupo G
+  { local:'Egypt',         visita:'Iran',         resultado:'', ganador_resultado:'empate',    prob:32, fuente:'Kalshi' },
+  { local:'New Zealand',   visita:'Belgium',      resultado:'', ganador_resultado:'visitante', prob:70, fuente:'Kalshi' },
+
+  // Grupo H
+  { local:'Cabo Verde',    visita:'Saudi Arabia', resultado:'', ganador_resultado:'empate',    prob:28, fuente:'Kalshi' },
+  { local:'Spain',         visita:'Uruguay',      resultado:'', ganador_resultado:'local',     prob:57, fuente:'Kalshi' },
+
+  // Grupo I
+  { local:'Norway',        visita:'France',       resultado:'', ganador_resultado:'visitante', prob:60, fuente:'Kalshi' },
+  { local:'Senegal',       visita:'Iraq',         resultado:'', ganador_resultado:'local',     prob:68, fuente:'Kalshi' },
+
+  // Grupo J
+  { local:'Jordan',        visita:'Argentina',    resultado:'', ganador_resultado:'visitante', prob:82, fuente:'Kalshi' },
+  { local:'Algeria',       visita:'Austria',      resultado:'', ganador_resultado:'empate',    prob:30, fuente:'Kalshi' },
+
+  // Grupo K
+  { local:'Colombia',      visita:'Portugal',     resultado:'', ganador_resultado:'visitante', prob:52, fuente:'Kalshi' },
+  { local:'Congo DR',      visita:'Uzbekistan',   resultado:'', ganador_resultado:'local',     prob:45, fuente:'Kalshi' },
+
+  // Grupo L
+  { local:'Panama',        visita:'England',      resultado:'', ganador_resultado:'visitante', prob:74, fuente:'Kalshi' },
+  { local:'Croatia',       visita:'Ghana',        resultado:'', ganador_resultado:'local',     prob:52, fuente:'Kalshi' },
+
+];
+
+// Devuelve el partido más inesperado: menor prob implícita de mercado
+// Solo considera partidos ya jugados (resultado !== "")
+function getMasInesperado() {
+  const jugados = RESULTADOS_INESPERADOS.filter(m => m.resultado !== '');
+  if (!jugados.length) return null;
+  return [...jugados].sort((a,b) => a.prob - b.prob)[0];
+}
+
+  // ── El Inesperado: hardcodeado desde RESULTADOS_INESPERADOS ──────
+  // Toma el partido con menor probabilidad de mercado (ordenados en el array).
+  // Busca dinámicamente quién en el grupo acertó el resultado de ese partido.
   let rIW='—',rIN='—',rIM='—',rIpct=1.1;
-  FIXTURE_ORDER_CAPTURA.forEach(([local,visita],idx)=>{
-    const real=res[idx];if(!real)return;
-    const gR=real[0]>real[1]?1:real[1]>real[0]?-1:0;
-    const withData=pros.filter(p=>p.partidos[idx]);if(!withData.length)return;
-    const correct=withData.filter(p=>{const pro=p.partidos[idx];return(pro[0]>pro[1]?1:pro[1]>pro[0]?-1:0)===gR;});
-    if(!correct.length)return;
-    const pct=correct.length/withData.length;
-    if(pct<rIpct){
-      rIpct=pct;rIM=`${local} vs ${visita}`;
-      const exact=correct.filter(p=>p.partidos[idx][0]===real[0]&&p.partidos[idx][1]===real[1]);
-      rIW=(exact.length?exact[0]:correct[0]).nombre;
-      rIN=`${real[0]}-${real[1]}`;
+  const masInesperado=getMasInesperado();
+  if(masInesperado){
+    rIM=`${masInesperado.local} vs ${masInesperado.visita}`;
+    rIN=masInesperado.resultado;
+    rIpct=masInesperado.prob/100;
+    // Buscar quién en el grupo acertó el resultado (ganador correcto)
+    const [gL,gV]=masInesperado.resultado.split('-').map(Number);
+    const gR=gL>gV?1:gV>gL?-1:0;
+    const idxPartido=FIXTURE_ORDER_CAPTURA.findIndex(([l,v])=>
+      (l===masInesperado.local&&v===masInesperado.visita)||
+      (l===masInesperado.visita&&v===masInesperado.local)
+    );
+    if(idxPartido>=0){
+      const correctos=pros.filter(p=>{
+        const pro=p.partidos[idxPartido];if(!pro)return false;
+        // Si el fixture está en orden inverso, invertir la comparación
+        const [fl,fv]=FIXTURE_ORDER_CAPTURA[idxPartido];
+        const flipped=fl===masInesperado.visita;
+        const pL=flipped?pro[1]:pro[0],pV=flipped?pro[0]:pro[1];
+        return(pL>pV?1:pV>pL?-1:0)===gR;
+      });
+      // Preferir quien acertó el marcador exacto
+      const exactos=correctos.filter(p=>{
+        const pro=p.partidos[idxPartido];if(!pro)return false;
+        const [fl,fv]=FIXTURE_ORDER_CAPTURA[idxPartido];
+        const flipped=fl===masInesperado.visita;
+        return flipped?(pro[1]===gL&&pro[0]===gV):(pro[0]===gL&&pro[1]===gV);
+      });
+      if(exactos.length) rIW=exactos[0].nombre;
+      else if(correctos.length) rIW=correctos[0].nombre;
     }
-  });
+  }
   return[
     {icon:"◎",titulo:"El Adivino", nombre:adivino?.nombre||'—',desc:`Acertó <strong>${adivino?.exactos||0} marcadores exactos</strong>. Visión de cristal.`,cls:"ee-gold"},
     {icon:"✕",titulo:"El Ciego",   nombre:ciego?.name||'—',   desc:`Solo <strong>${ciego?.grp||0} pts en grupos</strong>. Vivía en otro universo.`,cls:"ee-red"},
     {icon:"◈",titulo:"El Suertero",nombre:sN,                  desc:`El único que acertó el <strong>${sD}</strong>. Solo, con fe.`,cls:"ee-blue"},
     {icon:"▲",titulo:"El Hincha",  nombre:hincha?.nombre||'—', desc:`Le dio <strong>${hincha?.ecuGF||0} goles a Ecuador</strong>. Fe total en la Tri.`,cls:"ee-green"},
     {icon:"▼",titulo:"El Traidor", nombre:traidor?.nombre||'—',desc:`Solo <strong>${traidor?.ecuGF||0} goles para Ecuador</strong>. Ni en casa confía.`,cls:"ee-red"},
-    {icon:"⚡",titulo:"El Inesperado",nombre:rIW,desc:`Acertó el <strong>${rIN}</strong> en <strong>${rIM}</strong>. Solo el <strong>${Math.round(rIpct*100)}%</strong> lo vio venir.`,cls:"ee-purple"},
+    {icon:"⚡",titulo:"El Inesperado",nombre:rIW,desc:`Acertó el <strong>${rIN}</strong> en <strong>${rIM}</strong>. El mercado solo le daba <strong>${Math.round(rIpct*100)}%</strong> de chance.`,cls:"ee-purple"},
     {icon:"!!",titulo:"El Osado",  nombre:osado?.nombre||'—',  desc:`Apostó por un <strong>${osado?.maxGdet||'—'}</strong> en <strong>${osado?.maxGmatch||'—'}</strong>.`,cls:"ee-orange"},
     {icon:"=", titulo:"Los Gemelos",nombre:`${g1} & ${g2}`,    desc:`<strong>${gN} pronósticos idénticos</strong>. ¿Se copiaron?`,cls:"ee-teal"},
   ];
