@@ -1224,10 +1224,21 @@ function getMasInesperado() {
       const pro=p.partidos[idx];
       return flipped?(pro[1]===gL&&pro[0]===gV):(pro[0]===gL&&pro[1]===gV);
     });
-    rIW=(exactos.length?exactos[0]:correctos[0]).nombre;
-    rIN=cand.resultado;
+    const ganador=exactos.length?exactos[0]:correctos[0];
+    rIW=ganador.nombre;
+    // Capturar el pronóstico real del ganador para mostrarlo en descripción
+    const proGanador=ganador.partidos[idx];
+    const pGanL=flipped?(proGanador[1]):(proGanador[0]);
+    const pGanV=flipped?(proGanador[0]):(proGanador[1]);
+    const pronosticoReal=`${pGanL}-${pGanV}`;
+    const fueExacto=exactos.length>0;
+    rIN=fueExacto?cand.resultado:pronosticoReal; // si exacto muestra el real, si solo resultado muestra su pronóstico
     rIM=`${cand.local} vs ${cand.visita}`;
     rIpct=cand.prob/100;
+    // Guardar si fue exacto para la descripción
+    rIW=ganador.nombre;
+    // Guardamos en objeto para usar en desc
+    Object.assign(window._inesperadoMeta={},{fueExacto,pronosticoReal,resultadoReal:cand.resultado});
     break;
   }
   return[
@@ -1236,7 +1247,11 @@ function getMasInesperado() {
     {icon:"◈",titulo:"El Suertero",nombre:sN,                  desc:`El único que acertó el <strong>${sD}</strong>. Solo, con fe.`,cls:"ee-blue"},
     {icon:"▲",titulo:"El Hincha",  nombre:hincha?.nombre||'—', desc:`Le dio <strong>${hincha?.ecuGF||0} goles a Ecuador</strong>. Fe total en la Tri.`,cls:"ee-green"},
     {icon:"▼",titulo:"El Traidor", nombre:traidor?.nombre||'—',desc:`Solo <strong>${traidor?.ecuGF||0} goles para Ecuador</strong>. Ni en casa confía.`,cls:"ee-red"},
-    {icon:"⚡",titulo:"El Inesperado",nombre:rIW,desc:`Acertó el <strong>${rIN}</strong> en <strong>${rIM}</strong>. El mercado solo le daba <strong>${Math.round(rIpct*100)}%</strong> de chance.`,cls:"ee-purple"},
+    {icon:"⚡",titulo:"El Inesperado",nombre:rIW,desc:(()=>{
+      const m=window._inesperadoMeta||{};
+      if(m.fueExacto) return `Acertó el <strong>${m.resultadoReal}</strong> exacto en <strong>${rIM}</strong>. El mercado solo le daba <strong>${Math.round(rIpct*100)}%</strong> de chance.`;
+      return `Pronosticó <strong>${m.pronosticoReal}</strong> en <strong>${rIM}</strong> (resultado: ${m.resultadoReal}). El mercado solo le daba <strong>${Math.round(rIpct*100)}%</strong> al empate.`;
+    })(),cls:"ee-purple"},
     {icon:"!!",titulo:"El Osado",  nombre:osado?.nombre||'—',  desc:`Apostó por un <strong>${osado?.maxGdet||'—'}</strong> en <strong>${osado?.maxGmatch||'—'}</strong>.`,cls:"ee-orange"},
     {icon:"=", titulo:"Los Gemelos",nombre:`${g1} & ${g2}`,    desc:`<strong>${gN} pronósticos idénticos</strong>. ¿Se copiaron?`,cls:"ee-teal"},
   ];
