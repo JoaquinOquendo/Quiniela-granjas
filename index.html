@@ -1180,40 +1180,55 @@ function getMasInesperado() {
 }
 
   // ── El Inesperado: hardcodeado desde RESULTADOS_INESPERADOS ──────
-  // Toma el partido con menor probabilidad de mercado (ordenados en el array).
-  // Busca dinámicamente quién en el grupo acertó el resultado de ese partido.
+  // Los nombres en RESULTADOS_INESPERADOS están en inglés; FIXTURE_ORDER_CAPTURA
+  // usa nombres en español. Traducimos antes del findIndex.
+  // Si nadie en el grupo acertó el partido más inesperado, bajamos al siguiente.
+  const ES={
+    'Mexico':'México','South Africa':'Sudáfrica','South Korea':'Corea del Sur',
+    'Czechia':'Chequia','Canada':'Canadá','Bosnia and Herzegovina':'Bosnia y Herzegovina',
+    'Switzerland':'Suiza','Brazil':'Brasil','Morocco':'Marruecos','Scotland':'Escocia',
+    'Haiti':'Haití','United States':'Estados Unidos','Paraguay':'Paraguay',
+    'Australia':'Australia','Turkiye':'Turquía','Germany':'Alemania','Curacao':'Curazao',
+    'Ivory Coast':'Costa de Marfil','Ecuador':'Ecuador','Netherlands':'Países Bajos',
+    'Japan':'Japón','Sweden':'Suecia','Tunisia':'Túnez','Belgium':'Bélgica',
+    'Egypt':'Egipto','Iran':'Irán','New Zealand':'Nueva Zelanda','Spain':'España',
+    'Cabo Verde':'Cabo Verde','Saudi Arabia':'Arabia Saudita','Uruguay':'Uruguay',
+    'France':'Francia','Senegal':'Senegal','Iraq':'Irak','Norway':'Noruega',
+    'Argentina':'Argentina','Algeria':'Argelia','Austria':'Austria','Jordan':'Jordania',
+    'Portugal':'Portugal','Congo DR':'Congo DR','Colombia':'Colombia',
+    'Uzbekistan':'Uzbekistán','England':'Inglaterra','Croatia':'Croacia',
+    'Ghana':'Ghana','Panama':'Panamá','Qatar':'Qatar',
+  };
   let rIW='—',rIN='—',rIM='—',rIpct=1.1;
-  const masInesperado=getMasInesperado();
-  if(masInesperado){
-    rIM=`${masInesperado.local} vs ${masInesperado.visita}`;
-    rIN=masInesperado.resultado;
-    rIpct=masInesperado.prob/100;
-    // Buscar quién en el grupo acertó el resultado (ganador correcto)
-    const [gL,gV]=masInesperado.resultado.split('-').map(Number);
+  const jugados=[...RESULTADOS_INESPERADOS].filter(m=>m.resultado!=='').sort((a,b)=>a.prob-b.prob);
+  for(const cand of jugados){
+    const lES=ES[cand.local]||cand.local;
+    const vES=ES[cand.visita]||cand.visita;
+    const [gL,gV]=cand.resultado.split('-').map(Number);
     const gR=gL>gV?1:gV>gL?-1:0;
-    const idxPartido=FIXTURE_ORDER_CAPTURA.findIndex(([l,v])=>
-      (l===masInesperado.local&&v===masInesperado.visita)||
-      (l===masInesperado.visita&&v===masInesperado.local)
+    const idx=FIXTURE_ORDER_CAPTURA.findIndex(([l,v])=>
+      (l===lES&&v===vES)||(l===vES&&v===lES)
     );
-    if(idxPartido>=0){
-      const correctos=pros.filter(p=>{
-        const pro=p.partidos[idxPartido];if(!pro)return false;
-        // Si el fixture está en orden inverso, invertir la comparación
-        const [fl,fv]=FIXTURE_ORDER_CAPTURA[idxPartido];
-        const flipped=fl===masInesperado.visita;
-        const pL=flipped?pro[1]:pro[0],pV=flipped?pro[0]:pro[1];
-        return(pL>pV?1:pV>pL?-1:0)===gR;
-      });
-      // Preferir quien acertó el marcador exacto
-      const exactos=correctos.filter(p=>{
-        const pro=p.partidos[idxPartido];if(!pro)return false;
-        const [fl,fv]=FIXTURE_ORDER_CAPTURA[idxPartido];
-        const flipped=fl===masInesperado.visita;
-        return flipped?(pro[1]===gL&&pro[0]===gV):(pro[0]===gL&&pro[1]===gV);
-      });
-      if(exactos.length) rIW=exactos[0].nombre;
-      else if(correctos.length) rIW=correctos[0].nombre;
-    }
+    if(idx<0) continue;
+    const [fl]=FIXTURE_ORDER_CAPTURA[idx];
+    const flipped=fl===vES;
+    // Buscar quien acertó el resultado (dirección correcta)
+    const correctos=pros.filter(p=>{
+      const pro=p.partidos[idx];if(!pro)return false;
+      const pL=flipped?pro[1]:pro[0],pV=flipped?pro[0]:pro[1];
+      return(pL>pV?1:pV>pL?-1:0)===gR;
+    });
+    if(!correctos.length) continue; // nadie acertó este, probar el siguiente
+    // Preferir marcador exacto
+    const exactos=correctos.filter(p=>{
+      const pro=p.partidos[idx];
+      return flipped?(pro[1]===gL&&pro[0]===gV):(pro[0]===gL&&pro[1]===gV);
+    });
+    rIW=(exactos.length?exactos[0]:correctos[0]).nombre;
+    rIN=cand.resultado;
+    rIM=`${cand.local} vs ${cand.visita}`;
+    rIpct=cand.prob/100;
+    break;
   }
   return[
     {icon:"◎",titulo:"El Adivino", nombre:adivino?.nombre||'—',desc:`Acertó <strong>${adivino?.exactos||0} marcadores exactos</strong>. Visión de cristal.`,cls:"ee-gold"},
