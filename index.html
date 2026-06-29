@@ -1724,7 +1724,13 @@ const CSV_CAPTURA='https://docs.google.com/spreadsheets/d/e/2PACX-1vRVRovh88TsVE
 // CAPTURA M (Ronda de 32) — formato largo: una fila por persona/partido, columna PUNTOS.
 const CSV_CAPTURA_R32='https://docs.google.com/spreadsheets/d/e/2PACX-1vQp14lZZQipyU_hJ0JZM2pdnAcZNgo2Ao9zauKhclHm5KrmIRcT3qwBOSPpML2UxuCjOIePe3E3_ISa/pub?gid=567763074&single=true&output=csv';
 // Alias de nombres de la captura R32 -> nombre canónico del dashboard
-const R32_ALIAS={'jose andres':'Jose A','jose andres vasquez':'Jose A','jose a vasquez':'Jose A'};
+const R32_ALIAS={
+  'jose andres':'Jose A','jose andres vasquez':'Jose A','jose a vasquez':'Jose A',
+  'josesito':'Jose A',
+  'agustin':'Agus',
+  'julio':'Tio Julito',
+  'lina':'Tia lina',
+};
 // Estado de los puntos de partidos de eliminatoria (16avos y futuras rondas)
 const R32={puntos:{},cargado:false};
 
@@ -1781,11 +1787,13 @@ function parseCapturaR32(csv){
   const rows=parseCSV(csv);
   if(!rows.length) return null;
   const header=rows[0];
-  const iName=header.indexOf('Nombre');
-  const iPart=header.indexOf('Partido');
-  const iGL  =header.indexOf('Goles L');
-  const iGV  =header.indexOf('Goles V');
-  const iPts =header.indexOf('PUNTOS');
+  // Búsqueda de columnas case-insensitive (la hoja puede tener "Puntos" o "PUNTOS")
+  const col=(name)=>header.findIndex(h=>(h||'').trim().toLowerCase()===name.toLowerCase());
+  const iName=col('Nombre');
+  const iPart=col('Partido');
+  const iGL  =col('Goles L');
+  const iGV  =col('Goles V');
+  const iPts =col('Puntos');
   if(iName<0||iPts<0) return null;
   const puntos={};
   const pronos={};      // 'R32-XX' -> [{nombre,local,visitante}]
