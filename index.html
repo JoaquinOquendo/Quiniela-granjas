@@ -1032,39 +1032,6 @@ function buildTicker(players){
   document.getElementById('tickerInner').innerHTML=all+all;
 }
 
-function calcEsp(){
-  const res=DATA.resultados_grupos;
-  const pros=DATA.pronosticos_grupos;
-  const ecu=DATA.ecuador_partidos||[];
-  const stats=pros.map(p=>{
-    let exactos=0,ecuGF=0,maxG=0,maxGdet='',maxGmatch='';
-    p.partidos.forEach((pro,i)=>{
-      const real=res[i];
-      if(real&&pro[0]===real[0]&&pro[1]===real[1])exactos++;
-      const g=pro[0]+pro[1];
-      if(g>maxG){maxG=g;maxGdet=`${pro[0]}-${pro[1]}`;
-        const fix=FIXTURE_ORDER_CAPTURA[i];
-        maxGmatch=fix?`${fix[0]} vs ${fix[1]}`:'—';}
-    });
-    ecu.forEach(ec=>{const pro=p.partidos[ec.idx];if(!pro)return;ecuGF+=ec.esLocal?pro[0]:pro[1];});
-    return{nombre:p.nombre,exactos,ecuGF,maxG,maxGdet,maxGmatch};
-  });
-  const adivino=[...stats].sort((a,b)=>b.exactos-a.exactos)[0];
-  const ciego=[...DATA.players].sort((a,b)=>a.grp-b.grp)[0];
-  const hincha=[...stats].sort((a,b)=>b.ecuGF-a.ecuGF)[0];
-  const traidor=[...stats].sort((a,b)=>a.ecuGF-b.ecuGF)[0];
-  let sN='—',sD='—',minC=99;
-  pros.forEach(p=>p.partidos.forEach((pro,i)=>{
-    const real=res[i];if(!real||pro[0]!==real[0]||pro[1]!==real[1])return;
-    const c=pros.filter(q=>q.partidos[i]&&q.partidos[i][0]===real[0]&&q.partidos[i][1]===real[1]).length;
-    if(c<minC){minC=c;sN=p.nombre;sD=`${real[0]}-${real[1]}`;}
-  }));
-  const osado=[...stats].sort((a,b)=>b.maxG-a.maxG)[0];
-  let g1='—',g2='—',gN=0;
-  for(let a=0;a<pros.length;a++)for(let b=a+1;b<pros.length;b++){
-    let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
-    if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
-  }
 // ── RESULTADOS INESPERADOS — HARDCODE ────────────────────────
 // Cada entrada: partido jugado, resultado real, probabilidad implícita
 // de ESE resultado según Kalshi/Polymarket/BetMGM/Opta pre-partido.
@@ -1290,6 +1257,40 @@ function buscarAcertadorInesperado(cand){
   const pL=flipped?pro[1]:pro[0], pV=flipped?pro[0]:pro[1];
   return {nombre:ganador.nombre, pronostico:`${pL}-${pV}`, fueExacto:exactos.length>0};
 }
+
+function calcEsp(){
+  const res=DATA.resultados_grupos;
+  const pros=DATA.pronosticos_grupos;
+  const ecu=DATA.ecuador_partidos||[];
+  const stats=pros.map(p=>{
+    let exactos=0,ecuGF=0,maxG=0,maxGdet='',maxGmatch='';
+    p.partidos.forEach((pro,i)=>{
+      const real=res[i];
+      if(real&&pro[0]===real[0]&&pro[1]===real[1])exactos++;
+      const g=pro[0]+pro[1];
+      if(g>maxG){maxG=g;maxGdet=`${pro[0]}-${pro[1]}`;
+        const fix=FIXTURE_ORDER_CAPTURA[i];
+        maxGmatch=fix?`${fix[0]} vs ${fix[1]}`:'—';}
+    });
+    ecu.forEach(ec=>{const pro=p.partidos[ec.idx];if(!pro)return;ecuGF+=ec.esLocal?pro[0]:pro[1];});
+    return{nombre:p.nombre,exactos,ecuGF,maxG,maxGdet,maxGmatch};
+  });
+  const adivino=[...stats].sort((a,b)=>b.exactos-a.exactos)[0];
+  const ciego=[...DATA.players].sort((a,b)=>a.grp-b.grp)[0];
+  const hincha=[...stats].sort((a,b)=>b.ecuGF-a.ecuGF)[0];
+  const traidor=[...stats].sort((a,b)=>a.ecuGF-b.ecuGF)[0];
+  let sN='—',sD='—',minC=99;
+  pros.forEach(p=>p.partidos.forEach((pro,i)=>{
+    const real=res[i];if(!real||pro[0]!==real[0]||pro[1]!==real[1])return;
+    const c=pros.filter(q=>q.partidos[i]&&q.partidos[i][0]===real[0]&&q.partidos[i][1]===real[1]).length;
+    if(c<minC){minC=c;sN=p.nombre;sD=`${real[0]}-${real[1]}`;}
+  }));
+  const osado=[...stats].sort((a,b)=>b.maxG-a.maxG)[0];
+  let g1='—',g2='—',gN=0;
+  for(let a=0;a<pros.length;a++)for(let b=a+1;b<pros.length;b++){
+    let ig=0;pros[a].partidos.forEach((p,i)=>{const pb=pros[b].partidos[i];if(pb&&p[0]===pb[0]&&p[1]===pb[1])ig++;});
+    if(ig>gN){gN=ig;g1=pros[a].nombre;g2=pros[b].nombre;}
+  }
 
   // ── El Inesperado: usa buscarAcertadorInesperado sobre el hardcode ──
   // Cascada: partido de menor prob de mercado donde alguien del grupo acertó.
