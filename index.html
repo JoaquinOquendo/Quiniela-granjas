@@ -977,6 +977,15 @@ const PARTIDOS_COMPLETOS=[
   {grupo:"16avos",r32:"R32-14",hora:"Jul 3 · 14:00 ECT",local:"Australia",visitante:"Egipto",resultado:null,pronosticos:[]},
   {grupo:"16avos",r32:"R32-15",hora:"Jul 3 · 18:00 ECT",local:"Argentina",visitante:"Cabo Verde",resultado:null,pronosticos:[]},
   {grupo:"16avos",r32:"R32-16",hora:"Jul 3 · 21:30 ECT",local:"Colombia",visitante:"Ghana",resultado:null,pronosticos:[]},
+  // ── OCTAVOS DE FINAL — horarios en ECT (ET − 1h) ──
+  {grupo:"Octavos",r32:"R16-01",hora:"Jul 4 · 12:00 ECT",local:"Canadá",visitante:"Marruecos",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-02",hora:"Jul 4 · 16:00 ECT",local:"Paraguay",visitante:"Francia",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-03",hora:"Jul 5 · 15:00 ECT",local:"Brasil",visitante:"Noruega",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-04",hora:"Jul 5 · 19:00 ECT",local:"México",visitante:"Inglaterra",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-05",hora:"Jul 6 · 14:00 ECT",local:"Portugal",visitante:"España",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-06",hora:"Jul 6 · 19:00 ECT",local:"Estados Unidos",visitante:"Bélgica",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-07",hora:"Jul 7 · 11:00 ECT",local:"Argentina",visitante:"Egipto",resultado:null,pronosticos:[]},
+  {grupo:"Octavos",r32:"R16-08",hora:"Jul 7 · 15:00 ECT",local:"Suiza",visitante:"Colombia",resultado:null,pronosticos:[]},
 ];
 DATA.partidos=PARTIDOS_COMPLETOS.map(p=>Object.assign({},p,{pronosticos:[]}));
 function buildTicker(players){
@@ -1364,7 +1373,7 @@ function buildPartidoCard(p){
     ?`<div class="pe-center"><div class="pe-score">${p.resultado[0]}—${p.resultado[1]}</div><div class="pe-vs">FT</div></div>`
     :`<div class="pe-center"><div class="pe-vs">VS</div><div class="pe-hora">${e(p.hora)}</div></div>`;
   return`<div class="partido-ed${p.resultado?' played':''}">
-    <div class="pe-group"><div class="pe-group-lbl">${p.r32?'Ronda':'Grupo'}</div><div class="pe-group-name">${e(p.r32?'16avos':p.grupo.replace('Grupo ',''))}</div></div>
+    <div class="pe-group"><div class="pe-group-lbl">${p.r32?'Ronda':'Grupo'}</div><div class="pe-group-name">${e(p.r32?(p.r32.startsWith('R16')?'Octavos':p.r32.startsWith('QF')?'Cuartos':p.r32.startsWith('SF')?'Semis':p.r32.startsWith('FIN')?'Final':'16avos'):p.grupo.replace('Grupo ',''))}</div></div>
     <div class="pe-team"><div class="pe-team-name">${e(p.local)}</div></div>${ctr}
     <div class="pe-team right"><div class="pe-team-name">${e(p.visitante)}</div></div>
     <div class="pe-prono"><div class="pe-prono-lbl">Pronósticos</div>${chips||'<span style="font-size:.6rem;color:rgba(255,255,255,.2);font-family:Syne;letter-spacing:.1em">—</span>'}</div></div>`;
