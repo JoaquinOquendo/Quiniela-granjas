@@ -1044,6 +1044,11 @@ const PARTIDOS_COMPLETOS=[
   {grupo:"Octavos",r32:"R16-06",hora:"Jul 6 · 19:00 ECT",local:"Estados Unidos",visitante:"Bélgica",resultado:null,pronosticos:[]},
   {grupo:"Octavos",r32:"R16-07",hora:"Jul 7 · 11:00 ECT",local:"Argentina",visitante:"Egipto",resultado:null,pronosticos:[]},
   {grupo:"Octavos",r32:"R16-08",hora:"Jul 7 · 15:00 ECT",local:"Suiza",visitante:"Colombia",resultado:null,pronosticos:[]},
+  // ── CUARTOS DE FINAL — horarios en ECT (ET − 1h) ──
+  {grupo:"Cuartos",r32:"QF-01",hora:"Jul 9 · 15:00 ECT",local:"Francia",visitante:"Marruecos",resultado:null,pronosticos:[]},
+  {grupo:"Cuartos",r32:"QF-02",hora:"Jul 10 · 14:00 ECT",local:"España",visitante:"Bélgica",resultado:null,pronosticos:[]},
+  {grupo:"Cuartos",r32:"QF-03",hora:"Jul 11 · 16:00 ECT",local:"Noruega",visitante:"Inglaterra",resultado:null,pronosticos:[]},
+  {grupo:"Cuartos",r32:"QF-04",hora:"Jul 11 · 20:00 ECT",local:"Argentina",visitante:"Suiza",resultado:null,pronosticos:[]},
 ];
 DATA.partidos=PARTIDOS_COMPLETOS.map(p=>Object.assign({},p,{pronosticos:[]}));
 function buildTicker(players){
@@ -1220,6 +1225,50 @@ const RESULTADOS_INESPERADOS = [
   { local:'Panama',        visita:'England',      resultado:'0-2', ganador_resultado:'visitante', prob:74, fuente:'Kalshi' },
   { local:'Croatia',       visita:'Ghana',        resultado:'2-1', ganador_resultado:'local', prob:52, fuente:'Kalshi' },
 
+  // ══════════════════════════════════════════════════════════════════
+  // RONDA DE 32 (16avos) — Jun 28–Jul 3  (nombres en español + id;
+  // resultado = marcador a los 120', empate = se definió en penales)
+  // ══════════════════════════════════════════════════════════════════
+
+  { id:'R32-01', local:'Sudáfrica',       visita:'Canadá',      resultado:'0-1', ganador_resultado:'visitante', prob:62, fuente:'FanDuel' },
+  { id:'R32-02', local:'Brasil',          visita:'Japón',       resultado:'2-1', ganador_resultado:'local',     prob:62, fuente:'FanDuel' },
+  { id:'R32-03', local:'Alemania',        visita:'Paraguay',    resultado:'1-1', ganador_resultado:'empate',    prob:15, fuente:'Est.' },
+  { id:'R32-04', local:'Países Bajos',    visita:'Marruecos',   resultado:'1-1', ganador_resultado:'empate',    prob:24, fuente:'Est.' },
+  { id:'R32-05', local:'Costa de Marfil', visita:'Noruega',     resultado:'1-2', ganador_resultado:'visitante', prob:55, fuente:'FanDuel' },
+  { id:'R32-06', local:'Francia',         visita:'Suecia',      resultado:'3-0', ganador_resultado:'local',     prob:78, fuente:'FanDuel' },
+  { id:'R32-07', local:'México',          visita:'Ecuador',     resultado:'2-0', ganador_resultado:'local',     prob:56, fuente:'Kalshi' },
+  { id:'R32-08', local:'Inglaterra',      visita:'R.D. Congo',  resultado:'2-1', ganador_resultado:'local',     prob:80, fuente:'FanDuel' },
+  { id:'R32-09', local:'Bélgica',         visita:'Senegal',     resultado:'3-2', ganador_resultado:'local',     prob:54, fuente:'FanDuel' },
+  { id:'R32-10', local:'Estados Unidos',  visita:'Bosnia',      resultado:'2-0', ganador_resultado:'local',     prob:75, fuente:'FanDuel' },
+  { id:'R32-11', local:'España',          visita:'Austria',     resultado:'3-0', ganador_resultado:'local',     prob:80, fuente:'FanDuel' },
+  { id:'R32-12', local:'Portugal',        visita:'Croacia',     resultado:'2-1', ganador_resultado:'local',     prob:57, fuente:'FanDuel' },
+  { id:'R32-13', local:'Suiza',           visita:'Argelia',     resultado:'2-0', ganador_resultado:'local',     prob:64, fuente:'FanDuel' },
+  { id:'R32-14', local:'Australia',       visita:'Egipto',      resultado:'1-1', ganador_resultado:'empate',    prob:25, fuente:'Est.' },
+  { id:'R32-15', local:'Argentina',       visita:'Cabo Verde',  resultado:'3-2', ganador_resultado:'local',     prob:85, fuente:'FanDuel' },
+  { id:'R32-16', local:'Colombia',        visita:'Ghana',       resultado:'1-0', ganador_resultado:'local',     prob:62, fuente:'FanDuel' },
+
+  // ══════════════════════════════════════════════════════════════════
+  // OCTAVOS DE FINAL — Jul 4–7  (todos jugados)
+  // ══════════════════════════════════════════════════════════════════
+
+  { id:'R16-01', local:'Canadá',          visita:'Marruecos',   resultado:'0-3', ganador_resultado:'visitante', prob:45, fuente:'Est.' },
+  { id:'R16-02', local:'Paraguay',        visita:'Francia',     resultado:'0-1', ganador_resultado:'visitante', prob:70, fuente:'Est.' },
+  { id:'R16-03', local:'Brasil',          visita:'Noruega',     resultado:'1-2', ganador_resultado:'visitante', prob:25, fuente:'Est.' },
+  { id:'R16-04', local:'México',          visita:'Inglaterra',  resultado:'2-3', ganador_resultado:'visitante', prob:50, fuente:'Est.' },
+  { id:'R16-05', local:'Portugal',        visita:'España',      resultado:'0-1', ganador_resultado:'visitante', prob:55, fuente:'Est.' },
+  { id:'R16-06', local:'Estados Unidos',  visita:'Bélgica',     resultado:'1-4', ganador_resultado:'visitante', prob:45, fuente:'Est.' },
+  { id:'R16-07', local:'Argentina',       visita:'Egipto',      resultado:'3-2', ganador_resultado:'local',     prob:80, fuente:'Est.' },
+  { id:'R16-08', local:'Suiza',           visita:'Colombia',    resultado:'0-0', ganador_resultado:'empate',    prob:28, fuente:'Est.' },
+
+  // ══════════════════════════════════════════════════════════════════
+  // CUARTOS DE FINAL — Jul 9–11  (resultado vacío hasta que se jueguen)
+  // ══════════════════════════════════════════════════════════════════
+
+  { id:'QF-01', local:'Francia',    visita:'Marruecos',   resultado:'', prob:62, fuente:'Est.' },
+  { id:'QF-02', local:'España',     visita:'Bélgica',     resultado:'', prob:60, fuente:'Est.' },
+  { id:'QF-03', local:'Noruega',    visita:'Inglaterra',  resultado:'', prob:52, fuente:'Est.' },
+  { id:'QF-04', local:'Argentina',  visita:'Suiza',       resultado:'', prob:68, fuente:'Est.' },
+
 ];
 
 // Devuelve el partido más inesperado: menor prob implícita de mercado
@@ -1251,11 +1300,23 @@ const TEAM_ES={
 // Busca quién del grupo acertó el resultado del partido `cand` (de RESULTADOS_INESPERADOS).
 // Devuelve {nombre, pronostico, fueExacto} o null si nadie acertó.
 function buscarAcertadorInesperado(cand){
+  const [gL,gV]=cand.resultado.split('-').map(Number);
+  const gR=gL>gV?1:gV>gL?-1:0;
+  // ── Eliminatoria (R32/R16/QF/...): por id contra DATA.partidos ──
+  // Los pronósticos vienen de la captura de eliminatoria (CSV R32).
+  if(cand.id){
+    const p=DATA.partidos.find(x=>x.r32===cand.id);
+    if(!p||!p.pronosticos.length) return null;
+    const correctos=p.pronosticos.filter(pr=>(pr.local>pr.visitante?1:pr.visitante>pr.local?-1:0)===gR);
+    if(!correctos.length) return null;
+    const exactos=correctos.filter(pr=>pr.local===gL&&pr.visitante===gV);
+    const g=exactos.length?exactos[0]:correctos[0];
+    return {nombre:g.nombre, pronostico:`${g.local}-${g.visitante}`, fueExacto:exactos.length>0};
+  }
+  // ── Fase de grupos: por nombres (EN->ES) contra FIXTURE_ORDER_CAPTURA ──
   const pros=DATA.pronosticos_grupos;
   const lES=TEAM_ES[cand.local]||cand.local;
   const vES=TEAM_ES[cand.visita]||cand.visita;
-  const [gL,gV]=cand.resultado.split('-').map(Number);
-  const gR=gL>gV?1:gV>gL?-1:0;
   const idx=FIXTURE_ORDER_CAPTURA.findIndex(([l,v])=>
     (l===lES&&v===vES)||(l===vES&&v===lES)
   );
