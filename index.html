@@ -1049,6 +1049,9 @@ const PARTIDOS_COMPLETOS=[
   {grupo:"Cuartos",r32:"QF-02",hora:"Jul 10 · 14:00 ECT",local:"España",visitante:"Bélgica",resultado:null,pronosticos:[]},
   {grupo:"Cuartos",r32:"QF-03",hora:"Jul 11 · 16:00 ECT",local:"Noruega",visitante:"Inglaterra",resultado:null,pronosticos:[]},
   {grupo:"Cuartos",r32:"QF-04",hora:"Jul 11 · 20:00 ECT",local:"Argentina",visitante:"Suiza",resultado:null,pronosticos:[]},
+  // ── SEMIFINALES — horarios en ECT (ET − 1h) ──
+  {grupo:"Semis",r32:"SF-01",hora:"Jul 14 · 14:00 ECT",local:"Francia",visitante:"España",resultado:null,pronosticos:[]},
+  {grupo:"Semis",r32:"SF-02",hora:"Jul 15 · 14:00 ECT",local:"Inglaterra",visitante:"Argentina",resultado:null,pronosticos:[]},
 ];
 DATA.partidos=PARTIDOS_COMPLETOS.map(p=>Object.assign({},p,{pronosticos:[]}));
 function buildTicker(players){
@@ -1264,10 +1267,17 @@ const RESULTADOS_INESPERADOS = [
   // CUARTOS DE FINAL — Jul 9–11  (resultado vacío hasta que se jueguen)
   // ══════════════════════════════════════════════════════════════════
 
-  { id:'QF-01', local:'Francia',    visita:'Marruecos',   resultado:'', prob:62, fuente:'Est.' },
-  { id:'QF-02', local:'España',     visita:'Bélgica',     resultado:'', prob:60, fuente:'Est.' },
-  { id:'QF-03', local:'Noruega',    visita:'Inglaterra',  resultado:'', prob:52, fuente:'Est.' },
-  { id:'QF-04', local:'Argentina',  visita:'Suiza',       resultado:'', prob:68, fuente:'Est.' },
+  { id:'QF-01', local:'Francia',    visita:'Marruecos',   resultado:'2-0', ganador_resultado:'local',     prob:62, fuente:'FanDuel' },
+  { id:'QF-02', local:'España',     visita:'Bélgica',     resultado:'2-1', ganador_resultado:'local',     prob:60, fuente:'FanDuel' },
+  { id:'QF-03', local:'Noruega',    visita:'Inglaterra',  resultado:'1-2', ganador_resultado:'visitante', prob:52, fuente:'FanDuel' },
+  { id:'QF-04', local:'Argentina',  visita:'Suiza',       resultado:'3-1', ganador_resultado:'local',     prob:68, fuente:'FanDuel' },
+
+  // ══════════════════════════════════════════════════════════════════
+  // SEMIFINALES — Jul 14–15  (resultado vacío hasta que se jueguen)
+  // ══════════════════════════════════════════════════════════════════
+
+  { id:'SF-01', local:'Francia',    visita:'España',      resultado:'', prob:50, fuente:'FanDuel' },
+  { id:'SF-02', local:'Inglaterra', visita:'Argentina',   resultado:'', prob:37, fuente:'FanDuel' },
 
 ];
 
